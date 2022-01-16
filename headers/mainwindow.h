@@ -32,16 +32,13 @@ public:
 
 private slots:
 
-    void on_pushButtonIdentif_2_clicked();
-    void on_pushButton_page_id_exit_clicked();
-
-    // Page Image non modifiable
+    // Page Image non modifiable--------------------------------
     // Liste des images
     void on_listWidget_listeImage_nonModifiable_itemClicked(QListWidgetItem* item) ;
     // Agrandissement de l'image (non modifiable)
     void on_horizontalSlider_agrandissementNonModifiable_valueChanged(int value) ;
 
-    // Page Image modifiable
+    // Page Image modifiable--------------------------------
     // Liste des images
     void on_listWidget_listeImage_itemClicked(QListWidgetItem *item);
     // Champ d'affichage et de modification : Acces (Permisssion)
@@ -65,7 +62,7 @@ private slots:
     // Passer a la page des traitements de l'image choisie
     void on_pushButton_traitementImage_clicked() ;
 
-    // Page Traitement
+    // Page Traitement--------------------------------
     // -------------Standars-------------
 
     // Retour a la page pour choisir l'image a traiter
@@ -79,34 +76,47 @@ private slots:
     // Sauvegarder temporellement l'image de resultat
     void on_pushButton_traitementAppliquer_clicked() ;
 
-    // -------------Correction-------------
+    // -------------Luminosite-------------
 
-    // Initialiser les corrections
+    // Initialiser
     void on_groupBox_correction_clicked() ;
-    // Initialiser la modification de la nettete
-    void on_radioButton_nettete_clicked() ;
-    // Initialiser la modification de l'intensite de lumiere
+    // Bouton : Intensite lumineuse
     void on_radioButton_luminosite_clicked() ;
-    // Initialiser la modification du constraste
-    void on_radioButton_contraste_clicked() ;
-    // Initialiser la modification du bruitage de l'image
-    void on_radioButton_bruitage_clicked() ;
-    // Modifier la luminosite de l'image
+    // Intensite lumineuse
     void on_horizontalSlider_luminosite_valueChanged(int value) ;
-    // Modifier le constraste de l'image
+    // Bouton : Contraste
+    void on_radioButton_contraste_clicked() ;
+    // Contraste
     void on_horizontalSlider_contraste_valueChanged(int value) ;
-    // Modifier la nettete de l'image
+    // Bouton : Ombre
+    void on_radioButton_ombre_clicked() ;
+    // Ombre
+    void on_horizontalSlider_ombre_valueChanged(int value) ;
+    // Bouton : Haute lumiere
+    void on_radioButton_brillance_clicked() ;
+    // Haute lumiere
+    void on_horizontalSlider_brillance_valueChanged(int value) ;
+
+    // -------------Details-------------
+
+    // Initialiser
+    void on_groupBox_details_clicked() ;
+    // Bouton : Nettete
+    void on_radioButton_nettete_clicked() ;
+    // Nettete
     void on_horizontalSlider_nettete_valueChanged(int value) ;
-    // Bruiter l'image
+    // Bouton : Bruitage
+    void on_radioButton_bruitage_clicked() ;
+    // Bruitage
     void on_horizontalSlider_Bruitage_valueChanged(int value) ;
 
     // -------------Filtres de couleur-------------
 
-    // Initialiser les filtres de couleur
+    // Initialiser
     void on_groupBox_filtres_clicked() ;
     // Image originale
     void on_radioButton_originale_clicked() ;
-    // Image monochrome
+    // Image en niveau de gris
     void on_radioButton_niveauGris_clicked() ;
     // Image inversee
     void on_radioButton_inversement_clicked() ;
@@ -129,7 +139,7 @@ private slots:
 
     // -------------Extraction du canal de couleur-------------
 
-    // Extraction des canaux de couleur
+    // Initialiser
     void on_groupBox_extractionRVB_clicked();
     // Extraction canal rouge
     void on_radioButton_extractionR_clicked() ;
@@ -140,26 +150,22 @@ private slots:
 
     // -------------Seuillage & Segmentation-------------
 
-    // Initialiser le seuillage et la segmentation
+    // Initialiser
     void on_groupBox_seuillageSegmentation_clicked();
-
     // Seuillage
     void on_radioButton_seuillage_clicked() ;
     // Segmentation
     void on_radioButton_segmentation_clicked() ;
-
     // Seuils simples
     void on_radioButton_seuillageSimple_clicked() ;
     // Seuils par hysteresis
     void on_radioButton_seuillageHysteresis_clicked() ;
-
     // Seuil bas rouge
     void on_verticalSlider_seuilBasR_2_valueChanged(int value) ;
     // Seuil bas vert
     void on_verticalSlider_seuilBasV_2_valueChanged(int value) ;
     // Seuil bas bleu
     void on_verticalSlider_seuilBasB_2_valueChanged(int value) ;
-
     // Seuil haut rouge
     void on_verticalSlider_seuilHautR_2_valueChanged(int value) ;
     // Seuil haut vert
@@ -182,7 +188,7 @@ private slots:
 
     // -------------Contours-------------
 
-    // Initialiser les fonctions liees aux contours
+    // Initialiser
     void on_groupBox_contours_clicked() ;
     // Contours par filtres gradients
     void on_radioButton_contoursGradient_clicked() ;
@@ -191,67 +197,81 @@ private slots:
 
     //-------------Resolution-------------
 
+    // Initialiser
+    void on_groupBox_resolutionQuantification_clicked();
+    // Bouton : Resolution
+    void on_radioButton_resolution_clicked();
+    // Bouton : Interpolation par pixel le plus proche
+    void on_radioButton_PPP_clicked() ;
+    // Bouton : Interpolation bilineaire
+    void on_radioButton_bipolaire_clicked() ;
+    // Resolution
+    void on_horizontalSlider_resolution_valueChanged(int value) ;
+    // Bouton : Quantification
+    void on_radioButton_quantification_clicked() ;
     // Quantification
     void on_horizontalSlider_quantification_valueChanged(int value) ;
+
+    // -------------Debruitage-------------
+
+    // Initialiser
+    void on_groupBox_debruitage_clicked() ;
+    // Filtre moyeneur
+    void on_radioButton_moyenneur_clicked() ;
+    // Filtre gaussien
+    void on_radioButton_gaussien_clicked() ;
+    // Filtre median
+    void on_radioButton_median_clicked() ;
+    // Filtre de Kuwahara-Nagao
+    void on_radioButton_kuwahara_clicked();
+
+    // -------------Couleur-------------
+
+    // Initialiser
+    void on_groupBox_couleur_clicked() ;
+    // Bouton : Temperature
+    void on_radioButton_temperature_clicked() ;
+    // Temperature
+    void on_horizontalSlider_temperature_valueChanged(int value) ;
+    // Bouton : Vividite
+    void on_radioButton_vividite_clicked() ;
+    // Vividite
+    void on_horizontalSlider_vividite_valueChanged(int value) ;
+    // Bouton : Teinte
+    void on_radioButton_teinte_clicked() ;
+    // Teinte
+    void on_horizontalSlider_teinte_valueChanged(int value) ;
+    // Bouton : Saturation
+    void on_radioButton_saturation_clicked() ;
+    // Saturation
+    void on_horizontalSlider_saturation_valueChanged(int value) ;
 
     //-------------Autres-------------
 
     // Generer les icones
     void GenererIcone() ;
-
     // Afficher l'image resultante apres un traitement avec inversement des canaux de couleur
     void AffichageResultat(const Mat image, const int choix) ;
-
-
-
-    void on_groupBox_details_clicked() ;
-
-    void on_groupBox_resolutionQuantification_clicked();
-
-    void on_radioButton_resolution_clicked();
-
-    void on_radioButton_quantification_clicked() ;
-
-    void on_groupBox_debruitage_clicked() ;
-
-    void on_groupBox_couleur_clicked() ;
-
-    void on_horizontalSlider_temperature_valueChanged(int value) ;
-
-    void on_radioButton_temperature_clicked() ;
-
-
-    void on_radioButton_moyenneur_clicked() ;
-
-    void on_radioButton_gaussien_clicked() ;
-
-    void on_radioButton_median_clicked() ;
-
-    void on_horizontalSlider_ombre_valueChanged(int value) ;
-
-    void on_radioButton_ombre_clicked() ;
-
-    void on_horizontalSlider_brillance_valueChanged(int value) ;
-
-    void on_radioButton_brillance_clicked() ;
-
-    void on_horizontalSlider_saturation_valueChanged(int value) ;
-
-    void on_radioButton_saturation_clicked() ;
-
-    void on_horizontalSlider_teinte_valueChanged(int value) ;
-
-    void on_radioButton_teinte_clicked() ;
-
-    void on_horizontalSlider_vividite_valueChanged(int value) ;
-
-    void on_radioButton_vividite_clicked() ;
-
-    void on_horizontalSlider_resolution_valueChanged(int value) ;
-
-    void on_radioButton_bipolaire_clicked() ;
-
-    void on_radioButton_PPP_clicked() ;
+    // Messages d'aide
+    void AfficherMessageAide() ;
+    // Messages d'aide : Luminosite
+    void AfficherMessageAideLuminosite() ;
+    // Messages d'aide : Couleur
+    void AfficherMessageAideCouleur() ;
+    // Messages d'aide : Details
+    void AfficherMessageAideDetail() ;
+    // Messages d'aide : Resolution
+    void AfficherMessageAideResolution() ;
+    // Messages d'aide : Extraction
+    void AfficherMessageAideExtraction() ;
+    // Messages d'aide : Contours
+    void AfficherMessageAideContour() ;
+    // Messages d'aide : Debruitage
+    void AfficherMessageAideDebruitage() ;
+    // Messages d'aide : Seuillage et segmentation
+    void AfficherMessageAideSeuillageSegmentation() ;
+    // Messages d'aide : Filtres
+    void AfficherMessageAideFiltre() ;
 
     // Reinitialisation generale
     void Reinitialiser() ;
@@ -273,8 +293,6 @@ private slots:
     void ReinitialiserSeuillageSegmentation() ;
     // Reinitialiser : Box Filtres
     void ReinitialiserFiltre() ;
-
-    void on_radioButton_kuwahara_clicked();
 
 private:
     Ui::MainWindow *ui;

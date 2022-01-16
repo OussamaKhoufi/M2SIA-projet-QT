@@ -1,6 +1,5 @@
 #include "headers/mainwindow.h"
 #include "ui_mainwindow.h"
-#include "ui/dialog_identification.h"
 
 using namespace cv;
 
@@ -68,112 +67,19 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->listWidget_descripteurImageTitre->setToolTip("Titre") ;
     // Passer au traitement
     ui->pushButton_traitementImage->setToolTip("Commencer le traitement de l'image choisie") ;
+    // Sauvegarder les modifications
+    ui->pushButton_modifier->setToolTip("Sauvegarder les modifications") ;
 
     // Page du traitement-----------------------------
     // Initialiser
     GenererIcone() ;
-
     // Messages d'aide
-    // Box : Luminosite
-    ui->groupBox_correction->setToolTip("Modifier les paramètres liés à la luminosité de l'image :\nIntensité, contraste, ombres hautes lumières") ;
-    // Intensité
-    ui->radioButton_luminosite->setToolTip("Modifier l'intensité lumineuse de l'image") ;
-    ui->horizontalSlider_luminosite->setToolTip("Tirer à gauche : Atténuer l'intensité lumineuse\nTirer à droite : Augmenter l'intensité lumineuse") ;
-    // Contraste
-    ui->radioButton_contraste->setToolTip("Modifier le contraste de l'image") ;
-    ui->horizontalSlider_contraste->setToolTip("Tirer à gauche : Atténuer le contraste\nTirer à droite : Augmenter le contraste") ;
-    // Ombres
-    ui->radioButton_ombre->setToolTip("Modifier les ombres (shadows) de l'image") ;
-    ui->horizontalSlider_ombre->setToolTip("Tirer à gauche : Atténuer les ombres\nTirer à droite : Augmenter les ombres") ;
-    // Hautes lumières
-    ui->radioButton_brillance->setToolTip("Modifier les hautes lumières (highlights) de l'image") ;
-    ui->horizontalSlider_brillance->setToolTip("Tirer à gauche : Atténuer les hautes lumières\nTirer à droite : Augmenter les hautes lumières") ;
-
-    // Box : Couleur
-    ui->groupBox_couleur->setToolTip("Modifier les paramètres liés aux couleurs de l'image :\nTempérature, vividité, teinte, saturation") ;
-    // Température
-    ui->radioButton_temperature->setToolTip("Modifier la température de l'image") ;
-    ui->horizontalSlider_temperature->setToolTip("Tirer à gauche : Couleur froide\nTirer à droite : Couleur chaude") ;
-    // Vividité
-    ui->radioButton_vividite->setToolTip("Modifier la vividité de l'image") ;
-    ui->horizontalSlider_vividite->setToolTip("Tirer à gauche : Atténuer la vividité\nTirer à droite : Augmenter la vividité") ;
-    // Teinte
-    ui->radioButton_teinte->setToolTip("Modifier la teinte de l'image") ;
-    // Saturation
-    ui->radioButton_saturation->setToolTip("Modifier la saturation de l'image") ;
-    ui->horizontalSlider_saturation->setToolTip("Tirer à gauche : Atténuer la saturation\nTirer à droite : Augmenter la saturation") ;
-
-    // Box : Resolution
-    ui->groupBox_resolutionQuantification->setToolTip("Modifier la resolution & Quantification") ;
-    // Resolution
-    ui->radioButton_resolution->setToolTip("Redimensionner l'image") ;
-    ui->radioButton_PPP->setToolTip("Interpolation par pixel le plus proche") ;
-    ui->radioButton_bipolaire->setToolTip("Interpolation bilinéaire") ;
-    ui->horizontalSlider_resolution->setToolTip("Tirer à gauche : Dininuer a résolution\nTirer à droite : Augmenter la résolution (interpolation)") ;
-    // Quantification
-    ui->radioButton_quantification->setToolTip("Quantification :\Max : 8 bits\nMin : 1 bit") ;
-    ui->horizontalSlider_quantification->setToolTip("Tirer à gauche : Atténuer ") ;
-
-    // Box : Details
-    ui->groupBox_details->setToolTip("Modifier la nettete de l'image\nBruiter l'image (bruit uniforme)") ;
-
-    // Box : Extraction
-    ui->groupBox_extractionRVB->setToolTip("Extraire une composante de couleur de l'image (rouge, verte, bleue)") ;
-
-    // Box : Contours
-    ui->groupBox_contours->setToolTip("Détecter les contours de l'image par différents méthodes :\nFiltres gradients, filtre laplacien, transformée de Hough") ;
-
-    // Box : Debruitage
-    ui->groupBox_debruitage->setToolTip("Débruiter l'image par différents types de filtre :\nMoyenneur, gaussien (filtres linéaires)\nMédian, Kuwahara-Nagao (non-linéaire)") ;
-
-    // Box : Seuillage et segmentation
-    ui->groupBox_seuillageSegmentation->setToolTip("Seuiller ou segmenter l'image par seuillage simple ou à hystérésis") ;
-
-    // Box : Filtres
-    ui->groupBox_filtres->setToolTip("Appliquer les filtres de couleurs") ;
-
-    // Zone d'affichage
-    // Image de départ
-    ui->groupBox_imageOriginale->setToolTip("Image de départ :\nContenu, résolution, histogramme") ;
-    ui->graphicsView_imageOriginale->setToolTip("Image de départ") ;
-    ui->label_resolutionOriginale->setToolTip("Résolution de l'image de départ") ;
-    ui->label_zoomImageOriginale->setToolTip("Agrandissement de l'image de départ") ;
-    ui->horizontalSlider_imageOriginale->setToolTip("Tirer vers la droite pour agrandir l'image") ;
-    ui->label_histogrammeImageOriginale->setToolTip("Histogramme de l'image de départ") ;
-
-    // Image traitée
-    ui->groupBox_imageTraitee->setToolTip("Image de départ :\nContenu, résolution, histogramme") ;
-    ui->graphicsView_imageTraitee->setToolTip("Image traitée") ;
-    ui->label_resolutionTraitee->setToolTip("Résolution de l'image traitée") ;
-    ui->label_zoomImageTraitee->setToolTip("Agrandissement de l'image traitée") ;
-    ui->horizontalSlider_imageTraitee->setToolTip("Tirer vers la droite pour agrandir l'image") ;
-    ui->label_histogrammeImageTraitee->setToolTip("Histogramme de l'image traitée") ;
-
-    // Boutons
-    ui->pushButton_retour->setToolTip("Retourner à la page précédente (choisir l'image à traiter)") ;
-    ui->pushButton_traitementAppliquer->setToolTip("Appliquer le traitement actuel :\nL'image de départ sera remplacé par l'image traitée en cours d'affichage") ;
-    ui->pushButton_traitementSauvegarder->setToolTip("Sauvegarder l'image traitée") ;
+    AfficherMessageAide() ;
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::on_pushButtonIdentif_2_clicked()
-{
-    QString textSaisi = ui->textEdit_2->toPlainText();
-    ui->lineEdit_2->insert(textSaisi);
-    if (textSaisi=="test"){
-        Dialog_identification dialog_win;
-        dialog_win.setModal(true);
-        dialog_win.exec();
-        ui->stackedWidget->setCurrentIndex(1);
-    }
-}
-void MainWindow::on_pushButton_page_id_exit_clicked()
-{
-
 }
 
 // --------------------------Page Choisir Image (utilisateur niveau 1)--------------------------
@@ -1918,7 +1824,7 @@ void MainWindow::on_groupBox_couleur_clicked(){
     }
 }
 
-// Bouton temperature
+// Bouton : Temperature
 void MainWindow::on_radioButton_temperature_clicked(){
     // Si la case est cochee
     if(ui->radioButton_temperature->isChecked()){
@@ -1944,29 +1850,29 @@ void MainWindow::on_horizontalSlider_temperature_valueChanged(int value){
     AffichageResultat(imageResultat, 1);
 }
 
-// Bouton : Saturation
-void MainWindow::on_radioButton_saturation_clicked(){
+// Bouton : Vividite
+void MainWindow::on_radioButton_vividite_clicked(){
     // Si la case est cochee
-    if(ui->radioButton_saturation->isChecked()){
+    if(ui->radioButton_vividite->isChecked()){
         // Reinitialiser les autres sliders
-        // Teinte
-        ui->horizontalSlider_teinte->setValue(0) ;
-        ui->horizontalSlider_teinte->setEnabled(false) ;
         // Temperature
         ui->horizontalSlider_temperature->setValue(0) ;
         ui->horizontalSlider_temperature->setEnabled(false) ;
-        // Vividite
-        ui->horizontalSlider_vividite->setValue(0) ;
-        ui->horizontalSlider_vividite->setEnabled(false) ;
+        // Saturation
+        ui->horizontalSlider_saturation->setValue(0) ;
+        ui->horizontalSlider_saturation->setEnabled(false) ;
+        // Teinte
+        ui->horizontalSlider_teinte->setValue(0) ;
+        ui->horizontalSlider_teinte->setEnabled(false) ;
 
         // Activer le slider
-        ui->horizontalSlider_saturation->setEnabled(true) ;
+        ui->horizontalSlider_vividite->setEnabled(true) ;
     }
 }
 
-// Saturation
-void MainWindow::on_horizontalSlider_saturation_valueChanged(int value){
-    imageResultat = ImageSaturation(imageOriginale, value) ;
+// Vividite
+void MainWindow::on_horizontalSlider_vividite_valueChanged(int value){
+    imageResultat = ImageVividite(imageOriginale, value) ;
     AffichageResultat(imageResultat, 1) ;
 }
 
@@ -1996,29 +1902,29 @@ void MainWindow::on_horizontalSlider_teinte_valueChanged(int value){
     AffichageResultat(imageResultat, 1) ;
 }
 
-// Bouton : Vividite
-void MainWindow::on_radioButton_vividite_clicked(){
+// Bouton : Saturation
+void MainWindow::on_radioButton_saturation_clicked(){
     // Si la case est cochee
-    if(ui->radioButton_vividite->isChecked()){
+    if(ui->radioButton_saturation->isChecked()){
         // Reinitialiser les autres sliders
-        // Temperature
-        ui->horizontalSlider_temperature->setValue(0) ;
-        ui->horizontalSlider_temperature->setEnabled(false) ;
-        // Saturation
-        ui->horizontalSlider_saturation->setValue(0) ;
-        ui->horizontalSlider_saturation->setEnabled(false) ;
         // Teinte
         ui->horizontalSlider_teinte->setValue(0) ;
         ui->horizontalSlider_teinte->setEnabled(false) ;
+        // Temperature
+        ui->horizontalSlider_temperature->setValue(0) ;
+        ui->horizontalSlider_temperature->setEnabled(false) ;
+        // Vividite
+        ui->horizontalSlider_vividite->setValue(0) ;
+        ui->horizontalSlider_vividite->setEnabled(false) ;
 
         // Activer le slider
-        ui->horizontalSlider_vividite->setEnabled(true) ;
+        ui->horizontalSlider_saturation->setEnabled(true) ;
     }
 }
 
-// Vividite
-void MainWindow::on_horizontalSlider_vividite_valueChanged(int value){
-    imageResultat = ImageVividite(imageOriginale, value) ;
+// Saturation
+void MainWindow::on_horizontalSlider_saturation_valueChanged(int value){
+    imageResultat = ImageSaturation(imageOriginale, value) ;
     AffichageResultat(imageResultat, 1) ;
 }
 
@@ -2130,6 +2036,202 @@ void MainWindow::AffichageResultat(const Mat image, const int choix){
     int largeur = ui->label_histogrammeImageTraitee->width() ;        // Largeur de la fenetre d'affichage
     ui->label_histogrammeImageTraitee->setPixmap(histogrammeTraitee.scaled(largeur, hauteur, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     ui->label_histogrammeImageTraitee->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
+}
+
+// Messages d'aide
+void MainWindow::AfficherMessageAide(){
+    // Box : Luminosite
+    AfficherMessageAideLuminosite() ;
+    // Box : Couleur
+    AfficherMessageAideCouleur() ;
+    // Box : Resolution
+    AfficherMessageAideResolution() ;
+    // Box : Details
+    AfficherMessageAideDetail() ;
+    // Box : Extraction
+    AfficherMessageAideExtraction() ;
+    // Box : Contours
+    AfficherMessageAideContour() ;
+    // Box : Debruitage
+    AfficherMessageAideDebruitage() ;
+    // Box : Seuillage et segmentation
+    AfficherMessageAideSeuillageSegmentation() ;
+    // Box : Filtres
+    AfficherMessageAideFiltre() ;
+
+    // Zone d'affichage
+    // Image de départ
+    ui->groupBox_imageOriginale->setToolTip("Image de départ :\nContenu, résolution, histogramme") ;
+    ui->graphicsView_imageOriginale->setToolTip("Image de départ") ;
+    ui->label_resolutionOriginale->setToolTip("Résolution de l'image de départ") ;
+    ui->label_zoomImageOriginale->setToolTip("Agrandissement de l'image de départ") ;
+    ui->horizontalSlider_imageOriginale->setToolTip("Tirer vers la droite pour agrandir l'image") ;
+    ui->label_histogrammeImageOriginale->setToolTip("Histogramme de l'image de départ") ;
+
+    // Image traitée
+    ui->groupBox_imageTraitee->setToolTip("Image de départ :\nContenu, résolution, histogramme") ;
+    ui->graphicsView_imageTraitee->setToolTip("Image traitée") ;
+    ui->label_resolutionTraitee->setToolTip("Résolution de l'image traitée") ;
+    ui->label_zoomImageTraitee->setToolTip("Agrandissement de l'image traitée") ;
+    ui->horizontalSlider_imageTraitee->setToolTip("Tirer vers la droite pour agrandir l'image") ;
+    ui->label_histogrammeImageTraitee->setToolTip("Histogramme de l'image traitée") ;
+
+    // Boutons
+    ui->pushButton_retour->setToolTip("Retourner à la page précédente (choisir l'image à traiter)") ;
+    ui->pushButton_traitementAppliquer->setToolTip("Appliquer le traitement actuel :\nL'image de départ sera remplacé par l'image traitée en cours d'affichage") ;
+    ui->pushButton_traitementReinitialiser->setToolTip("Réinitialiser l'image de départ par l'image choisie dans la page précédente") ;
+    ui->pushButton_traitementSauvegarder->setToolTip("Sauvegarder l'image traitée") ;
+}
+
+// Messages d'aide : Luminosite
+void MainWindow::AfficherMessageAideLuminosite(){
+    ui->groupBox_correction->setToolTip("Modifier les paramètres liés à la luminosité de l'image :\nIntensité, contraste, ombres hautes lumières") ;
+    // Intensité
+    ui->radioButton_luminosite->setToolTip("Modifier l'intensité lumineuse de l'image") ;
+    ui->horizontalSlider_luminosite->setToolTip("Tirer à gauche : Atténuer l'intensité lumineuse\nTirer à droite : Augmenter l'intensité lumineuse") ;
+    // Contraste
+    ui->radioButton_contraste->setToolTip("Modifier le contraste de l'image") ;
+    ui->horizontalSlider_contraste->setToolTip("Tirer à gauche : Atténuer le contraste\nTirer à droite : Augmenter le contraste") ;
+    // Ombres
+    ui->radioButton_ombre->setToolTip("Modifier les ombres (shadows) de l'image") ;
+    ui->horizontalSlider_ombre->setToolTip("Tirer à gauche : Atténuer les ombres\nTirer à droite : Augmenter les ombres") ;
+    // Hautes lumières
+    ui->radioButton_brillance->setToolTip("Modifier les hautes lumières (highlights) de l'image") ;
+    ui->horizontalSlider_brillance->setToolTip("Tirer à gauche : Atténuer les hautes lumières\nTirer à droite : Augmenter les hautes lumières") ;
+}
+
+// Messages d'aide : Couleur
+void MainWindow::AfficherMessageAideCouleur(){
+    ui->groupBox_couleur->setToolTip("Modifier les paramètres liés aux couleurs de l'image :\nTempérature, vividité, teinte, saturation") ;
+    // Température
+    ui->radioButton_temperature->setToolTip("Modifier la température de l'image") ;
+    ui->horizontalSlider_temperature->setToolTip("Tirer à gauche : Couleur froide\nTirer à droite : Couleur chaude") ;
+    // Vividité
+    ui->radioButton_vividite->setToolTip("Modifier la vividité de l'image") ;
+    ui->horizontalSlider_vividite->setToolTip("Tirer à gauche : Atténuer la vividité\nTirer à droite : Augmenter la vividité") ;
+    // Teinte
+    ui->radioButton_teinte->setToolTip("Modifier la teinte de l'image") ;
+    // Saturation
+    ui->radioButton_saturation->setToolTip("Modifier la saturation de l'image") ;
+    ui->horizontalSlider_saturation->setToolTip("Tirer à gauche : Atténuer la saturation\nTirer à droite : Augmenter la saturation") ;
+}
+
+// Messages d'aide : Details
+void MainWindow::AfficherMessageAideDetail(){
+    ui->groupBox_details->setToolTip("Modifier la nettete de l'image\nBruiter l'image (bruit uniforme)") ;
+    // Nettete
+    ui->radioButton_nettete->setToolTip("Modifier la netteté de l'image") ;
+    ui->horizontalSlider_nettete->setToolTip("Tirer à gauche : Lisser l'image\nTirer à droite : Réhausser les contours dans l'image") ;
+    // Bruitage
+    ui->radioButton_bruitage->setToolTip("Ajouter du bruit additif (bruit uniforme) à l'image") ;
+    ui->horizontalSlider_Bruitage->setToolTip("Tirer à droite : Augmenter l'intensité du bruit") ;
+}
+
+// Messages d'aide : Resolution
+void MainWindow::AfficherMessageAideResolution(){
+    ui->groupBox_resolutionQuantification->setToolTip("Modifier la resolution & Quantification") ;
+    // Resolution
+    ui->radioButton_resolution->setToolTip("Redimensionner l'image") ;
+    ui->radioButton_PPP->setToolTip("Interpolation par pixel le plus proche") ;
+    ui->radioButton_bipolaire->setToolTip("Interpolation bilinéaire") ;
+    ui->horizontalSlider_resolution->setToolTip("Tirer à gauche : Dininuer a résolution\nTirer à droite : Augmenter la résolution (interpolation)") ;
+    // Quantification
+    ui->radioButton_quantification->setToolTip("Quantification :\nMax : 8 bits\nMin : 1 bit") ;
+    ui->horizontalSlider_quantification->setToolTip("Tirer à gauche : Atténuer le nombre de nuances") ;
+}
+
+// Messages d'aide : Extraction
+void MainWindow::AfficherMessageAideExtraction(){
+    ui->groupBox_extractionRVB->setToolTip("Extraire une composante de couleur de l'image (rouge, verte, bleue)") ;
+    // Canal rouge
+    ui->radioButton_extractionR->setToolTip("Extraction de la composante rouge de l'image") ;
+    // Canal vert
+    ui->radioButton_extractionV->setToolTip("Extraction de la composante verte de l'image") ;
+    // Canal bleu
+    ui->radioButton_extractionB->setToolTip("Extraction de la composante bleue de l'image") ;
+}
+
+// Messages d'aide : Contours
+void MainWindow::MainWindow::AfficherMessageAideContour(){
+    ui->groupBox_contours->setToolTip("Détecter les contours de l'image par différents méthodes :\nFiltres gradients, filtre laplacien, transformée de Hough") ;
+    // Filtrage de type gradient
+    ui->radioButton_contoursGradient->setToolTip("Détection de contours par la norme du gradient") ;
+    // Filtrage de type laplacien
+    ui->radioButton_contoursLaplacien->setToolTip("Détection de contours par filtre laplacien") ;
+    // Transformée de Hough
+    ui->radioButton_contoursHough->setToolTip("Détection de contours par la transformée de Hough") ;
+}
+
+// Messages d'aide : Debruitage
+void MainWindow::AfficherMessageAideDebruitage(){
+    ui->groupBox_debruitage->setToolTip("Débruiter l'image par différents types de filtre :\nMoyenneur, gaussien (filtres linéaires)\nMédian, Kuwahara-Nagao (non-linéaire)") ;
+    // Filtres lineaires
+    ui->radioButton_moyenneur->setToolTip("Filtre moyenneur (linéaire)") ;
+    ui->radioButton_gaussien->setToolTip("Filtre gaussien (linéaire)") ;
+    // Filtres non lineaires
+    ui->radioButton_median->setToolTip("Filtre médian (non linéaire)") ;
+    ui->radioButton_kuwahara->setToolTip("Filtre de Kuwahara-Nagao (non linéaire)") ;
+}
+
+// Messages d'aide : Seuillage et segmentation
+void MainWindow::AfficherMessageAideSeuillageSegmentation(){
+    ui->groupBox_seuillageSegmentation->setToolTip("Seuiller ou segmenter l'image") ;
+    ui->radioButton_seuillage->setToolTip("Seuillage simple ou à hystérésis") ;
+    ui->radioButton_segmentation->setToolTip("Segmentation par seuillage simple ou à hystérésis") ;
+    ui->radioButton_seuillageSimple->setToolTip("Seuillage simple (conserver les valeurs supérieures au seuil)") ;
+    ui->radioButton_seuillageHysteresis->setToolTip("Seuillage à hystérésis (conserver les valeurs supérieures au seuil bas et inférieures au seuil haut)") ;
+    // Seuils bas
+    ui->groupBox_seuilBas->setToolTip("Seuils (rouge, vert, bleu) du seuillage simple\nSeuils (rouge, vert, bleu) bas du seuillage à hystérésis\n"
+                                      "Pour une image en niveau de gris, la valeur du seuil est la même pour les trois composantes") ;
+    ui->verticalSlider_seuilBasR_2->setToolTip("Seuil de la composante rouge") ;
+    ui->verticalSlider_seuilBasV_2->setToolTip("Seuil de la composante verte") ;
+    ui->verticalSlider_seuilBasB_2->setToolTip("Seuil de la composante bleue") ;
+    ui->pushButton_seuilBasR->setToolTip("Réinitialiser le seuil de la composante rouge à 0") ;
+    ui->pushButton_seuilBasV->setToolTip("Réinitialiser le seuil de la composante verte à 0") ;
+    ui->pushButton_seuilBasB->setToolTip("Réinitialiser le seuil de la composante bleue à 0") ;
+    // Seuils hauts
+    ui->groupBox_seuilHaut->setToolTip("Seuils hauts(rouge, vert, bleu) du seuillage à hystérésis\nPour une image en niveau de gris, la valeur du seuil est la même pour les trois composantes") ;
+    ui->verticalSlider_seuilHautR_2->setToolTip("Seuil de la composante rouge") ;
+    ui->verticalSlider_seuilHautV_2->setToolTip("Seuil de la composante verte") ;
+    ui->verticalSlider_seuilHautB_2->setToolTip("Seuil de la composante bleue") ;
+    ui->pushButton_seuilHautR->setToolTip("Réinitialiser le seuil de la composante rouge à 256") ;
+    ui->pushButton_seuilHautV->setToolTip("Réinitialiser le seuil de la composante verte à 256") ;
+    ui->pushButton_seuilHautB->setToolTip("Réinitialiser le seuil de la composante bleue à 256") ;
+}
+
+// Messages d'aide : Filtres
+void MainWindow::AfficherMessageAideFiltre(){
+    ui->groupBox_filtres->setToolTip("Appliquer les filtres de couleurs") ;
+    // Niveau de gris
+    ui->radioButton_niveauGris->setToolTip("Niveau de gris") ;
+    ui->label_mono->setToolTip("Niveau de gris") ;
+    // Inversement
+    ui->radioButton_inversement->setToolTip("Inversement des intensités lumineuses");
+    ui->label_negatif->setToolTip("Inversement des intensités lumineuses") ;
+    // Sepia
+    ui->radioButton_sepia->setToolTip("Sepia") ;
+    ui->label_sepia->setToolTip("Sepia") ;
+    // Rouge
+    ui->radioButton_rouge->setToolTip("Rouge") ;
+    ui->label_rouge->setToolTip("Rouge") ;
+    // Vert
+    ui->radioButton_vert->setToolTip("Vert") ;
+    ui->label_vert->setToolTip("Vert") ;
+    // Bleu
+    ui->radioButton_bleu->setToolTip("Bleu") ;
+    ui->label_bleu->setToolTip("Bleu") ;
+    // RGB
+    ui->radioButton_rgb->setToolTip("Couleur extrême RGB") ;
+    ui->label_rgb->setToolTip("Couleur extrême RGB") ;
+    // Cyan
+    ui->radioButton_cyan->setToolTip("Cyan") ;
+    ui->label_cyan->setToolTip("Cyan") ;
+    // Magenta
+    ui->radioButton_magenta->setToolTip("Magenta") ;
+    ui->label_magenta->setToolTip("Magenta") ;
+    // Jaune
+    ui->radioButton_jaune->setToolTip("Jaune") ;
+    ui->label_jaune->setToolTip("Jaune") ;
 }
 
 // Reinitialisation generale
