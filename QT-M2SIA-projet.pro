@@ -29,20 +29,16 @@ SOURCES += \
         ./sources/bibliotheque.cpp \
         ./sources/complement.cpp \
         ./sources/image.cpp \
-        ./sources/traitementImage.cpp \
-    ui/dialog_identification.cpp
+        ./sources/traitementImage.cpp
 
 HEADERS += \
         ./headers/mainwindow.h \
         ./headers/bibliotheque.h \
         ./headers/complement.h \
         ./headers/image.h \
-        ./headers/traitementImage.h \
-    ui/dialog_identification.h
+        ./headers/traitementImage.h
 FORMS += \
-        ./ui/mainwindow.ui \
-    ui/dialog_identification.ui \
-    ui/goal_ui.ui
+        ./ui/mainwindow.ui
 
 LIBS += \
         -ljsoncpp -lstdc++fs \

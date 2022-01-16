@@ -15,6 +15,8 @@
 #include "rapidjson/writer.h"
 // Fonctions complementaires
 #include "complement.h"
+// QT
+#include <QDateTime>
 
 using namespace rapidjson ;
 using namespace std ;
@@ -42,15 +44,19 @@ class Bibliotheque{
         void AfficherCout() ;                                                           // Affichage le cout d'une image
         void ConstruireAfficherSousListe() ;                                            // Construire et afficher une sous-liste
         void Trier() ;                                                                  // Trier la bibliotheque suivant une critere
-        void AjouterImage() ;                                                           // Ajouter une image dans la bibliotheque
-        void SupprimerImage() ;                                                         // Supprimer une image de la bibliotheque
-        void Sauvegarder() ;                                                            // Sauvegarder une bibliotheque
-        void majBiblioSuivantDroitAcces(const bool droitAcces) ;                 // Creer une sous-bibliotheque avec les images correspondantes au droit d'utilisateur
+        void AjouterImage(string cheminAccesContenu,
+                                        string titre,int numero,
+                                        double cout,string source,
+                                        string dateAjout,string dateCreation,
+                                        string acces);                                  // Ajouter une image dans la bibliotheque
+        void SupprimerImage(int numero) ;                                               // Supprimer une image de la bibliotheque
+        void Sauvegarder(string fileName) ;                                             // Sauvegarder une bibliotheque
+        void majBiblioSuivantDroitAcces(const bool droitAcces) ;                        // Creer une sous-bibliotheque avec les images correspondantes au droit d'utilisateur
 
         /*Methodes supplementaires*/
-        int ConstruireAfficherSousListeCout(const int choix) ;                          // Construire et afficher une sous-liste en fonction du cout (4 premieres options)
-        int ConstruireAfficherSousListeCout(double coutMin, double coutMax) ;           // Construire et afficher une sous-liste en fonction du cout (derniere option)
-        int ConstruireAfficherSousListeSource(const string source) ;                    // Construire et afficher une sous-liste en fonction de la source
+        Json::Value ConstruireAfficherSousListeCout(const int choix) ;                  // Construire et afficher une sous-liste en fonction du cout (4 premieres options)
+        Json::Value ConstruireAfficherSousListeCout(double coutMin, double coutMax) ;           // Construire et afficher une sous-liste en fonction du cout (derniere option)
+        Json::Value  ConstruireAfficherSousListeDateAjout(const int choix) ;                    // Construire et afficher une sous-liste en fonction de la date d'ajout
         Json::Value Trier(const int choix) ;
         vector<int> Trier(vector<double>valeurNonTri) ;                                 // Determiner les indices des elements avant le tri (reel)
         vector<int> Trier(vector<string>valeurNonTri) ;                                 // Determiner les indices des elements avant le tri (chaine de caracteres)

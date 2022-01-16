@@ -1,0 +1,15 @@
+{
+   "images" : [
+      {
+         "acces" : "R",
+         "cheminAcces" : "/home/vm/M2SIA-projet-QT/DATA/Images/flower.jpg",
+         "cout" : 3,
+         "dateAjout" : "12/01/2000",
+         "dateCreation" : "01/01/2000",
+         "numero" : 0,
+         "source" : "testqt",
+         "titre" : "titre"
+      }
+   ],
+   "nbImages" : 1
+}

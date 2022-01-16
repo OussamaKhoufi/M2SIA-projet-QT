@@ -1,0 +1,15 @@
+{
+   "images" : [
+      {
+         "acces" : "R",
+         "cheminAcces" : "/home/vm/M2SIA-projet-QT/DATA/Images/flower.jpg",
+         "cout" : 0,
+         "dateAjout" : "05/01/2022",
+         "dateCreation" : "01/01/2022",
+         "numero" : 0,
+         "source" : "jardin",
+         "titre" : "fleur"
+      }
+   ],
+   "nbImages" : 1
+}

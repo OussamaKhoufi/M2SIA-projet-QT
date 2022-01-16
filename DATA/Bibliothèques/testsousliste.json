@@ -1,0 +1,25 @@
+{
+   "images" : [
+      {
+         "acces" : "R",
+         "cheminAcces" : "./DATA/Images/flower.jpg",
+         "cout" : 23,
+         "dateAjout" : "16/01/2022",
+         "dateCreation" : "23/02/1996",
+         "numero" : 5,
+         "source" : "rome",
+         "titre" : "visage"
+      },
+      {
+         "acces" : "P",
+         "cheminAcces" : "./DATA/Images/lena.png",
+         "cout" : 69,
+         "dateAjout" : "16/01/2022",
+         "dateCreation" : "23/06/1980",
+         "numero" : 3,
+         "source" : "matlab",
+         "titre" : "lena"
+      }
+   ],
+   "nbImages" : 2
+}

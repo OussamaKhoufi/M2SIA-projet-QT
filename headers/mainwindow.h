@@ -1,34 +1,75 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef APPMAINWINDOW_H
+#define APPMAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFile>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QTableWidget>
+#include <QTextStream>
 #include "headers/image.h"
 #include "headers/bibliotheque.h"
-#include <QGraphicsPixmapItem>
-#include <QPixmap>
 namespace Ui {
-class MainWindow;
+class AppMainWindow;
 }
 
-class MainWindow : public QMainWindow
+class AppMainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit AppMainWindow(QWidget *parent = 0);
+    ~AppMainWindow();
 
 private slots:
-    void on_pushButton_4_clicked();
+    void on_pushButtonIdentifier_clicked();             // button identification
 
-    void on_pushButtonIdentif_2_clicked();
+    void on_pushButtonQuitter_clicked();                // Button Quitter l'application
 
-    void on_pushButton_page_id_exit_clicked();
+    void on_pushButtonChargerBiblio_clicked();          // Button charger une bibliothèque
 
-    void on_pushButtonShowImage_clicked();
+    void on_pushButtonRetourIdentification_clicked();   // button retour au menu identification
+
+    void on_tableBiblioRowClicked(int , int );
+
+    void on_pushButtonSauvegarder_clicked();
+
+    void on_pushButtonSupprimerImage_clicked();
+
+    void on_pushButtonRetourMenuPrincipal_clicked();
+
+    void on_lineEditMdp_returnPressed();
+
+    void on_comboBoxTrierIndexChanged(int);
+
+    void on_comboBoxCritereCoutIndexChanged(int);
+
+    void on_comboBoxCritereDateAjoutIndexChanged(int);
+
+
+    void on_pushButtonAjouterImage_clicked();
+
+    void on_pushButtonAjoutImageAnnuler_clicked();
+
+
+    void on_pushButtonAjoutImageAjouter_clicked();
+
+    void on_pushButtonCreerBiblio_clicked();
+
+    void on_pushButtonSauvegarderSousListe_clicked();
+
+    void on_pushButtonOuvrirImage_clicked();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::AppMainWindow *ui;
+    Bibliotheque _objBiblio;                            // Objet de classe Bibliothèque
+    bool _droitAcces;
+    int _numImageSelected;
+    string _newImageFileName;
+    Bibliotheque _objSousListeBiblio ;
+    void updateTableWidgetBiblio();                     // mise à jour du tableau des descripteurs après chargement de la bibliothèque
+    void updateTableWidgetSousListeBiblio(Json::Value);            // mise à jour du tableau de la sous liste de la bibliothèque
+
 };
 
-#endif // MAINWINDOW_H
+#endif // APPMAINWINDOW_H
