@@ -11,7 +11,7 @@ Image::Image()
     Json::Value biblio ;                                                                // Objet Json
     Json::Reader reader ;                                                               // Variable pour la lecture d'un fichier Json
 
-    ifstream bibliotheque_file("./DATA/Bibliothèques/bibliotheque.json", ios::in) ;     // Charger le contenu du fichier json 
+    ifstream bibliotheque_file("/home/vm/M2SIA-projet-QT/DATA/Bibliothèques/bibliotheque.json", ios::in) ;     // Charger le contenu du fichier json
     reader.parse(bibliotheque_file, biblio) ;                                           // Importer le contenu a l'objet Json
 
     // Saisir et valider le numero de l'image
@@ -693,6 +693,7 @@ void Image::ModifierDescripteurImage(const vector<int> erreur){
     }   
 }									
 
+/*
 // Traitement de l'image
 void Image::TraitementImage(int choixTraitement){
     Mat image = imread(getCheminAccesContenu(),IMREAD_COLOR) ;                                   // Charger l'image
@@ -784,9 +785,9 @@ void Image::TraitementImage(int choixTraitement){
         imageResultat = ImageSegmentation(image) ;
         titreFigure = "Image apres Segmentation" ;
         break;
-        case 15 : /*
-        imageResultat = TransformHough(image) ;
-        titreFigure = "Image apres Rehaussement de contours (Laplacien)" ;*/
+        case 15 :
+        //imageResultat = TransformHough(image) ;
+        //titreFigure = "Image apres Rehaussement de contours (Laplacien)" ;
         break;
         case 16 : 
         imageResultat = plot_histogram(image);
@@ -804,6 +805,6 @@ void Image::TraitementImage(int choixTraitement){
     waitKey(0) ; 
     destroyWindow(titreFigure) ;
 
-}
+}*/
 
 
