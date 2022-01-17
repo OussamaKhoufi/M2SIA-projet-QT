@@ -6,6 +6,7 @@ using namespace std ;
 // Traitement de couleur
 Mat ImageTemperature(const Mat image, const int valeur) ;               // Modifier la temperature de l'image
 Mat ImageSaturation(const Mat image, const int valeur) ;                // Modifier la saturation
+Mat ImageSaturationElement(const Mat image, const int valeur) ;         // Calcul elementaire pour la modification la saturation
 Mat ImageTeinte(const Mat image, const int valeur) ;                    // Modifier la teinte
 Mat ImageVividite(const Mat image, const int valeur) ;                  // Modifier la vividite
 
@@ -89,6 +90,8 @@ int VecteurMedian(vector<int> vecteur) ;                                // Deter
 bool MatriceEgale(const Mat matrice1, const Mat matrice2) ;             // Verifier l'egalite entre deux matrices de memes dimensions
 double MoyenneVecteur(const vector<double> vecteur) ;                   // Calculer la moyenne d'un vecteur
 double VarianceVecteur(const vector<double> vecteur) ;                  // Calculer la variance d'un vecteur
+Mat ImageFourier(const Mat image) ;                                     // Transformee de Fourier 2D de l'image (module)
+double ImageFourierElement(const Mat image, const int ligne, const int colonne) ;               // Element de calcul de la transformee de Fourier 2D de l'image (module)
 
 // Autres
 Mat ImageMiroir(const Mat image, const Mat filtre) ;	                // Effet miroir - Filtre donne
@@ -105,4 +108,5 @@ Mat plot_histogram(Mat image) ;                                         // Image
 bool VerifierImage(const Mat image, Mat& imageVerifiee) ;               // Verifier si l'image est en couleurs ou en niveau de gris
 Mat ImageBGRRGB(const Mat image) ;                                      // Echanger les composantes R et B de l'image
 Mat ImageBruitage(const Mat image, const int valeur) ;                  // Ajouter un bruit sur l'image
+int VerifierSaturation(const int valeur) ;                              // Verifier la saturation
 //void ImageRGBHSV(const Mat composanteRGB[3], Mat& composanteHSV[3]) ;   // Convertir de l'espace RGB vers l'espace HSV

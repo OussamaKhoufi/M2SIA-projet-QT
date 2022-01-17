@@ -1919,12 +1919,14 @@ void MainWindow::on_radioButton_saturation_clicked(){
 
         // Activer le slider
         ui->horizontalSlider_saturation->setEnabled(true) ;
+        ui->horizontalSlider_saturation->setValue(0) ;
     }
 }
 
 // Saturation
 void MainWindow::on_horizontalSlider_saturation_valueChanged(int value){
-    imageResultat = ImageSaturation(imageOriginale, value) ;
+    imwrite("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png", imageOriginale) ;
+    imageResultat = ImageSaturation(imread("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png"), value) ;
     AffichageResultat(imageResultat, 1) ;
 }
 
@@ -2355,3 +2357,8 @@ void MainWindow::ReinitialiserFiltre(){
 
 
 
+// Transformee de Fourier
+void MainWindow::on_radioButton_fourier_clicked(){
+    imageResultat = Normalisation(MonoCouleur(ImageFourier(imageOriginale)), 255) ;
+    AffichageResultat(imageResultat, 0) ;
+}

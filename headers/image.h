@@ -8,7 +8,9 @@
 #include <vector>
 #include <fstream>
 #include <algorithm>
+// Maths
 #include <cmath>
+#include <complex>
 // Json
 #include <jsoncpp/json/value.h>
 #include <jsoncpp/json/json.h>

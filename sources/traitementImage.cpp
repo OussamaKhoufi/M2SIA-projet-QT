@@ -91,9 +91,8 @@ Mat ImageTemperature(const Mat image, const int valeur){
 // Modifier la saturation
 Mat ImageSaturation(const Mat image, const int valeur){
     // Declaration des variables
-    Mat imageHSV ;                                  // Convertir l'image originale en HSV
-    int c, ligne, colonne ;                         // Indices
-    int val ;                                       // Valeur de calcul intermediaire
+    Mat imageHSV = image ;                          // Image originale en HSV
+    int c ;                                         // Indices
     Mat imageResultante ;                           // Image resultante
     Mat imageComposante[3] ;                        // Composantes de l'image originale
     vector<Mat> imageResultanteComposante ;         // Composante de l'image resultante
@@ -102,30 +101,18 @@ Mat ImageSaturation(const Mat image, const int valeur){
     imageResultanteComposante.clear() ;
 
     // Convertir l'image originale en HSV
-    cvtColor(image, imageHSV, COLOR_BGR2HSV) ;
+    cvtColor(imageHSV, imageHSV, COLOR_BGR2HSV) ;
 
     //  Decomposition des composantes
     split(imageHSV, imageComposante) ;
 
     // Si il n'ya aucune modification ou si l'image est en niveau de gris
     if((valeur == 0) || VerifierImage(image, imageResultante)){
-        imageResultante = image ;
+        // Retour
+        return image ;
     // Modifier la saturation
     }else{
-        for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
-            for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
-                // Calcul pour verifier la saturation
-                val = imageComposante[1].at<unsigned char>(ligne, colonne) + valeur ;
-                // Si saturation
-                if(val > 255){
-                    imageComposante[1].at<unsigned char>(ligne, colonne) = 255 ;
-                }else if(val < 0){
-                    imageComposante[1].at<unsigned char>(ligne, colonne) = 0 ;
-                }else{
-                    imageComposante[1].at<unsigned char>(ligne, colonne) = val ;
-                }
-            }
-        }
+        imageComposante[1] = ImageSaturationElement(imageComposante[1], valeur) ;
         // Affecter les composante de l'image traitee
         for(c = 0 ; c < 3 ; c++){
             imageResultanteComposante.push_back(imageComposante[c])  ;
@@ -136,8 +123,27 @@ Mat ImageSaturation(const Mat image, const int valeur){
 
         // Convertir l'image traitee en RGB
         cvtColor(imageHSV, imageResultante, COLOR_HSV2BGR) ;
-    }
 
+        // Retour
+        return imageResultante ;
+    }
+}
+
+// Calcul elementaire pour la modification la saturation
+Mat ImageSaturationElement(const Mat image, const int valeur){
+    // Declaration des variables
+    int ligne, colonne ;            // Indices
+    int val ;                       // Valeur de calcul intermediaire
+    Mat imageResultante = image ;   // Resultat
+
+    // Calculs
+    for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
+        for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
+            // Calcul pour verifier la saturation
+            val = imageResultante.at<unsigned char>(ligne, colonne) + valeur ;
+            imageResultante.at<unsigned char>(ligne, colonne) = VerifierSaturation(val) ;
+        }
+    }
 
     // Retour
     return imageResultante ;
@@ -2206,6 +2212,54 @@ double VarianceVecteur(const vector<double> vecteur){
     return variance ;
 }
 
+// Transformee de Fourier 2D de l'image (module)
+Mat ImageFourier(const Mat image){
+    // Declaration des variables
+    int ligne, colonne ;                            // Indices
+    int val ;                                       // Valeur de calcul intermediaire
+    Mat imageMono = ImageMonochrome(image) ;        // Convertir l'image originale en niveau de gris
+    Mat imageFourier(image.size(), CV_8U) ;         // Image du module de la transformee de Fourier
+
+    for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
+        for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
+            val = (int)ImageFourierElement(imageMono, ligne, colonne) ;
+            // Verifier la saturation
+            if(val > 255){
+                val = 255 ;
+            }else if(val < 0){
+                val = 0 ;
+            }
+            imageFourier.at<unsigned char>(ligne, colonne) = val ;
+        }
+    }
+
+    // Retour
+    return imageFourier ;
+}
+
+// Element de calcul de la transformee de Fourier 2D de l'image (module)
+double ImageFourierElement(const Mat image, const int ligne, const int colonne){
+    // Declaration des variables
+    int L, C ;                                      // Indices
+    double nbLigne = (int)image.size().height ;     // Nombre de lignes de l'image
+    double nbColonne = (int)image.size().width ;    // Nombre de colonnes de l'image
+    complex<double> resultat ;                      // Resutat
+    complex<double> val ;                           // Valeur de calcul intermediaire
+    complex<double> j(0.0, 1.0) ;                   // i imaginaire
+
+    resultat = 0 ;
+    for(L = 0 ; L < nbLigne ; L++){
+        for(C = 0 ; C < nbColonne ; C++){
+            val.real(2*3.14*((double)ligne*L/nbLigne + (double)colonne*C/nbColonne)) ;
+            resultat += exp(-j*val)*(double)image.at<unsigned char>(L, C) ;
+        }
+    }
+    resultat /= (nbLigne*nbColonne) ;
+
+    // Retour
+    return abs(resultat) ;
+}
+
 //////////////////// Autres ////////////////////
 
 // Effet miroir avec un filtre determine
@@ -2832,6 +2886,17 @@ Mat ImageBruitage(const Mat image, const int valeur){
 
     // Retour
     return imageResultante ;
+}
+
+// Verifier la saturation
+int VerifierSaturation(const int valeur){
+    if(valeur > 255){
+        return 255 ;
+    }else if(valeur < 0){
+        return 0 ;
+    }else{
+        return valeur ;
+    }
 }
 
 

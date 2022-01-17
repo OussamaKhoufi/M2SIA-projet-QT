@@ -507,7 +507,7 @@
       <property name="geometry">
        <rect>
         <x>960</x>
-        <y>690</y>
+        <y>780</y>
         <width>191</width>
         <height>21</height>
        </rect>
@@ -520,7 +520,7 @@
       <property name="geometry">
        <rect>
         <x>960</x>
-        <y>570</y>
+        <y>660</y>
         <width>251</width>
         <height>21</height>
        </rect>
@@ -1415,7 +1415,7 @@
       <property name="geometry">
        <rect>
         <x>960</x>
-        <y>630</y>
+        <y>720</y>
         <width>251</width>
         <height>21</height>
        </rect>
@@ -2026,7 +2026,7 @@
       <property name="geometry">
        <rect>
         <x>960</x>
-        <y>600</y>
+        <y>690</y>
         <width>251</width>
         <height>21</height>
        </rect>
@@ -2806,6 +2806,35 @@
        </property>
       </widget>
      </widget>
+     <widget class="QGroupBox" name="groupBox_autre">
+      <property name="geometry">
+       <rect>
+        <x>960</x>
+        <y>510</y>
+        <width>251</width>
+        <height>80</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Autres</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <widget class="QRadioButton" name="radioButton_fourier">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>30</y>
+         <width>211</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Transform&amp;ée de Fourier</string>
+       </property>
+      </widget>
+     </widget>
      <zorder>pushButton_traitementAppliquer</zorder>
      <zorder>groupBox_imageOriginale</zorder>
      <zorder>groupBox_imageTraitee</zorder>
@@ -2823,6 +2852,7 @@
      <zorder>groupBox_details</zorder>
      <zorder>groupBox_resolutionQuantification</zorder>
      <zorder>groupBox_debruitage</zorder>
+     <zorder>groupBox_autre</zorder>
     </widget>
    </widget>
   </widget>

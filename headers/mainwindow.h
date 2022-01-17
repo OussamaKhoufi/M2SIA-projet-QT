@@ -294,6 +294,8 @@ private slots:
     // Reinitialiser : Box Filtres
     void ReinitialiserFiltre() ;
 
+    void on_radioButton_fourier_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
