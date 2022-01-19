@@ -13,7 +13,7 @@
       {
          "acces" : "P",
          "cheminAcces" : "./DATA/Images/halloween_sun.png",
-         "cout" : 9.9,
+         "cout" : 9.9000000000000004,
          "dateAjout" : "18/12/2021",
          "dateCreation" : "08/10/2004",
          "numero" : 2,
@@ -59,7 +59,17 @@
          "numero" : 6,
          "source" : "google",
          "titre" : "salt"
+      },
+      {
+         "acces" : "P",
+         "cheminAcces" : "/home/vm/M2SIA-projet-QT/DATA/Images/flower.jpg",
+         "cout" : 2,
+         "dateAjout" : "06/01/2000",
+         "dateCreation" : "01/01/2000",
+         "numero" : 10,
+         "source" : "jardin",
+         "titre" : "fleur"
       }
    ],
-   "nbImages" : 6
+   "nbImages" : 7
 }

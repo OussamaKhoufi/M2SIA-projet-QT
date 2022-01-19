@@ -1,4 +1,4 @@
-#include "./../headers/image.h"
+#include "headers/image.h"
 
 /*Constructeurs*/
 // Constructeur vide
@@ -11,11 +11,11 @@ Image::Image()
     Json::Value biblio ;                                                                // Objet Json
     Json::Reader reader ;                                                               // Variable pour la lecture d'un fichier Json
 
-    ifstream bibliotheque_file("./DATA/Bibliothèques/bibliotheque.json", ios::in) ;     // Charger le contenu du fichier json 
+    ifstream bibliotheque_file("/home/vm/M2SIA-projet-QT/DATA/Bibliothèques/bibliotheque.json", ios::in) ;     // Charger le contenu du fichier json
     reader.parse(bibliotheque_file, biblio) ;                                           // Importer le contenu a l'objet Json
 
     // Saisir et valider le numero de l'image
-    cout << "Veuillez saisir le numero de l'image souhaitee : " ; 
+    cout << "Veuillez saisir le numero de l'image souhaitee : " ;
     do{
         // Saisie
         cin >> nbSaisi ;
@@ -67,14 +67,14 @@ Image::Image(string chemin)
     VerifierExtension(chemin) ;                                                 // Verifier l'existance de l'xension ".json"
     exist = experimental::filesystem::exists(chemin) ;                          // Verifier l'existace du fichier
     do{
-        decision = 'N' ; 
+        decision = 'N' ;
         // Verifier l'existance du fichier
         if (exist){                                                             // Si le fichier existe
-            ifstream bibliotheque_file(chemin, ios::in) ;                       // Charger le contenu du fichier json 
+            ifstream bibliotheque_file(chemin, ios::in) ;                       // Charger le contenu du fichier json
             reader.parse(bibliotheque_file, biblio) ;                           // Importer le contenu a l'objet Json
 
             // Saisir et valider le numero de l'image
-            cout << "Veuillez saisir le numero de l'image souhaitee : " << endl ; 
+            cout << "Veuillez saisir le numero de l'image souhaitee : " << endl ;
             do{
                 // Saisie
                 cin >> nbSaisi ;
@@ -108,24 +108,24 @@ Image::Image(string chemin)
                 }
             }
         // Si le fichier n'existe pas
-        }else{                                                                  
+        }else{
             cout << "Fichier non exist" << endl ;
             // Si l'utilisateur veut continuer
-            if (Continuer("Voulez-vous saisir un autre chemin ? [Y/N] : ")){                                                   
+            if (Continuer("Voulez-vous saisir un autre chemin ? [Y/N] : ")){
                 cout << "Nouveau chemin : ./DATA/Bibliothèques/" ;
                 // Saisir un autre chemin
-                cin >> chemin ;             
-                // Completer le chemin                                    
-                chemin = "./DATA/Bibliothèques/" + chemin ;                     
-                decision = 'Y' ;                                 
+                cin >> chemin ;
+                // Completer le chemin
+                chemin = "./DATA/Bibliothèques/" + chemin ;
+                decision = 'Y' ;
             }
         }
-    }while(decision == 'Y') ;    
+    }while(decision == 'Y') ;
 }
 
 // Constructeur avec le chemin vers la bibliotheque et le numero de l'image connus
 Image::Image(string chemin, int numero){
-    // Declaration des variables 
+    // Declaration des variables
     bool exist ;                                                                // Variable pour verifier l'existance du fichier
     char decision ;                                                             // Condition d'arret de la boucle
     int c ;                                                                     // Indice
@@ -139,12 +139,12 @@ Image::Image(string chemin, int numero){
     do{
         decision = 'N' ;
         if (exist){                                                             // Si le fichier existe
-            ifstream bibliotheque_file(chemin, ios::in) ;                       // Charger le contenu du fichier json 
+            ifstream bibliotheque_file(chemin, ios::in) ;                       // Charger le contenu du fichier json
             reader.parse(bibliotheque_file, biblio) ;                           // Importer le contenu a l'objet Json
 
             // Verifier le numero de l'image et saisir un autre numero en cas d'erreur
             while(VerifierNumero(numero, biblio) == false){
-                cout << "Ce numero n'existe pas. Veuillez saisir un autre numero : " ; 
+                cout << "Ce numero n'existe pas. Veuillez saisir un autre numero : " ;
                 do{
                     cin >> numeroSaisi ;
                     if(VerifierNumero(numeroSaisi, numero) == false){
@@ -170,22 +170,22 @@ Image::Image(string chemin, int numero){
                 }
             }
         // Si le fichier n'existe pas
-        }else{                                                                  
+        }else{
             cout << "Fichier non exist" << endl ;
             // Si l'utilisateur veut continuer
-            if (Continuer("Voulez-vous saisir un autre chemin ? [Y/N] : ")){                                                   
+            if (Continuer("Voulez-vous saisir un autre chemin ? [Y/N] : ")){
                 cout << "Nouveau chemin : ./DATA/Bibliothèques/" ;
                 // Saisir un autre chemin
-                cin >> chemin ;             
-                // Completer le chemin                                    
-                chemin = "./DATA/Bibliothèques/" + chemin ;                     
-                decision = 'Y' ;                                 
+                cin >> chemin ;
+                // Completer le chemin
+                chemin = "./DATA/Bibliothèques/" + chemin ;
+                decision = 'Y' ;
             }
         }
-    }while(decision == 'Y') ;    
+    }while(decision == 'Y') ;
 }
 
-// Constructeur avec un objet bibliotheque et le numero de l'image connu 
+// Constructeur avec un objet bibliotheque et le numero de l'image connu
 Image::Image(Bibliotheque objBiblio, int numImage){
     // Declaration des variables
     int c  ;                                                    // Indice
@@ -213,35 +213,35 @@ Image::Image(Bibliotheque objBiblio, int numImage){
 // Chemin d'acces
 string Image::getCheminAccesContenu() const {
     return _cheminAccesContenu ;
-}    
+}
 // Source
 string Image::getSource() const {
     return _source ;
-}              
+}
 // Titre
 string Image::getTitre() const {
     return _titre ;
-}       
+}
 // Numero
 int Image::getNumero() const {
     return _numero ;
-}                
+}
 // Cout
 double Image::getCout() const {
     return _cout ;
-}                    
+}
 // Permission
 string Image::getAcces() const {
     return _acces ;
-}                  
+}
 // Date d'ajout
 string Image::getDateAjout() const {
     return _dateAjout ;
-}              
+}
 // Date de creation
 string Image::getDateCreation() const {
     return _dateCreation ;
-}       
+}
 // Chemin Json
 string Image::getCheminJson() const {
     return _cheminJson ;
@@ -255,39 +255,39 @@ int Image::getNumeroJson() const {
 // Chemin d'acces
 void Image::setCheminAccesContenu(const string cheminAccesContenu){
     _cheminAccesContenu = cheminAccesContenu ;
-}   
+}
 // Source
 void Image::setSource(const string source){
     _source = source ;
-}                     
+}
 // Titre
 void Image::setTitre(const string titre){
     _titre = titre ;
-}                    
+}
 // Numero
 void Image::setNumero(const int numero){
     _numero = numero ;
-}                     
+}
 // Cout
 void Image::setCout(const double cout){
     _cout = cout ;
-}                        
+}
 // Permission
 void Image::setAcces(const string acces){
     _acces = acces ;
-}                       
+}
 // Date d'ajout
 void Image::setDateAjout(const string dateAjout){
     _dateAjout = dateAjout ;
-}              
+}
 // Date de creation
 void Image::setDateCreation(const string dateCreation){
     _dateCreation = dateCreation ;
-}      
+}
 // Chemin Json
 void Image::setCheminJson(const string cheminJson){
     _cheminJson = cheminJson ;
-}  
+}
 // Numero Json
 void Image::setNumeroJson(const int numeroJson){
     _numeroJson = numeroJson ;
@@ -298,13 +298,13 @@ void Image::setNumeroJson(const int numeroJson){
 void Image::AfficherContenuImage(){
     // Declaration des variables
     Mat image = imread(getCheminAccesContenu()) ;   // Charger l'image
-    string windowName = getTitre() ;                // Nom de la fenetre d'affichage    
+    string windowName = getTitre() ;                // Nom de la fenetre d'affichage
 
     // Affichage
-    namedWindow(windowName, WINDOW_NORMAL) ; 
-    imshow(windowName, image);  
-    waitKey(0) ; 
-    destroyWindow(windowName) ; 
+    namedWindow(windowName, WINDOW_NORMAL) ;
+    imshow(windowName, image);
+    waitKey(0) ;
+    destroyWindow(windowName) ;
 }
 
 // Afficher les descripteurs de l'image
@@ -325,7 +325,7 @@ void Image::ModifierDescripteurImage(){
     // Declaration des variables
     bool validation ;                                                               // Variable booleenne pour valider les conditions
     int choix ;                                                                     // Choix des actions (entier)
-    string saisie ;                                                                 // Choix des actions (chaine de caracteres)    
+    string saisie ;                                                                 // Choix des actions (chaine de caracteres)
     string nouveauTexte ;                                                           // Variable pour la saisie des chaines de caractere
     string jourAjout, moisAjout, anneeAjout ;                                       // Jour, Mois, Annee d'ajout
     string jourCreation, moisCreation, anneeCreation ;                              // Jour, Mois, Annee de creation
@@ -335,8 +335,8 @@ void Image::ModifierDescripteurImage(){
     Json::Value biblio ;                                                            // Objet Json
     Json::Reader reader ;                                                           // Variable pour la lecture du fichier Json
 
-    ifstream bibliotheque_file(getCheminJson(), ios::in) ;                          // Charger le contenu du fichier json 
-    reader.parse(bibliotheque_file, biblio) ;                                       // Importer le contenu a l'objet Json 
+    ifstream bibliotheque_file(getCheminJson(), ios::in) ;                          // Charger le contenu du fichier json
+    reader.parse(bibliotheque_file, biblio) ;                                       // Importer le contenu a l'objet Json
 
     do{
         // Afficher les choix
@@ -365,10 +365,10 @@ void Image::ModifierDescripteurImage(){
         do{
             erreur.clear() ;
             switch (choix){
-            // Chemin d'acces   
+            // Chemin d'acces
             case 1 :
                 cout << "Veuillez saisir le nouveau chemin d'acces : ./DATA/Images/" ;
-                break ;             
+                break ;
             // Source
             case 2 :
                 cout << "Veuillez saisir la nouvelle source : " ;
@@ -378,11 +378,11 @@ void Image::ModifierDescripteurImage(){
                 cout << "Veuillez saisir le nouveau titre : " ;
                 break ;
             // Numero
-            case 4 : 
+            case 4 :
                 cout << "Veuillez saisir le nouveau numero : " ;
                 break ;
             // Cout
-            case 5 : 
+            case 5 :
                 cout << "Veuillez saisir le nouveau cout : " ;
                 break ;
             // Acces (Permission)
@@ -393,7 +393,7 @@ void Image::ModifierDescripteurImage(){
             case 7 :
                 cout << "Veuillez saisir la nouvelle date d'ajout : " ;
                 break ;
-            //Date de creation     
+            //Date de creation
             case 8 :
                 cout << "Veuillez saisir la nouvelle date de creation : " ;
             default:
@@ -427,8 +427,8 @@ vector<int> Image::ModifierDescripteurImage(const int choix, const string saisie
         // Chemin d'acces
         case 1 :
             // Completer le chemin
-            nouveauTexte = "./DATA/Images/" + saisie ;    
-            // Si le chemin est invalide            
+            nouveauTexte = "./DATA/Images/" + saisie ;
+            // Si le chemin est invalide
             if(experimental::filesystem::exists(nouveauTexte) == false){
                 // Erreur : Chemin invalide
                 erreur.push_back(1) ;
@@ -436,7 +436,7 @@ vector<int> Image::ModifierDescripteurImage(const int choix, const string saisie
             }else{
                 // Modifier le chemin de l'image
                 setCheminAccesContenu(nouveauTexte) ;
-                biblio["images"][getNumeroJson()]["cheminAcces"] = nouveauTexte ; 
+                biblio["images"][getNumeroJson()]["cheminAcces"] = nouveauTexte ;
             }
             break ;
 
@@ -445,7 +445,7 @@ vector<int> Image::ModifierDescripteurImage(const int choix, const string saisie
             nouveauTexte = saisie ;
             // Modifier la source de l'image
             setSource(nouveauTexte) ;
-            biblio["images"][getNumeroJson()]["source"] = nouveauTexte ;    
+            biblio["images"][getNumeroJson()]["source"] = nouveauTexte ;
             break ;
 
         // Titre
@@ -455,7 +455,7 @@ vector<int> Image::ModifierDescripteurImage(const int choix, const string saisie
             setTitre(nouveauTexte) ;
             biblio["images"][getNumeroJson()]["titre"] = nouveauTexte ;
             break ;
-            
+
         // Numero
         case 4 :
             // Si la saisie est un numero
@@ -517,7 +517,7 @@ vector<int> Image::ModifierDescripteurImage(const int choix, const string saisie
             break ;
 
         // Date d'ajout
-        case 7 : 
+        case 7 :
             // Verifier les erreurs de la sasiie de la date
             erreurDate = VerifierDate(saisie, jourAjout, moisAjout, anneeAjout) ;
             // S'il n'y a aucune erreur
@@ -540,7 +540,7 @@ vector<int> Image::ModifierDescripteurImage(const int choix, const string saisie
                 for(c = 0 ; c < (int)erreurDate.size() ; c++){
                     erreur.push_back(erreurDate[c]) ;
                 }
-            }    
+            }
             break ;
 
         // Date de creation
@@ -567,7 +567,7 @@ vector<int> Image::ModifierDescripteurImage(const int choix, const string saisie
                 for(c = 0 ; c < (int)erreurDate.size() ; c++){
                     erreur.push_back(erreurDate[c]) ;
                 }
-            }    
+            }
             break ;
 
         default :
@@ -576,7 +576,7 @@ vector<int> Image::ModifierDescripteurImage(const int choix, const string saisie
 
     // Retour
     return erreur ;
-}			
+}
 
 // Afficher les erreurs de la modification d'un descripteur de l'image
 void Image::ModifierDescripteurImage(const vector<int> erreur){
@@ -618,7 +618,7 @@ void Image::ModifierDescripteurImage(const vector<int> erreur){
                     cout << "Le cout doit eter un reel." << endl ;
                 }else{
                     cout << "Le cout doit etre positif ou nul." << endl ;
-                }        
+                }
                 break ;
             // Acces (Permission)
             case 6 :
@@ -652,7 +652,7 @@ void Image::ModifierDescripteurImage(const vector<int> erreur){
                             default :
                                 break ;
                         }
-                    }                
+                    }
                 }
                 break ;
             // Date de creation
@@ -683,24 +683,25 @@ void Image::ModifierDescripteurImage(const vector<int> erreur){
                             default :
                                 break ;
                         }
-                    }                
-                }                
+                    }
+                }
                 break ;
 
             default :
                 break ;
         }
-    }   
-}									
+    }
+}
 
+/*
 // Traitement de l'image
 void Image::TraitementImage(int choixTraitement){
     Mat image = imread(getCheminAccesContenu(),IMREAD_COLOR) ;                                   // Charger l'image
     Mat imageResultat;
     string titreFigure;
-    string stringSaisi; 
+    string stringSaisi;
     bool traitementFini;
-    
+
     switch (choixTraitement){
         case 1 :
         imageResultat = ImageMonochrome(image) ;
@@ -711,7 +712,7 @@ void Image::TraitementImage(int choixTraitement){
         titreFigure="Image en Négatif";
         break;
         case 3 :
-        int choix;        
+        int choix;
         cout << endl << "Pour choisir une composante à afficher tapez : " << endl;
         cout << endl << "1 pour la composante Rouge." << endl;
         cout << endl << "2 pour la composante Verte." << endl;
@@ -738,72 +739,72 @@ void Image::TraitementImage(int choixTraitement){
                 cout << endl <<"Choix non valide : il faut un des entiers {1,2,3}" << endl ;
                 traitementFini= false;
             }
-        }while(traitementFini==false);        
+        }while(traitementFini==false);
         break;
-        case 4 : 
+        case 4 :
         imageResultat = ImageRehaussementContraste(ImageMonochrome(image),1) ;
         titreFigure = "Image apres Normalisation" ;
         break;
-        case 5 : 
+        case 5 :
         imageResultat = ImageRehaussementContraste(ImageMonochrome(image),2) ;
         titreFigure = "Image apres Egalisation" ;
         break;
-        case 6 : 
+        case 6 :
         imageResultat = ImageFiltrage(ImageMonochrome(image),1) ;
         titreFigure = "Image Filtree avec Filtre Moyenneur 3x3" ;
         break;
-        case 7 : 
+        case 7 :
         imageResultat = ImageFiltrage(ImageMonochrome(image),2) ;
         titreFigure = "Image Filtree avec Filtre Gaussien 3x3" ;
         break;
-        case 8 : 
+        case 8 :
         imageResultat = ImageFiltrage(ImageMonochrome(image),3) ;
         titreFigure = "Image Filtree avec Filtre Median 3x3" ;
         break;
-        case 9 : 
+        case 9 :
         imageResultat = ImageContour(image,1) ;
         titreFigure = "Image de Contours avec Filtre Sobel 3x3" ;
         break;
-        case 10 : 
+        case 10 :
         imageResultat = ImageContour(image,2) ;
         titreFigure = "Image de Contours avec Filtre Laplacien 3x3" ;
         break;
-        case 11 : 
+        case 11 :
         imageResultat = ImageRehaussementContour(image,20,1) ;
         titreFigure = "Image apres Rehaussement de Contours (Gradient)" ;
         break;
-        case 12 : 
+        case 12 :
         imageResultat = ImageRehaussementContour(image,20,2) ;
         titreFigure = "Image apres Rehaussement de contours (Laplacien)" ;
         break;
-        case 13 : 
+        case 13 :
         imageResultat = ImageSeuillage(image) ;
         titreFigure = "Image apres Seuillage" ;
         break;
-        case 14 : 
+        case 14 :
         imageResultat = ImageSegmentation(image) ;
         titreFigure = "Image apres Segmentation" ;
         break;
-        case 15 : /*
-        imageResultat = TransformHough(image) ;
-        titreFigure = "Image apres Rehaussement de contours (Laplacien)" ;*/
+        case 15 :
+        //imageResultat = TransformHough(image) ;
+        //titreFigure = "Image apres Rehaussement de contours (Laplacien)" ;
         break;
-        case 16 : 
+        case 16 :
         imageResultat = plot_histogram(image);
         titreFigure = "Histogramme de l'image en niveau de gris" ;
         break;
         default :
         cout << "Erreur choix Traitement d'images";
-        break; 
+        break;
     }
-    
+
     // Affichage
     //imageResultat=ConcatenerImage(image,imageResultat);
-    namedWindow(titreFigure,WINDOW_NORMAL) ; 
-    imshow(titreFigure, imageResultat);  
-    waitKey(0) ; 
+    namedWindow(titreFigure,WINDOW_NORMAL) ;
+    imshow(titreFigure, imageResultat);
+    waitKey(0) ;
     destroyWindow(titreFigure) ;
 
-}
+}*/
 
 
