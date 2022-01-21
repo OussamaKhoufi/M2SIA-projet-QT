@@ -24,7 +24,7 @@ void ExtraireDate(const string date, string& jour, string& mois, string& annee) 
 
 /*Verification*/
 bool VerifierCout(const string saisie, double& chiffre) ;                         	        // Verifier le format du cout saisie
-void VerifierExtension(string& nom) ;												        // Verifier l'extension ".json"
+void VerifierExtension (string& nom) ;												        // Verifier l'extension ".json"
 bool VerifierNumero(const string saisie, int& numero) ;                         	        // Verifier le format du numero (entier)
 bool VerifierNumero(const string saisie, double& numero) ;                         	        // Verifier le format du numero (reel)
 bool VerifierNumero(const int numero, const Json::Value biblio) ;               	        // Verifier l'existance d'un numero de l'image

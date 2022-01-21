@@ -19,33 +19,20 @@ Mat ImageTemperature(const Mat image, const int valeur){
     //  Decomposition des composantes de couleur
     split(image, imageComposante) ;
 
-    // Si il n'ya aucune modification
-    if(valeur == 0){
-        imageResultante = image ;
     // Si temperature chaude
-    }else if(valeur > 0){
+    if(valeur > 0){
         // Augmenter l'intensite des canaux rouge et vert
         for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
             for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
                 // Canal rouge
                 // Calcul pour verifier la saturation
-                val = imageComposante[2].at<unsigned char>(ligne, colonne) + valeur ;
-                // Si saturation
-                if(val > 255){
-                    imageComposante[2].at<unsigned char>(ligne, colonne) = 255 ;
-                }else{
-                    imageComposante[2].at<unsigned char>(ligne, colonne) = val ;
-                }
+                val = VerifierSaturation(imageComposante[2].at<unsigned char>(ligne, colonne) + valeur) ;
+                imageComposante[2].at<unsigned char>(ligne, colonne) = val ;
 
                 // Canal vert
                 // Calcul pour verifier la saturation
-                val = imageComposante[1].at<unsigned char>(ligne, colonne) + valeur ;
-                // Si saturation
-                if(val > 255){
-                    imageComposante[1].at<unsigned char>(ligne, colonne) = 255 ;
-                }else{
-                    imageComposante[1].at<unsigned char>(ligne, colonne) = val ;
-                }
+                val = VerifierSaturation(imageComposante[1].at<unsigned char>(ligne, colonne) + valeur) ;
+                imageComposante[1].at<unsigned char>(ligne, colonne) = val ;
             }
         }
     // Si temperature froide
@@ -55,23 +42,13 @@ Mat ImageTemperature(const Mat image, const int valeur){
             for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
                 // Canal bleu
                 // Calcul pour verifier la saturation
-                val = imageComposante[0].at<unsigned char>(ligne, colonne) + abs(valeur) ;
-                // Si saturation
-                if(val > 255){
-                    imageComposante[0].at<unsigned char>(ligne, colonne) = 255 ;
-                }else{
-                    imageComposante[0].at<unsigned char>(ligne, colonne) = val ;
-                }
+                val = VerifierSaturation(imageComposante[0].at<unsigned char>(ligne, colonne) + abs(valeur)) ;
+                imageComposante[0].at<unsigned char>(ligne, colonne) = val ;
 
                 // Canal vert
                 // Calcul pour verifier la saturation
-                val = imageComposante[1].at<unsigned char>(ligne, colonne) + abs(valeur) ;
-                // Si saturation
-                if(val > 255){
-                    imageComposante[1].at<unsigned char>(ligne, colonne) = 255 ;
-                }else{
-                    imageComposante[1].at<unsigned char>(ligne, colonne) = val ;
-                }
+                val = VerifierSaturation(imageComposante[1].at<unsigned char>(ligne, colonne) + abs(valeur)) ;
+                imageComposante[1].at<unsigned char>(ligne, colonne) = val ;
             }
         }
     }
@@ -107,11 +84,7 @@ Mat ImageSaturation(const Mat image, const int valeur){
     split(imageHSV, imageComposante) ;
 
     // Si il n'ya aucune modification ou si l'image est en niveau de gris
-    if((valeur == 0) || VerifierImage(image, imageResultante)){
-        // Retour
-        return image ;
-    // Modifier la saturation
-    }else{
+    if(VerifierImage(image, imageResultante) == false){
         imageComposante[1] = ImageSaturationElement(imageComposante[1], valeur) ;
         // Affecter les composante de l'image traitee
         for(c = 0 ; c < 3 ; c++){
@@ -123,10 +96,10 @@ Mat ImageSaturation(const Mat image, const int valeur){
 
         // Convertir l'image traitee en RGB
         cvtColor(imageHSV, imageResultante, COLOR_HSV2BGR) ;
-
-        // Retour
-        return imageResultante ;
     }
+
+    // Retour
+    return imageResultante ;
 }
 
 // Calcul elementaire pour la modification la saturation
@@ -140,8 +113,8 @@ Mat ImageSaturationElement(const Mat image, const int valeur){
     for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
         for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
             // Calcul pour verifier la saturation
-            val = imageResultante.at<unsigned char>(ligne, colonne) + valeur ;
-            imageResultante.at<unsigned char>(ligne, colonne) = VerifierSaturation(val) ;
+            val = VerifierSaturation(imageResultante.at<unsigned char>(ligne, colonne) + valeur) ;
+            imageResultante.at<unsigned char>(ligne, colonne) = val ;
         }
     }
 
@@ -168,36 +141,31 @@ Mat ImageTeinte(const Mat image, const int valeur){
     //  Decomposition des composantes
     split(imageHSV, imageComposante) ;
 
-    // Si il n'ya aucune modification
-    if(valeur == 0){
-        imageResultante = image ;
     // Modifier la teinte
-    }else{
-        for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
-            for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
-                // Calcul pour verifier la saturation
-                val = imageComposante[0].at<unsigned char>(ligne, colonne) - valeur ;
-                // Si saturation
-                if(val > 179){
-                    imageComposante[0].at<unsigned char>(ligne, colonne) = 179 ;
-                }else if(val < 0){
-                    imageComposante[0].at<unsigned char>(ligne, colonne) = 0 ;
-                }else{
-                    imageComposante[0].at<unsigned char>(ligne, colonne) = val ;
-                }
+    for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
+        for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
+            // Calcul pour verifier la saturation
+            val = imageComposante[0].at<unsigned char>(ligne, colonne) - valeur ;
+            // Si saturation
+            if(val > 179){
+                imageComposante[0].at<unsigned char>(ligne, colonne) = 179 ;
+            }else if(val < 0){
+                imageComposante[0].at<unsigned char>(ligne, colonne) = 0 ;
+            }else{
+                imageComposante[0].at<unsigned char>(ligne, colonne) = val ;
             }
         }
-        // Affecter les composante de l'image traitee
-        for(c = 0 ; c < 3 ; c++){
-            imageResultanteComposante.push_back(imageComposante[c])  ;
-        }
-
-        // Fusion des composantes de couleur
-        merge(imageResultanteComposante, imageHSV) ;
-
-        // Convertir l'image traitee en RGB
-        cvtColor(imageHSV, imageResultante, COLOR_HSV2BGR) ;
     }
+    // Affecter les composante de l'image traitee
+    for(c = 0 ; c < 3 ; c++){
+        imageResultanteComposante.push_back(imageComposante[c])  ;
+    }
+
+    // Fusion des composantes de couleur
+    merge(imageResultanteComposante, imageHSV) ;
+
+    // Convertir l'image traitee en RGB
+    cvtColor(imageHSV, imageResultante, COLOR_HSV2BGR) ;
 
     // Retour
     return imageResultante ;
@@ -240,63 +208,33 @@ Mat ImageVividite(const Mat image, const int valeur){
         // Determiner la composante non saturee et affecter les valeurs a ajouter dans les composantes
         // Canal rouge
         if(maxR == valMin){
-            val[2] = maxR + valeur ;
-            // Verifier la saturation
-            if(val[2] > 255){
-                val[2] -= 255 ;
-            }else if(val[2] < 0){
-                val[2] = 0 ;
-            }else{
-                val[2] = valeur ;
-            }
+            val[2] = valeur ;
         // Canal vert
         }else if(maxV == valMin){
-            val[1] = maxV + valeur ;
-            // Verifier la saturation
-            if(val[1] > 255){
-                val[1] -= 255 ;
-            }else if(val[1] < 0){
-                val[1] = 0 ;
-            }else{
-                val[1] = valeur ;
-            }
+            val[1] = valeur ;
         // Canal bleu
         }else{
-            val[0] = maxB + valeur ;
-            // Verifier la saturation
-            if(val[0] > 255){
-                val[0] -= 255 ;
-            }else if(val[0] < 0){
-                val[0] = 0 ;
-            }else{
-                val[0] = valeur ;
-            }
+            val[0] = valeur ;
         }
     }
 
-    // Si il n'ya aucune modification ou l'image est en niveau de gris
-    if((valeur == 0) || VerifierImage(image, imageResultante)){
-        imageResultante = image ;
-    // Sinon
-    }else{
+    // Modifier la vividite
+    if(VerifierImage(image, imageResultante) == false){
         for(c = 0 ; c < 3 ; c++){
-            // Augmenter l'intensite des canaux
+            // Augmenter l'intensite du canal non sature
             for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
                 for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
-                    valMin = imageComposante[c].at<unsigned char>(ligne, colonne) + val[c] ;
-                    if(valMin < 0){
-                       imageComposante[c].at<unsigned char>(ligne, colonne) = 0 ;
-                    }else{
-                        imageComposante[c].at<unsigned char>(ligne, colonne) += val[c] ;
-                    }
-
+                    valMin = VerifierSaturation((int)imageComposante[c].at<unsigned char>(ligne, colonne) + val[c]) ;
+                    imageComposante[c].at<unsigned char>(ligne, colonne) = valMin ;
                 }
             }
         }
+
         // Affceter les composante de l'image traitee
         for(c = 0 ; c < 3 ; c++){
             imageResultanteComposante.push_back(imageComposante[c])  ;
         }
+
         // Fusion des composantes de couleur
         merge(imageResultanteComposante, imageResultante) ;
     }
@@ -360,29 +298,17 @@ Mat ImageSepia(const Mat image){
             // Composante rouge
             // Verifier la saturation
             val = (double)imageResultanteComposante[2].at<unsigned char>(ligne, colonne)/valMax*120 ;
-            if(val > 255){
-                imageResultanteComposante[2].at<unsigned char>(ligne, colonne) = 255 ;
-            }else{
-                imageResultanteComposante[2].at<unsigned char>(ligne, colonne) = val ;
-            }
+            imageResultanteComposante[2].at<unsigned char>(ligne, colonne) = VerifierSaturation((int)val) ;
 
             // Composante verte
             // Verifier la saturation
             val = (double)imageResultanteComposante[1].at<unsigned char>(ligne, colonne)/valMax*70 ;
-            if(val > 255){
-                imageResultanteComposante[1].at<unsigned char>(ligne, colonne) = 255 ;
-            }else{
-                imageResultanteComposante[1].at<unsigned char>(ligne, colonne) = val ;
-            }
+            imageResultanteComposante[1].at<unsigned char>(ligne, colonne) = VerifierSaturation((int)val) ;
 
             // Composante bleue
             // Verifier la saturation
             val = (double)imageResultanteComposante[0].at<unsigned char>(ligne, colonne)/valMax*20 ;
-            if(val > 255){
-                imageResultanteComposante[0].at<unsigned char>(ligne, colonne) = 255 ;
-            }else{
-                imageResultanteComposante[0].at<unsigned char>(ligne, colonne) = val ;
-            }
+            imageResultanteComposante[0].at<unsigned char>(ligne, colonne) = VerifierSaturation((int)val) ;
         }
     }
 
@@ -516,11 +442,7 @@ Mat ImageJaune(const Mat image){
     // Initialisation
     imageResultanteComposante.clear() ;
 
-    // Si l'image est en niveau de gris
-    if(VerifierImage(image, imageResultante)){
-        imageResultante = image ;
-    // Si 'limage est en couleurs
-    }else{
+    if(VerifierImage(image, imageResultante) == false){
         // Decomposition des composantes de couleur
         split(imageResultante, imageComposante) ;
 
@@ -547,6 +469,8 @@ Mat ImageJaune(const Mat image){
 
         // Fusion des composantes de couleur
         merge(imageResultanteComposante, imageResultante) ;
+    }else{
+        imageResultante = MonoCouleur(imageResultante) ;
     }
 
     // Retour
@@ -563,11 +487,7 @@ Mat ImageCyan(const Mat image){
     Mat imageResultante ;                       // Image resultante
     vector<Mat> imageResultanteComposante ;     // Des composantes de l'image resultante
 
-    // Si l'image est en niveau de gris
-    if(VerifierImage(image, imageResultante)){
-        imageResultante = image ;
-    // Si 'limage est en couleurs
-    }else{
+    if(VerifierImage(image, imageResultante) == false){
         // Decomposition des composantes de couleur
         split(image, imageComposante) ;
 
@@ -597,6 +517,8 @@ Mat ImageCyan(const Mat image){
 
         // Fusion des composantes de couleur
         merge(imageResultanteComposante, imageResultante) ;
+    }else{
+        imageResultante = MonoCouleur(imageResultante) ;
     }
 
     // Retour
@@ -613,11 +535,7 @@ Mat ImageMagenta(const Mat image){
     Mat imageResultante ;                       // Image resultante
     vector<Mat> imageResultanteComposante ;     // Des composantes de l'image resultante
 
-    // Si l'image est en niveau de gris
-    if(VerifierImage(image, imageResultante)){
-        imageResultante = image ;
-    // Si 'limage est en couleurs
-    }else{
+    if(VerifierImage(image, imageResultante) == false){
         // Decomposition des composantes de couleur
         split(image, imageComposante) ;
 
@@ -647,6 +565,8 @@ Mat ImageMagenta(const Mat image){
 
         // Fusion des composantes de couleur
         merge(imageResultanteComposante, imageResultante) ;
+    }else{
+        imageResultante = MonoCouleur(imageResultante) ;
     }
 
     // Retour
@@ -665,10 +585,7 @@ Mat ImageRGB(const Mat image){
     vector<Mat> imageResultanteComposante ;     // Des composantes de l'image resultante
 
     // Si l'image est en niveau de gris
-    if(VerifierImage(image, imageResultante)){
-        imageResultante = image ;
-    // Si 'limage est en couleurs
-    }else{
+    if(VerifierImage(image, imageResultante) == false){
         // Decomposition des composantes de couleur
         split(image, imageComposante) ;
 
@@ -680,9 +597,9 @@ Mat ImageRGB(const Mat image){
             for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
                 // Affecter les valeurs des composantes du pixel sur les variables intermediaires
                 cps.clear() ;
-                rouge = imageComposante[2].at<unsigned char>(ligne, colonne) ;      // Rouge
-                vert = imageComposante[1].at<unsigned char>(ligne, colonne) ;       // Vert
-                bleu = imageComposante[0].at<unsigned char>(ligne, colonne) ;       // Bleu
+                rouge = (int)imageComposante[2].at<unsigned char>(ligne, colonne) ;      // Rouge
+                vert = (int)imageComposante[1].at<unsigned char>(ligne, colonne) ;       // Vert
+                bleu = (int)imageComposante[0].at<unsigned char>(ligne, colonne) ;       // Bleu
                 cps.push_back(bleu) ;
                 cps.push_back(vert) ;
                 cps.push_back(rouge) ;
@@ -690,15 +607,15 @@ Mat ImageRGB(const Mat image){
                 if((bleu != vert) || (bleu != rouge) || (vert != rouge)){
                     // Si la couleur la plus intense est le rouge
                     if(rouge == MaxVecteur(cps)){
-                        imageComposante[1].at<unsigned char>(ligne, colonne)  = 0 ;     // Enlever le vert
+                        imageComposante[1].at<unsigned char>(ligne, colonne) = 0 ;      // Enlever le vert
                         imageComposante[0].at<unsigned char>(ligne, colonne) = 0 ;      // Enlever le bleu
                     // Si la couleur la plus intense est le vert
                     }else if(vert == MaxVecteur(cps)){
-                        imageComposante[2].at<unsigned char>(ligne, colonne)  = 0 ;     // Enlever le rouge
+                        imageComposante[2].at<unsigned char>(ligne, colonne) = 0 ;      // Enlever le rouge
                         imageComposante[0].at<unsigned char>(ligne, colonne) = 0 ;      // Enlever le bleu
                     // Si la couleur la plus intense est le bleu
                     }else{
-                        imageComposante[2].at<unsigned char>(ligne, colonne)  = 0 ;     // Enlever le rouge
+                        imageComposante[2].at<unsigned char>(ligne, colonne) = 0 ;      // Enlever le rouge
                         imageComposante[1].at<unsigned char>(ligne, colonne) = 0 ;      // Enlever le vert
                     }
                 }
@@ -712,9 +629,9 @@ Mat ImageRGB(const Mat image){
 
         // Fusion des composantes de couleur
         merge(imageResultanteComposante, imageResultante) ;
+    }else{
+        imageResultante = MonoCouleur(imageResultante) ;
     }
-
-
 
     // Retour
     return imageResultante ;
@@ -1264,6 +1181,89 @@ Mat ImageKuwahara(const Mat image){
     return imageResultante ;
 }
 
+//////////////////// Bruitage ////////////////////
+
+// Ajouter du bruit gaussien sur l'image
+Mat ImageBruitGaussien(const Mat image, const double moyenne, const double sigma){
+    // Declaration des variables
+    int c, ligne, colonne ;                         // Indices
+    int val ;                                       // Valeur de calcul intermediaire
+    Mat imageComposante[(int)image.channels()] ;    // Des composantes de l'image originale
+    Mat imageBruit(image.size(), CV_8U) ;           // Image du bruit gaussien
+    Mat imageResultante ;                           // Image resultante
+    vector<Mat> imageResultanteComposante ;         // Des composantes de l'image resultante
+
+    // Initialisation
+    imageResultanteComposante.clear() ;
+
+    // Calculer l'image du bruit gaussien
+    randn(imageBruit, moyenne, sigma) ;
+
+    // Decomposition des composantes de couleur
+    split(image, imageComposante) ;
+
+    for(c = 0 ; c < (int)image.channels() ; c++){
+        for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
+            for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
+                val = VerifierSaturation((int)imageComposante[c].at<unsigned char>(ligne, colonne) + (int)imageBruit.at<unsigned char>(ligne, colonne)) ;
+                imageComposante[c].at<unsigned char>(ligne, colonne) = val ;
+            }
+        }
+        imageResultanteComposante.push_back(imageComposante[c]) ;
+    }
+
+    // Fusion des composantes de couleur
+    merge(imageResultanteComposante, imageResultante) ;
+
+    // Retour
+    return imageResultante ;
+}
+
+// Ajouter du bruit poivre et sel dans l'image
+Mat ImageBruitPoivreSel(const Mat image){
+    // Declaration des variables
+    int c, ligne, colonne ;                         // Indices
+    int val ;                                       // Valeur de calcul intermediaire
+    Mat imageComposante[(int)image.channels()] ;    // Des composantes de l'image originale
+    Mat imageBruitSel(image.size(), CV_8U) ;        // Image du bruit "sel"
+    Mat imageBruitPoivre(image.size(), CV_8U) ;     // Image du bruit "poivre"
+    Mat imageResultante ;                           // Image resultante
+    vector<Mat> imageResultanteComposante ;         // Des composantes de l'image resultante
+
+    // Initialisation
+    imageResultanteComposante.clear() ;
+
+    // Creer l'image du bruit poivre et sel
+    // Sel
+    randn(imageBruitSel, 75, 20) ;
+    imageBruitSel = ImageSeuillage(imageBruitSel, 127) ;
+    // Poivre
+    randn(imageBruitPoivre, 75, 20) ;
+    imageBruitPoivre = ImageSeuillage(imageBruitPoivre, 127) ;
+
+    // Decomposition des composantes de couleur
+    split(image, imageComposante) ;
+
+    // Ajouter du bruit dans l'image
+    for(c = 0 ; c < (int)image.channels() ; c++){
+        for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
+            for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
+                val = VerifierSaturation((int)imageComposante[c].at<unsigned char>(ligne, colonne) + (int)imageBruitSel.at<unsigned char>(ligne, colonne)) ;
+                imageComposante[c].at<unsigned char>(ligne, colonne) = val ;
+                val = VerifierSaturation((int)imageComposante[c].at<unsigned char>(ligne, colonne) - (int)imageBruitPoivre.at<unsigned char>(ligne, colonne)) ;
+                imageComposante[c].at<unsigned char>(ligne, colonne) = val ;
+            }
+        }
+        imageResultanteComposante.push_back(imageComposante[c]) ;
+    }
+
+    // Fusion des composantes de couleur
+    merge(imageResultanteComposante, imageResultante) ;
+
+    // Retour
+    return imageResultante ;
+}
+
 //////////////////// Contours ////////////////////
 
 // Detection de contours par filtres gradients
@@ -1334,7 +1334,7 @@ Mat ImageRehaussementContour(const Mat image, const int val, const int choix){
     }else{
         split(image, imageComposante) ;
         for(c = 0 ; c < nbComposante ; c++){
-            imageRehaussementComposante.push_back(imageComposante[nbComposante - 1 - c] + imageContour*val) ;
+            imageRehaussementComposante.push_back(imageComposante[c] + imageContour*val) ;
         }
         merge(imageRehaussementComposante, imageRehaussement) ;
     }
@@ -1383,7 +1383,7 @@ Mat ImageSeuillage(const Mat image, vector<int> seuil){
 
     // Seuillage sur chaque canal de couleur
     for(c = 0 ; c < nbComposante ; c++){
-        imageSeuillageComposante.push_back(ImageSeuillage(imageComposante[nbComposante - 1 - c], seuil[nbComposante - 1 - c]))  ;
+        imageSeuillageComposante.push_back(ImageSeuillage(imageComposante[c], seuil[c]))  ;
     }
 
     // Fusion des composantes de couleur
@@ -1999,7 +1999,7 @@ Mat ImageConvolution(const Mat image, const Mat filtre){
 
     // Convolution sur chaque canal de couleur
     for(c = 0 ; c < nbComposante ; c++){
-        imageConvComposante.push_back(MatriceConvolution(imageComposante[nbComposante - 1 - c], filtre))  ;
+        imageConvComposante.push_back(MatriceConvolution(imageComposante[c], filtre))  ;
     }
 
     // Fusion des composantes de couleur
@@ -2897,6 +2897,54 @@ int VerifierSaturation(const int valeur){
     }else{
         return valeur ;
     }
+}
+
+// Arranger les differentes parties de la transformee de Fourier
+Mat ImageFourierArranger(const Mat image){
+    // Declaration des variables
+    int ligne, colonne ;
+    int nbLigne = (int)image.size().height ;
+    int nbColonne = (int)image.size().width ;
+    Mat imageHG(nbLigne/2, nbColonne/2, CV_8U) ;
+    Mat imageHD(nbLigne/2, nbColonne/2, CV_8U) ;
+    Mat imageBG(nbLigne - nbLigne/2, nbColonne - nbColonne/2, CV_8U) ;
+    Mat imageBD(nbLigne - nbLigne/2, nbColonne - nbColonne/2, CV_8U) ;
+    Mat imageArrangee(image.size(), CV_8U) ;
+
+    // Partie en haut, a gauche de l'image
+    for(ligne = 0 ; ligne < (int)imageHG.size().height ; ligne++){
+        for(colonne = 0 ; colonne < (int)imageHG.size().width ; colonne++){
+            imageHG.at<unsigned char>(ligne, colonne) = image.at<unsigned char>(ligne, colonne) ;
+        }
+    }
+    // Partie en haut, a droite de l'image
+    for(ligne = 0 ; ligne < (int)imageHD.size().height ; ligne++){
+        for(colonne = 0 ; colonne < (int)imageHD.size().width ; colonne++){
+            imageHD.at<unsigned char>(ligne, colonne) = image.at<unsigned char>(ligne, colonne + nbColonne/2) ;
+        }
+    }
+    // Partie en bas, a gauche de l'image
+    for(ligne = 0 ; ligne < (int)imageBG.size().height ; ligne++){
+        for(colonne = 0 ; colonne < (int)imageBG.size().width ; colonne++){
+            imageBG.at<unsigned char>(ligne, colonne) = image.at<unsigned char>(ligne + nbLigne/2, colonne) ;
+        }
+    }
+    // Partie en bas, a droite de l'image
+    for(ligne = 0 ; ligne < (int)imageBD.size().height ; ligne++){
+        for(colonne = 0 ; colonne < (int)imageBD.size().width ; colonne++){
+            imageBD.at<unsigned char>(ligne, colonne) = image.at<unsigned char>(ligne + nbLigne/2, colonne + nbColonne/2) ;
+        }
+    }
+
+    // Image arrangee
+    // Partie en haut, a gauche
+    for(ligne = 0 ; ligne < (int)imageBD.size().height ; ligne++){
+        for(colonne = 0 ; colonne < (int)imageBD.size().width ; colonne++){
+            imageArrangee.at<unsigned char>(ligne, colonne) = imageHG.at<unsigned char>(ligne, colonne) ;
+        }
+    }
+    // Retour
+    return imageArrangee ;
 }
 
 

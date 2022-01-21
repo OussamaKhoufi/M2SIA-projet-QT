@@ -77,7 +77,6 @@ private slots:
     void on_doubleSpinBoxMax_valueChanged(double );
 
     // Page Image non modifiable--------------------------------
-
     // Agrandissement de l'image (non modifiable)
     void on_horizontalSlider_agrandissementNonModifiable_valueChanged(int value) ;
 
@@ -322,6 +321,20 @@ private slots:
     void ReinitialiserSeuillageSegmentation() ;
     // Reinitialiser : Box Filtres
     void ReinitialiserFiltre() ;
+
+    void on_radioButton_fourier_clicked() ;
+
+    void on_radioButtonEgalisation_clicked() ;
+    void on_radioButtonBruitPoivreSel_clicked() ;
+
+
+    void on_groupBox_autre_clicked();
+    // Reinitialiser : Box Autres
+    void ReinitialiserAutre() ;
+
+    void on_radioButtonKmeans_clicked();
+
+    void on_radioButtonTransformeeHough_clicked();
 
 
 
