@@ -40,7 +40,7 @@ private slots:
 
     void on_pushButtonRetourIdentification_clicked();   // button retour au menu identification
 
-    void on_tableBiblioRowClicked(int , int );
+    void on_tableBiblioRowClicked(int , int);
 
     void on_pushButtonSauvegarder_clicked();
 
@@ -72,20 +72,20 @@ private slots:
 
     void on_pushButtonRetourMenuModificationImage_clicked();
 
-    void on_doubleSpinBoxMin_valueChanged(double );
+    void on_doubleSpinBoxMin_valueChanged(double);
 
-    void on_doubleSpinBoxMax_valueChanged(double );
+    void on_doubleSpinBoxMax_valueChanged(double);
 
-    // Page Image non modifiable--------------------------------
-    // Agrandissement de l'image (non modifiable)
-    void on_horizontalSlider_agrandissementNonModifiable_valueChanged(int value) ;
+    // Page Consultation Image --------------------------------
+    // Agrandissement de l'image
+    void on_horizontalSlider_agrandissementNonModifiable_valueChanged(int) ;
 
     // Page Image modifiable--------------------------------
 
     // Bouton de sauvegarder les modifications
     void on_pushButton_modifier_clicked() ;
     // Agrandissement de l'image
-    void on_horizontalSlider_agrandissement_valueChanged(int value) ;
+    void on_horizontalSlider_agrandissement_valueChanged(int) ;
     // Passer a la page des traitements de l'image choisie
     void on_pushButton_traitementImage_clicked() ;
 
@@ -95,9 +95,9 @@ private slots:
     // Retour a la page pour choisir l'image a traiter
     void on_pushButton_retour_clicked() ;
     // Agrandissement de l'image originale
-    void on_horizontalSlider_imageOriginale_valueChanged(int value) ;
+    void on_horizontalSlider_imageOriginale_valueChanged(int) ;
     // Agrandissement de l'image traitee
-    void on_horizontalSlider_imageTraitee_valueChanged(int value) ;
+    void on_horizontalSlider_imageTraitee_valueChanged(int) ;
     // Reinitialiser l'image originale
     void on_pushButton_traitementReinitialiser_clicked() ;
     // Sauvegarder temporellement l'image de resultat
@@ -110,19 +110,19 @@ private slots:
     // Bouton : Intensite lumineuse
     void on_radioButton_luminosite_clicked() ;
     // Intensite lumineuse
-    void on_horizontalSlider_luminosite_valueChanged(int value) ;
+    void on_horizontalSlider_luminosite_valueChanged(int) ;
     // Bouton : Contraste
     void on_radioButton_contraste_clicked() ;
     // Contraste
-    void on_horizontalSlider_contraste_valueChanged(int value) ;
+    void on_horizontalSlider_contraste_valueChanged(int) ;
     // Bouton : Ombre
     void on_radioButton_ombre_clicked() ;
     // Ombre
-    void on_horizontalSlider_ombre_valueChanged(int value) ;
+    void on_horizontalSlider_ombre_valueChanged(int) ;
     // Bouton : Haute lumiere
     void on_radioButton_brillance_clicked() ;
     // Haute lumiere
-    void on_horizontalSlider_brillance_valueChanged(int value) ;
+    void on_horizontalSlider_brillance_valueChanged(int) ;
 
     // -------------Details-------------
 
@@ -131,11 +131,11 @@ private slots:
     // Bouton : Nettete
     void on_radioButton_nettete_clicked() ;
     // Nettete
-    void on_horizontalSlider_nettete_valueChanged(int value) ;
+    void on_horizontalSlider_nettete_valueChanged(int) ;
     // Bouton : Bruitage
     void on_radioButton_bruitage_clicked() ;
     // Bruitage
-    void on_horizontalSlider_Bruitage_valueChanged(int value) ;
+    void on_horizontalSlider_Bruitage_valueChanged(int) ;
 
     // -------------Filtres de couleur-------------
 
@@ -188,17 +188,17 @@ private slots:
     // Seuils par hysteresis
     void on_radioButton_seuillageHysteresis_clicked() ;
     // Seuil bas rouge
-    void on_verticalSlider_seuilBasR_2_valueChanged(int value) ;
+    void on_verticalSlider_seuilBasR_2_valueChanged(int) ;
     // Seuil bas vert
-    void on_verticalSlider_seuilBasV_2_valueChanged(int value) ;
+    void on_verticalSlider_seuilBasV_2_valueChanged(int) ;
     // Seuil bas bleu
-    void on_verticalSlider_seuilBasB_2_valueChanged(int value) ;
+    void on_verticalSlider_seuilBasB_2_valueChanged(int) ;
     // Seuil haut rouge
-    void on_verticalSlider_seuilHautR_2_valueChanged(int value) ;
+    void on_verticalSlider_seuilHautR_2_valueChanged(int) ;
     // Seuil haut vert
-    void on_verticalSlider_seuilHautV_2_valueChanged(int value) ;
+    void on_verticalSlider_seuilHautV_2_valueChanged(int) ;
     // Seuil haut bleu
-    void on_verticalSlider_seuilHautB_2_valueChanged(int value) ;
+    void on_verticalSlider_seuilHautB_2_valueChanged(int) ;
 
     // Reinitialiser seuil bas rouge
     void on_pushButton_seuilBasR_clicked() ;
@@ -340,12 +340,14 @@ private slots:
 
     void on_pushButtonRetourMenuConsultationImage_clicked();
 
+    void on_pushButton_traitementSauvegarder_clicked();
+
 private:
     Ui::AppMainWindow *ui;
-    Bibliotheque _objBiblio;                            // Objet de classe Bibliothèque
-    bool _droitAcces;
-    int _numImageSelected;
-    string _newImageFileName;
+    Bibliotheque _objBiblio;          // Objet de classe Bibliothèque
+    bool _droitAcces;                 // droit d'acces de l'utilisateur, true : utilisateur niveau 2 , false : utilisateur niveau 1
+    int _numImageSelected;            // numéro de l'image selectionnee par l'utilisateur
+    string _ImageAjouteeFileName;     //
     Bibliotheque _objSousListeBiblio ;
     int _indiceImageSelectionnee ;   // Indice de l'image choisi dans la bibliotheque
     Mat _imageOriginale ;            // Image originale

@@ -106,13 +106,12 @@ Mat ConcatenerImage(Mat image1, Mat image2) ;                           // Conca
 Mat MonoCouleur(const Mat image) ;                                      // Convertir le format d'une image monochrome en format RVB
 void SaisirSeuil(int& seuil) ;                                          // Saisie et verification de la valeur d'un seuil
 void SaisirSeuil(int& seuilBas, int& seuilHaut) ;                       // Saisie et verification des valeurs des seuils hysteresis
-Mat plot_histogram1D(Mat image,int choixCouleur) ;                      // Image du Graphe Histogramme en niveau de gris
-Mat calc_histogram(Mat image) ;                                         // Calcul d'histogramme
-Mat plot_histogram(Mat image) ;                                         // Image du Graphe Histogramme
+Mat PlotHistogram1D(Mat image,int choixCouleur) ;                      // Image du Graphe Histogramme en niveau de gris
+Mat CalcHistogram(Mat image) ;                                         // Calcul d'histogramme
+Mat PlotHistogram(Mat image) ;                                         // Image du Graphe Histogramme
 bool VerifierImage(const Mat image, Mat& imageVerifiee) ;               // Verifier si l'image est en couleurs ou en niveau de gris
 Mat ImageBGRRGB(const Mat image) ;                                      // Echanger les composantes R et B de l'image
 Mat ImageBruitage(const Mat image, const int valeur) ;                  // Ajouter un bruit sur l'image
 int VerifierSaturation(const int valeur) ;                              // Verifier la saturation
 Mat ImageFourierArranger(const Mat image) ;                             // Arranger les differentes parties de la transformee de Fourier
 
-//void ImageRGBHSV(const Mat composanteRGB[3], Mat& composanteHSV[3]) ;   // Convertir de l'espace RGB vers l'espace HSV

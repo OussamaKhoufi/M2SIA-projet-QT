@@ -1891,7 +1891,7 @@ vector<int> Histogramme(const Mat image, const int nbIntervalle){
     // Derniere intervalle
     for(ligne = 0 ; ligne < image.size().height ; ligne++){
         for(colonne = 0 ; colonne < image.size().width ; colonne++){
-            if((image.at<unsigned char>(ligne, colonne) == ((float)255/nbIntervalle*c)) ){
+            if((image.at<unsigned char>(ligne, colonne) == ((float)255/nbIntervalle*c))){
                 occurence[nbIntervalle - 1]++ ;
             }
         }
@@ -2719,7 +2719,7 @@ void SaisirSeuil(int& seuilBas, int& seuilHaut){
 }
 
 // Calcul d'histogramme sur un cannal
-Mat calc_histogram(Mat image) {
+Mat CalcHistogram(Mat image) {
     Mat hist;
     hist = Mat::zeros(256, 1, CV_32F);
     image.convertTo(image, CV_32F);
@@ -2736,10 +2736,10 @@ Mat calc_histogram(Mat image) {
 }
 
 // Image du Graphe Histogramme d'un seul canal
-Mat plot_histogram1D(Mat image,int choixCouleur) {
+Mat PlotHistogram1D(Mat image,int choixCouleur) {
     Mat histogram_image(400, 512, CV_8UC3, Scalar(0, 0, 0));
     Mat normalized_histogram;
-    Mat histogram = calc_histogram(image);
+    Mat histogram = CalcHistogram(image);
     Scalar couleur;
     normalize(histogram, normalized_histogram, 0, 400, NORM_MINMAX, -1, Mat());
     if (choixCouleur==1) {
@@ -2760,18 +2760,18 @@ Mat plot_histogram1D(Mat image,int choixCouleur) {
 }
 
 // Image du graphe histogramme d'image 1 canals ou 3 canals
-Mat plot_histogram(Mat image) {
+Mat PlotHistogram(Mat image) {
      Mat histogram_image_R(800, 1024, CV_8UC3, Scalar(0, 0, 0));
      Mat histogram_image_G(800, 1024, CV_8UC3, Scalar(0, 0, 0));
      Mat histogram_image_B(800, 1024, CV_8UC3, Scalar(0, 0, 0));
      Mat histogram_image(800, 1024, CV_8UC3, Scalar(0, 0, 0));
      Mat imageTemp;
     if (VerifierImage(image,imageTemp)){
-        return plot_histogram1D(imageTemp,0);
+        return PlotHistogram1D(imageTemp,0);
     }else {
-        histogram_image_R = plot_histogram1D(ImageExtractionCouleur(imageTemp,1),3) ;
-        histogram_image_G = plot_histogram1D(ImageExtractionCouleur(imageTemp,2),2) ;
-        histogram_image_B = plot_histogram1D(ImageExtractionCouleur(imageTemp,3),1) ;
+        histogram_image_R = PlotHistogram1D(ImageExtractionCouleur(imageTemp,1),3) ;
+        histogram_image_G = PlotHistogram1D(ImageExtractionCouleur(imageTemp,2),2) ;
+        histogram_image_B = PlotHistogram1D(ImageExtractionCouleur(imageTemp,3),1) ;
         addWeighted(histogram_image_B,0.5,
         histogram_image_G,0.5,0.0,histogram_image);
         addWeighted(histogram_image,0.5,
