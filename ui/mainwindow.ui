@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AppMainWindow</class>
- <widget class="QMainWindow" name="AppMainWindow">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>SIA-QT-APP</string>
+   <string>Photobox (Projet-M2-SIA)</string>
   </property>
   <property name="locale">
    <locale language="French" country="France"/>
@@ -251,7 +251,7 @@ border-color: rgb(114, 159, 207);</string>
         <number>1</number>
        </property>
        <property name="text">
-        <string>PhotoBox   </string>
+        <string>Photobox   </string>
        </property>
        <property name="textFormat">
         <enum>Qt::AutoText</enum>
@@ -508,7 +508,7 @@ border-color: rgb(114, 159, 207);</string>
         <number>1</number>
        </property>
        <property name="text">
-        <string>PhotoBox   </string>
+        <string>Photobox   </string>
        </property>
        <property name="textFormat">
         <enum>Qt::AutoText</enum>
@@ -615,7 +615,7 @@ color: rgb(0, 0, 0);</string>
         <enum>Qt::SolidLine</enum>
        </property>
        <property name="sortingEnabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -5135,6 +5135,9 @@ background-color: rgb(238, 238, 236);</string>
         <height>271</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(238, 238, 236);</string>
+      </property>
       <property name="title">
        <string>Filtres</string>
       </property>
@@ -5859,6 +5862,80 @@ background-color: rgb(238, 238, 236);</string>
         <string>Autres</string>
        </property>
       </widget>
+     </widget>
+     <widget class="QPushButton" name="pushButtonAfficherImageTraitee">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>70</y>
+        <width>21</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <zorder>groupBox_imageTraitee</zorder>
+     <zorder>groupBox_correction</zorder>
+     <zorder>groupBox_couleur</zorder>
+     <zorder>groupBox_imageOriginale</zorder>
+     <zorder>pushButton_retour</zorder>
+     <zorder>pushButton_traitementAppliquer</zorder>
+     <zorder>label_resolutionOriginale</zorder>
+     <zorder>pushButton_traitementReinitialiser</zorder>
+     <zorder>pushButton_traitementSauvegarder</zorder>
+     <zorder>groupBox_contours</zorder>
+     <zorder>groupBox_seuillageSegmentation</zorder>
+     <zorder>groupBox_debruitage</zorder>
+     <zorder>groupBox_details</zorder>
+     <zorder>groupBox_autre</zorder>
+     <zorder>groupBox_resolutionQuantification</zorder>
+     <zorder>groupBox_extractionRVB</zorder>
+     <zorder>labelMenuITraitementImage</zorder>
+     <zorder>labelAppIconMenuTraitementImage</zorder>
+     <zorder>groupBox_filtres</zorder>
+     <zorder>label_resolutionTraitee</zorder>
+     <zorder>pushButtonAfficherImageTraitee</zorder>
+    </widget>
+    <widget class="QWidget" name="ImageTraiteeAgrandi">
+     <widget class="QGraphicsView" name="graphicsView_contenuImageTraiteeAgrandi">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>1281</width>
+        <height>781</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>1100</x>
+        <y>797</y>
+        <width>150</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(238, 238, 236);</string>
+      </property>
+      <property name="text">
+       <string>Retour</string>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
      </widget>
     </widget>
    </widget>

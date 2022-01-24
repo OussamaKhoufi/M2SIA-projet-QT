@@ -1,4 +1,4 @@
-#include "../headers/bibliotheque.h"
+#include "headers/bibliotheque.h"
 
 /*Constructeurs*/
 // Constructeur vide
@@ -44,76 +44,6 @@ void Bibliotheque::setCheminJson(const string cheminJson){
 }
 
 /*Methodes principales*/
-// Afficher la liste des descripteurs
-void Bibliotheque::AfficherDescripteurs(){
-    // Declaration des variables
-    Json::Value biblio = getBilbiotheque() ;        // Objet Json
-    int nbImages = biblio["nbImages"].asInt() ;     // Nombre d'images existantes dans la bibliotheque
-    int c ;                                         // Indice
-
-    // Affichage
-    for (c = 0 ; c < nbImages ; c++){
-        cout << "Descipteur de l'image " << c+1 << " : " << endl ;
-        cout << "Chemin d'acces : " << biblio["images"][c]["cheminAcces"].asString() << endl ;
-        cout << "Source : " << biblio["images"][c]["source"].asString() << endl ;
-        cout << "Titre : " << biblio["images"][c]["titre"].asString() << endl ;
-        cout << "Numero : " << biblio["images"][c]["numero"].asInt() << endl ;
-        cout << "Cout : " << biblio["images"][c]["cout"].asDouble() << "€" << endl ;
-        cout << "Permission : " << biblio["images"][c]["acces"].asString() << endl ;
-        cout << "Date d'ajout : " << biblio["images"][c]["dateAjout"].asString() << endl ;
-        cout << "Date de creation : " << biblio["images"][c]["dateCreation"].asString() << endl << endl ;  
-    }
-}
-
-// Afficher la liste des descripteurs d'une partie indiquee de la bibliotheque
-void Bibliotheque::AfficherDescripteurs(const Json::Value bibliotheque, const int indice){
-    cout << "Chemin d'acces : " << bibliotheque["images"][indice]["cheminAcces"].asString() << endl ;
-    cout << "Source : " << bibliotheque["images"][indice]["source"].asString() << endl ;
-    cout << "Titre : " << bibliotheque["images"][indice]["titre"].asString() << endl ;
-    cout << "Numero : " << bibliotheque["images"][indice]["numero"].asInt() << endl ;
-    cout << "Cout : " << bibliotheque["images"][indice]["cout"].asDouble() << "€" << endl ;
-    cout << "Permission : " << bibliotheque["images"][indice]["acces"].asString() << endl ;
-    cout << "Date d'ajout : " << bibliotheque["images"][indice]["dateAjout"].asString() << endl ;
-    cout << "Date de creation : " << bibliotheque["images"][indice]["dateCreation"].asString() << endl << endl ;     
-} 
-
-// Affichage le cout d'une image
-void Bibliotheque::AfficherCout(){
-    // Declaration des variables
-    int c ;                                         // Indice
-    string numeroSaisi ;                            // Numero saisi par l'utilisateur
-    int numero ;                                    // Numero de l'image
-    Json::Value biblio = getBilbiotheque() ;        // Objet Json
-    int nbImages = biblio["nbImages"].asInt() ;     // Nombre d'images existantes dans la bibliotheque
-     
-    // Choix du numero de l'image et verification 
-    cout << "Veuillez donner le numero de l'image : " << endl ;
-    do{
-        // Saisie du numero souhaite
-        numeroSaisi.clear() ;
-        cin >> numeroSaisi ; 
-
-        // Verifier le format du numero saisi
-        if(VerifierNumero(numeroSaisi, numero)){
-            // Verification de l'existance du numero saisi dans la bibliotheque
-            if (VerifierNumero(numero, getBilbiotheque())){
-                for(c = 0 ; c < nbImages ; c++){
-                    // Chercher l'image ayant le numero correspondant
-                    if(biblio["images"][c]["numero"].asInt() == numero){
-                        // Affichage le cout correspondant
-                        cout << "Cout de l'image " << numero << " : " << biblio["images"][c]["cout"].asDouble() << "€" << endl ;
-                        break ;
-                    }
-                }
-            }else{
-                cout << "Ce numero n'existe pas. " ;
-            }            
-        }else{
-            cout << "Format invalide. " ;
-        }
-    }while(Continuer("Voulez-vous saisir un nouveau numero ? [Y/N] : ")) ;
-}
-
 
 // Ajouter une image
 void Bibliotheque::AjouterImage(string cheminAccesContenu,
@@ -147,7 +77,7 @@ void Bibliotheque::AjouterImage(string cheminAccesContenu,
     // Saisie : Titre
     biblio["images"][indice]["titre"] = titre ;
     // Incrémentation nbIamges
-    biblio["nbImages"] = indice + 1 ;
+    biblio["nbImages"] = indice + 1;
 
 
     setBilbiotheque(biblio) ;
@@ -493,21 +423,15 @@ Json::Value Bibliotheque::Trier(const int choix){
 
     // Trier suivant le choix
     switch(choix){
-       /* // Titre
-    case  :
-        // Initialiser vecteur des titres
-        for (c = 0 ; c < nbImages ; c++){
-            texteNonTri.push_back(biblioNonTrie["images"][c]["titre"].asString()) ;
-        }
-        indice = Trier(texteNonTri) ;
-        break ;*/
         // Cout
     case 1 :
         // Initialiser vecteur des couts
         for (c = 0 ; c < nbImages ; c++){
             reelNonTri.push_back(biblioNonTrie["images"][c]["cout"].asDouble()) ;
         }
+
         indice = Trier(reelNonTri) ;
+
         break ;
         // Numero
     case 2 :
@@ -517,42 +441,7 @@ Json::Value Bibliotheque::Trier(const int choix){
         }
         indice = Trier(entierNonTri) ;
         break ;
-/*
-        // Source
-    case 4 :
-        // Initialiser vecteur des sources
-        for (c = 0 ; c < nbImages ; c++){
-            texteNonTri.push_back(biblioNonTrie["images"][c]["titre"].asString()) ;
-        }
-        indice = Trier(texteNonTri) ;
-        break ;
-        // Date de creation
-    case 5 :
-        // Initialiser vecteur des dates de creation
-        for (c = 0 ; c < nbImages ; c++){
-            valeurTemp.push_back(biblioNonTrie["images"][c]["dateCreation"].asString()) ;
-        }
-        // Inverser la position des elements de la date pour trier
-        for(c = 0 ; c < nbImages ; c++){
-            ExtraireDate(valeurTemp[nbImages -1 - c], jour, mois, annee) ;
-            entierNonTri.push_back(stoi(annee + mois + jour)) ;
-        }
-        indice = Trier(entierNonTri) ;
-        break ;
-        // Date d'ajout
-    case 6 :
-        // Initialiser vecteur des dates d'ajout
-        for (c = 0 ; c < nbImages ; c++){
-            valeurTemp.push_back(biblioNonTrie["images"][c]["dateAjout"].asString()) ;
-        }
-        // Inverser la position des elements de la date pour trier
-        for(c = 0 ; c < nbImages ; c++){
-            ExtraireDate(valeurTemp[nbImages - 1 - c], jour, mois, annee) ;
-            entierNonTri.push_back(stoi(annee + mois + jour)) ;
-        }
-        indice = Trier(entierNonTri) ;
-        break ;
-*/
+
         // Permission (acces)
     case 3 :
         // Initialiser vecteur des permissions
@@ -603,7 +492,7 @@ vector<int> Bibliotheque::Trier(vector<double>valeurNonTri){
     }
 
     // Remplir le vecteur des indice du tri
-    for (c = 1 ; c < (int)valeurTri.size() ; c++){                      // Pour chaque element du vecteur des indices du vecteur des couts trie
+    for (c = 0 ; c < (int)valeurTri.size() ; c++){                      // Pour chaque element du vecteur des indices du vecteur des couts trie
         for (k = 0 ; k < (int)valeurTri.size() ; k++){                  // Pour chaque element du vecteur des indices du vecteur des couts non trie
             if ((valeurTri[c] == valeurNonTri[k])){                     // Si on retrouve le meme cout dans le vecteur trie que dans le vecteur non trie     
                 if ((*find(indice.begin(), indice.end(), k)) != k){     // Si l'indice correspondant n'est pas encore ecrit dans le vecteur des indices de tri                         
@@ -639,7 +528,7 @@ vector<int> Bibliotheque::Trier(vector<string>valeurNonTri){
     }
 
     // Remplir le vecteur des indice du tri
-    for (c = 1 ; c < (int)valeurTri.size() ; c++){                      // Pour chaque element du vecteur des indices du vecteur des couts trie
+    for (c = 0 ; c < (int)valeurTri.size() ; c++){                      // Pour chaque element du vecteur des indices du vecteur des couts trie
         for (k = 0 ; k < (int)valeurTri.size() ; k++){                  // Pour chaque element du vecteur des indices du vecteur des couts non trie
             if ((valeurTri[c] == valeurNonTri[k])){                     // Si on retrouve le meme cout dans le vecteur trie que dans le vecteur non trie     
                 if ((*find(indice.begin(), indice.end(), k)) != k){     // Si l'indice correspondant n'est pas encore ecrit dans le vecteur des indices de tri                         
@@ -689,18 +578,118 @@ vector<int> Bibliotheque::Trier(vector<int>valeurNonTri){
     return indice ;
 }
 
-// Veriffier bibliotheque vide ou invalide
-bool Bibliotheque::VerifierBibliotheque(){
-    // Si la biliotheque ne contient aucune image
-    if(getBilbiotheque()["nbImages"].asInt() == 0){
-        cout << "Bibliotheque vide" << endl ;
-        return false ;
-    // Si le nombre d'images est negatif
-    }else if(getBilbiotheque()["nbImages"].asInt() < 0){
-        cout << "Bibliotheque invalide." << endl ;
-        return false ;
-    // Bibliotheque valide
-    }else{
-        return true ;
+
+/*Date*/
+// Extraire jour, mois, annee a partir d'une date
+void Bibliotheque::ExtraireDate(const string date, string& jour, string& mois, string& annee){
+    // Initialisation
+    jour.clear() ;
+    mois.clear() ;
+    annee.clear() ;
+
+    // Jour de creation : caracteres aux indices 0 et 1
+    jour.push_back(date[0]) ;
+    jour.push_back(date[1]) ;
+
+    // Mois de creation : caracteres aux indices 3 et 4
+    mois.push_back(date[3]) ;
+    mois.push_back(date[4]) ;
+
+    // Annee de creation : 4 dernieres caracteres
+    annee.push_back(date[6]) ;
+    annee.push_back(date[7]) ;
+    annee.push_back(date[8]) ;
+    annee.push_back(date[9]) ;
+}
+
+/*Verification*/
+
+// Verifier l'extension ".json"
+void Bibliotheque::VerifierExtension(string& nom){
+    if (nom.length() < 6){                                          // Si la longueur du nom est < 6 (".json" = 5 caracteres)
+        nom += ".json" ;                                            // Ajouter l'extension
+    }else{                                                          // Sinon
+        if(nom.find(".json", nom.length()-5) != nom.length()-5){    // Si ".json" n'existe pas dans le nom saisi
+            nom += ".json" ;                                        // Ajouter l'extension
+        }
     }
 }
+
+// Verifier l'existance d'un numero de l'image
+bool Bibliotheque::VerifierNumero(const int numero, const Json::Value biblio){
+    // Declaration des variables
+    int c ;                                         // Indice
+    bool exist = false ;                            // Verificaiton de l'existance du numero saisi
+    int nbImages = biblio["nbImages"].asInt() ;     // Nombre d'images existantes dans la bibliotheque
+
+    // Verification de l'existance du numero saisi dans la bibliotheque
+    for (c = 0 ; c < nbImages ; c++){
+        // Si le numero existe
+        if (numero == biblio["images"][c]["numero"].asInt()){
+            exist = true ;
+            break ;
+        }
+    }
+
+    // Retour
+    return exist ;
+}
+
+// Verifier le format du numero (entier)
+bool Bibliotheque::VerifierNumero(const string saisie, int& numero){
+    // Declaration des variables
+    bool validation = true ;
+    int c ;
+
+    // Verifier le format du numero saisi
+    for(c = 0 ; c < (int)saisie.size() ; c++){
+        if(isdigit(saisie[c]) == false){
+            validation = false ;
+            break ;
+        }
+    }
+
+    // Si le format est valide
+    if(validation){
+        numero = stoi(saisie) ;
+    }
+
+    // Retour
+    return validation ;
+}
+
+// Verifier le format du numero (reel)
+bool Bibliotheque::VerifierNumero(const string saisie, double& numero){
+    // Declaration des variables
+    bool validation = true ;
+    int c ;
+    int s = 0 ;
+
+    // Verifier le format de chaque caractere du numero
+    for(c = 0 ; c < (int)saisie.size() ; c++){
+        // Si le caractere n'est pas un chiffre
+        if(isdigit(saisie[c]) == false){
+            // Si ce caractere ne se trouve pas dans la premiere position et si c'est le separateur du reel
+            if((c > 0) && (saisie[c] == '.')){
+                // S'il y a plus d'un separateur
+                if(s++ > 1){
+                    validation = false ;
+                    break ;
+                }
+            // Si ce n'est pas le separateur du reel
+            }else{
+                validation = false ;
+                break ;
+            }
+        }
+    }
+
+    // Si le format est valide
+    if(validation){
+        numero = stod(saisie) ;
+    }
+
+    // Retour
+    return validation ;
+}
+

@@ -1,9 +1,9 @@
 #include "headers/mainwindow.h"
 #include "ui_mainwindow.h"
 
-AppMainWindow::AppMainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::AppMainWindow){
+    ui(new Ui::MainWindow){
     ui->setupUi(this) ;
     // Connecter les signaux et slots
     connect(ui->tableWidgetBiblio, SIGNAL(cellClicked(int, int)), this,SLOT(on_tableBiblioRowClicked(int , int))) ;          // connecter la selection d'une ligne avec la selection d'un numero d'image
@@ -57,20 +57,22 @@ AppMainWindow::AppMainWindow(QWidget *parent) :
     ui->pushButton_modifier->setToolTip("Sauvegarder les modifications") ;
 
     // Page du traitement-----------------------------
+    // ajouter l'icon sur le boutton agrandir image traitee
+    ui->pushButtonAfficherImageTraitee->setIcon(QIcon(":/icons/agrandir.png"));
     // Initialiser
     GenererIcone() ;
     // Messages d'aide
     AfficherMessageAide() ;
 }
 
-AppMainWindow::~AppMainWindow(){
+MainWindow::~MainWindow(){
     delete ui ;
 }
 
-void AppMainWindow::on_pushButtonIdentifier_clicked(){
+void MainWindow::on_pushButtonIdentifier_clicked(){
     QString userMdp = ui->lineEditMdp->text() ;
     QStringRef codeDroitAcces(&userMdp, 4, 2) ;
-    QFile userIdFile("/home/vm/M2SIA-projet-QT/DATA/idUsers.txt") ;
+    QFile userIdFile(":/idUsers.txt") ;
     bool idFound=false ;
 
    // tester l'ouverture du fichier
@@ -123,17 +125,15 @@ void AppMainWindow::on_pushButtonIdentifier_clicked(){
 
 }
 
-void AppMainWindow::on_pushButtonQuitter_clicked(){
+void MainWindow::on_pushButtonQuitter_clicked(){
     qApp->quit() ;
 }
 
-void AppMainWindow::on_pushButtonChargerBiblio_clicked(){
-    QString fileName = QFileDialog::getOpenFileName(0,"Charger la bibliothèque","/home/vm/M2SIA-projet-QT/DATA/Bibliothèques","*.json") ; // Ouvrir une fenetre pour que l'utilisateur choisisse un fichier .json
+void MainWindow::on_pushButtonChargerBiblio_clicked(){
+    QString fileName = QFileDialog::getOpenFileName(0,"Charger la bibliothèque",QCoreApplication::applicationDirPath(),"*.json") ; // Ouvrir une fenetre pour que l'utilisateur choisisse un fichier .json
     QFile fileBiblio(fileName) ;
     // test sur l'ouverture du fichier
-    if(!fileBiblio.open(QIODevice::ReadOnly)){
-        QMessageBox::information(0,"error",fileBiblio.errorString()) ;
-    }else{
+    if(fileBiblio.open(QIODevice::ReadOnly)){
         // Chargement de la bibliothèque
         _objBiblio = Bibliotheque(fileName.toStdString()) ;                                 // Chargement de la bibliotheque : construction d'un objet de classe bibliothèque à partir du fichier json choisi
         _objBiblio.majBiblioSuivantDroitAcces(_droitAcces) ;                                // mettre à jour l'objet bibliotheque suivant le niveau de l'utilisateur
@@ -153,41 +153,24 @@ void AppMainWindow::on_pushButtonChargerBiblio_clicked(){
     }
 
 }
-void AppMainWindow::on_pushButtonCreerBiblio_clicked(){
-    QString fileName = QFileDialog::getSaveFileName(0,tr("Sauvegarder bibliothèque d'images"), "", tr("*.json")) ;
-    if (!fileName.isEmpty()){
-    string fileNameStr = fileName.toStdString() ;
-    VerifierExtension(fileNameStr) ;
-    _objBiblio.Sauvegarder(fileNameStr) ;
-    fileName = QString::fromStdString(fileNameStr) ;
-    if (!fileName.isEmpty()){
-        // Chargement de la bibliothèque
-        _objBiblio = Bibliotheque(fileNameStr) ;                                            // Chargement de la bibliotheque : construction d'un objet de classe bibliothèque à partir du fichier json choisi
-        _objBiblio.majBiblioSuivantDroitAcces(_droitAcces) ;                                // mettre à jour l'objet bibliotheque suivant le niveau de l'utilisateur
-        updateTableWidgetBiblio() ;                                                         // mettre à jour la table des descripteurs de la bibliotheque
-        updateTableWidgetSousListeBiblio(Json::Value()) ;                                   // vider la table de la sous-liste de la bibliothèque
-        ui->stackedWidget->setCurrentIndex(2) ;                                             // Aller au Menu Bibliothèque (page 2)
-        // extraire le nom de la bibliotheque du chemin d acces du fichier .json
-        QString biblioName ;                                                                // Nom de la bibliothèque
-        int i=6 ;
-        do{
-        biblioName.push_front(fileName[fileName.length()-i]) ;
-        i++ ;
-        }while(fileName[fileName.length()-i]!='/') ;
-        // ecrire le nom de la bibliotheque dans labelBiblioName
-        ui->labelBiblioName->setText(biblioName) ;
-        ui->labelSousListeBiblioName->setText(biblioName) ;
-    }
-    }
+void MainWindow::on_pushButtonCreerBiblio_clicked(){
+    // ecrire le nom de la bibliotheque dans labelBiblioName
+    ui->labelBiblioName->setText("nouvelle bibliotheque") ;
+    ui->labelSousListeBiblioName->setText("nouvelle bibliotheque") ;
+    // Creation de la bibliothèque
+    _objBiblio.setBilbiotheque(Json::Value()) ;                                         // Creer la bibliotheque : construction d'un objet de classe bibliothèque à partir du fichier json choisi
+    updateTableWidgetBiblio() ;                                                         // mettre à jour la table des descripteurs de la bibliotheque
+    updateTableWidgetSousListeBiblio(Json::Value()) ;                                   // vider la table de la sous-liste de la bibliothèque
+    ui->stackedWidget->setCurrentIndex(2) ;                                             // Aller au Menu Bibliothèque (page 2)
 }
 
-void AppMainWindow::on_pushButtonRetourIdentification_clicked(){
+void MainWindow::on_pushButtonRetourIdentification_clicked(){
     ui->statusbar->showMessage("") ;                     // Vider le message de la statusbar
     ui->lineEditMdp->clear() ;                           // Vider le champ du mot de passe
     ui->stackedWidget->setCurrentIndex(0) ;              // Retour au Menu Identification (page 0)
 }
 
-void AppMainWindow::updateTableWidgetBiblio(){
+void MainWindow::updateTableWidgetBiblio(){
     Json::Value biblio = _objBiblio.getBilbiotheque() ;        // Objet Json
     ui->tableWidgetBiblio->setRowCount(biblio["nbImages"].asInt()) ;           // Mettre à jour le nombre de lignes du tableWidgetBiblio suivant le Nombre d'images existantes dans la bibliotheque chargée
     for (int i = 0 ; i < ui->tableWidgetBiblio->rowCount() ; i++) {
@@ -195,46 +178,46 @@ void AppMainWindow::updateTableWidgetBiblio(){
         for (int j = 0 ; j < ui->tableWidgetBiblio->columnCount() ; j++)     {
             item = new QTableWidgetItem ;
             if (j==0){item->setText(QString::fromStdString((biblio["images"][i]["titre"].asString()))) ;}
-            if (j==1){item->setText(QString::fromStdString((biblio["images"][i]["cout"].asString()))) ;}
-            if (j==2){item->setText(QString::fromStdString((biblio["images"][i]["numero"].asString()))) ;}
+            if (j==1){item->setData(Qt::EditRole,biblio["images"][i]["cout"].asDouble()) ;}
+            if (j==2){item->setData(Qt::EditRole,biblio["images"][i]["numero"].asDouble()) ;}
             if (j==3){item->setText(QString::fromStdString((biblio["images"][i]["source"].asString()))) ;}
-            if (j==4){item->setText(QString::fromStdString((biblio["images"][i]["dateCreation"].asString()))) ;}
-            if (j==5){item->setText(QString::fromStdString((biblio["images"][i]["dateAjout"].asString()))) ;}
+            if (j==4){item->setData(Qt::EditRole,QDate::fromString(QString::fromStdString(biblio["images"][i]["dateCreation"].asString()),"dd'/'MM'/'yyyy")) ;}
+            if (j==5){item->setData(Qt::EditRole,QDate::fromString(QString::fromStdString(biblio["images"][i]["dateAjout"].asString()),"dd'/'MM'/'yyyy")) ;}
             if (j==6){item->setText(QString::fromStdString((biblio["images"][i]["acces"].asString()))) ;}
             ui->tableWidgetBiblio->setItem(i,j,item) ;
         }
     }
 }
 
-void AppMainWindow::updateTableWidgetSousListeBiblio(Json::Value biblio){
+void MainWindow::updateTableWidgetSousListeBiblio(Json::Value biblio){
     ui->tableWidgetSousListeBiblio->setRowCount(biblio["nbImages"].asInt()) ;           // Mettre à jour le nombre de lignes du tableWidgetBiblio suivant le Nombre d'images existantes dans la bibliotheque chargée
     for (int i = 0 ; i < ui->tableWidgetSousListeBiblio->rowCount() ; i++){
         QTableWidgetItem *item ;
         for (int j = 0 ; j < ui->tableWidgetSousListeBiblio->columnCount() ; j++){
             item = new QTableWidgetItem ;
             if (j==0){item->setText(QString::fromStdString((biblio["images"][i]["titre"].asString()))) ;}
-            if (j==1){item->setText(QString::fromStdString((biblio["images"][i]["cout"].asString()))) ;}
-            if (j==2){item->setText(QString::fromStdString((biblio["images"][i]["numero"].asString()))) ;}
+            if (j==1){item->setData(Qt::EditRole,biblio["images"][i]["cout"].asDouble()) ;}
+            if (j==2){item->setData(Qt::EditRole,biblio["images"][i]["numero"].asDouble()) ;}
             if (j==3){item->setText(QString::fromStdString((biblio["images"][i]["source"].asString()))) ;}
-            if (j==4){item->setText(QString::fromStdString((biblio["images"][i]["dateCreation"].asString()))) ;}
-            if (j==5){item->setText(QString::fromStdString((biblio["images"][i]["dateAjout"].asString()))) ;}
+            if (j==4){item->setData(Qt::EditRole,QDate::fromString(QString::fromStdString(biblio["images"][i]["dateCreation"].asString()),"dd'/'MM'/'yyyy")) ;}
+            if (j==5){item->setData(Qt::EditRole,QDate::fromString(QString::fromStdString(biblio["images"][i]["dateAjout"].asString()),"dd'/'MM'/'yyyy")) ;}
             if (j==6){item->setText(QString::fromStdString((biblio["images"][i]["acces"].asString()))) ;}
             ui->tableWidgetSousListeBiblio->setItem(i,j,item) ;
         }
     }
 }
 
-void AppMainWindow::on_pushButtonSauvegarder_clicked(){
-    QString fileName = QFileDialog::getSaveFileName(0,tr("Sauvegarder bibliothèque d'images"), "", tr("*.json")) ;
+void MainWindow::on_pushButtonSauvegarder_clicked(){
+    QString fileName = QFileDialog::getSaveFileName(0,tr("Sauvegarder bibliothèque d'images"), QCoreApplication::applicationDirPath(), tr("*.json")) ;
     //QMessageBox::information(0,"Sauvegarge bibliothèque",fileName) ;
     if (!fileName.isEmpty()){
         string fileNameStr = fileName.toStdString() ;
-        VerifierExtension(fileNameStr) ;
+        Bibliotheque::VerifierExtension(fileNameStr) ;
         _objBiblio.Sauvegarder(fileNameStr) ;
     }
 }
 
-void AppMainWindow::on_tableBiblioRowClicked(int row, int){
+void MainWindow::on_tableBiblioRowClicked(int row, int){
     ui->pushButtonSupprimerImage->setEnabled(_droitAcces) ;
     ui->pushButtonOuvrirImage->setEnabled(true) ;
     QTableWidgetItem *item = ui->tableWidgetBiblio->item(row,2) ;
@@ -248,10 +231,9 @@ void AppMainWindow::on_tableBiblioRowClicked(int row, int){
     }
 
 
-
 }
 
-void AppMainWindow::on_pushButtonSupprimerImage_clicked(){
+void MainWindow::on_pushButtonSupprimerImage_clicked(){
     QMessageBox::StandardButton reply ;
       reply = QMessageBox::question(0, "Supprression de l'image", "Etes-vous sûr de vouloir supprimer cette image?",QMessageBox::Yes | QMessageBox::No) ;
       if (reply == QMessageBox::Yes){
@@ -260,7 +242,7 @@ void AppMainWindow::on_pushButtonSupprimerImage_clicked(){
       }
 }
 
-void AppMainWindow::on_pushButtonRetourMenuPrincipal_clicked(){
+void MainWindow::on_pushButtonRetourMenuPrincipal_clicked(){
         ui->stackedWidget->setCurrentIndex(1) ;              // Retour au Menu Principal (page 1)
         // Reinitialiser le menu bibliothèque
         ui->comboBoxCritereCout->setCurrentIndex(0) ;
@@ -273,16 +255,16 @@ void AppMainWindow::on_pushButtonRetourMenuPrincipal_clicked(){
         ui->tableWidgetBiblio->clearSelection() ;
 }
 
-void AppMainWindow::on_lineEditMdp_returnPressed(){
+void MainWindow::on_lineEditMdp_returnPressed(){
     emit ui->pushButtonIdentifier->click() ;            // emettre signal click du pushButtonIdentifier
 }
 
-void AppMainWindow::on_comboBoxTrierIndexChanged(int index){
+void MainWindow::on_comboBoxTrierIndexChanged(int index){
     _objBiblio.Trier(index) ;
     updateTableWidgetBiblio() ;
 }
 
-void AppMainWindow::on_comboBoxCritereCoutIndexChanged(int index){
+void MainWindow::on_comboBoxCritereCoutIndexChanged(int index){
     ui->comboBoxCritereDateAjout->setCurrentIndex(0) ; // Reinitialiser le critere cout
     // Initialisation de la sous liste bibliothèque
     _objSousListeBiblio=Bibliotheque(_objBiblio.getBilbiotheque()) ;
@@ -298,7 +280,7 @@ void AppMainWindow::on_comboBoxCritereCoutIndexChanged(int index){
     _objSousListeBiblio = Bibliotheque(sousListeJson) ;
 }
 
-void AppMainWindow::on_comboBoxCritereDateAjoutIndexChanged(int index){
+void MainWindow::on_comboBoxCritereDateAjoutIndexChanged(int index){
     ui->comboBoxCritereCout->setCurrentIndex(0) ; // Reinitialiser le critere cout
     // Initialisation de la sous liste bibliothèque
     _objSousListeBiblio=Bibliotheque(_objBiblio.getBilbiotheque()) ;
@@ -310,7 +292,7 @@ void AppMainWindow::on_comboBoxCritereDateAjoutIndexChanged(int index){
     _objSousListeBiblio = Bibliotheque(sousListeJson) ;
 }
 
-void AppMainWindow::on_pushButtonAjouterImage_clicked(){
+void MainWindow::on_pushButtonAjouterImage_clicked(){
     // Initialiser le menu Ajout Image
     ui->dateEditAjoutImageDateAjout->setDate(QDate::currentDate()) ;
     ui->dateEditAjoutImageDateCreation->setDate(QDate()) ;
@@ -319,7 +301,7 @@ void AppMainWindow::on_pushButtonAjouterImage_clicked(){
     ui->lineEditAjoutImageTitre->clear() ;
     ui->spinBoxAjoutImageNumero->setValue(0) ;
     // Charger l image à ajouter
-    QString fileName = QFileDialog::getOpenFileName(0,tr("Choisir une image à ajouter"), "/home/vm/M2SIA-projet-QT/DATA/Bibliothèques" ,tr("Fichiers Images (*.png *.jpg *.bmp *.pgm *.jpeg *.tiff)")) ;
+    QString fileName = QFileDialog::getOpenFileName(0,tr("Choisir une image à ajouter"), QCoreApplication::applicationDirPath() ,tr("Fichiers Images (*.png *.jpg *.bmp *.pgm *.jpeg *.tiff)")) ;
     if (!fileName.isEmpty()){
         _ImageAjouteeFileName = fileName.toStdString() ;
         QPixmap pix(fileName) ;
@@ -330,11 +312,11 @@ void AppMainWindow::on_pushButtonAjouterImage_clicked(){
     }
 }
 
-void AppMainWindow::on_pushButtonAjoutImageAnnuler_clicked(){
+void MainWindow::on_pushButtonAjoutImageAnnuler_clicked(){
     ui->stackedWidget->setCurrentIndex(2) ;          // Aller au menu bibliothèque
 }
 
-void AppMainWindow::on_pushButtonAjoutImageAjouter_clicked(){
+void MainWindow::on_pushButtonAjoutImageAjouter_clicked(){
     QString titre = ui->lineEditAjoutImageTitre->text() ;
     int numero = ui->spinBoxAjoutImageNumero->value() ;
     double cout = ui->doubleSpinBoxAjoutImageCout->value() ;
@@ -343,7 +325,7 @@ void AppMainWindow::on_pushButtonAjoutImageAjouter_clicked(){
     QString dateAjout = ui->dateEditAjoutImageDateAjout->date().toString("dd/MM/yyyy") ;
     QString dateCreation = ui->dateEditAjoutImageDateCreation->date().toString("dd/MM/yyyy") ;
 
-    if (VerifierNumero(numero,_objBiblio.getBilbiotheque())){
+    if (Bibliotheque::VerifierNumero(numero,_objBiblio.getBilbiotheque())){
         QMessageBox::information(0,"Erreur Ajout Image","Le numéro que vous avez choisi existe dèjà!") ;
     }else if( ui->dateEditAjoutImageDateAjout->date() < ui->dateEditAjoutImageDateCreation->date()){
         QMessageBox::information(0,"Erreur Ajout Image","La date d'ajout ne doit pas etre inférieur à la date de création!") ;
@@ -357,16 +339,16 @@ void AppMainWindow::on_pushButtonAjoutImageAjouter_clicked(){
 }
 
 
-void AppMainWindow::on_pushButtonSauvegarderSousListe_clicked(){
-    QString fileName = QFileDialog::getSaveFileName(0,tr("Sauvegarder bibliothèque d'images"), "", tr("*.json")) ;
+void MainWindow::on_pushButtonSauvegarderSousListe_clicked(){
+    QString fileName = QFileDialog::getSaveFileName(0,tr("Sauvegarder bibliothèque d'images"), QCoreApplication::applicationDirPath(), tr("*.json")) ;
     if (!fileName.isEmpty()){
         string fileNameStr = fileName.toStdString() ;
-        VerifierExtension(fileNameStr) ;
+        Bibliotheque::VerifierExtension(fileNameStr) ;
         _objSousListeBiblio.Sauvegarder(fileNameStr) ;
     }
 }
 
-void AppMainWindow::on_pushButtonOuvrirImage_clicked(){
+void MainWindow::on_pushButtonOuvrirImage_clicked(){
     if (!_droitAcces){
     // Declaration des variables
     QString chemin ;                                        // Chemin d'acces a l'image choisie
@@ -412,7 +394,7 @@ void AppMainWindow::on_pushButtonOuvrirImage_clicked(){
         // Cout
         ui->doubleSpinBoxModificationImageCout->setValue(_objBiblio.getBilbiotheque()["images"][_indiceImageSelectionnee]["cout"].asDouble()) ;
         // Date d'ajout
-        ExtraireDate(_objBiblio.getBilbiotheque()["images"][_indiceImageSelectionnee]["dateAjout"].asString(),jour,mois,annee) ;
+        Bibliotheque::ExtraireDate(_objBiblio.getBilbiotheque()["images"][_indiceImageSelectionnee]["dateAjout"].asString(),jour,mois,annee) ;
         dateTemp = QDate(QString::fromStdString(annee).toInt(&ok),QString::fromStdString(mois).toInt(&ok),QString::fromStdString(jour).toInt(&ok)) ;
         if(!ok){
             QMessageBox::information(0,"Erreur Date d'Ajout","Impossible de charger la date d'ajout, fichier corrompu.") ;
@@ -420,7 +402,7 @@ void AppMainWindow::on_pushButtonOuvrirImage_clicked(){
             ui->dateEditModificationImageDateAjout->setDate(dateTemp) ;
         }
         // Date de creation
-        ExtraireDate(_objBiblio.getBilbiotheque()["images"][_indiceImageSelectionnee]["dateCreation"].asString(),jour,mois,annee) ;
+        Bibliotheque::ExtraireDate(_objBiblio.getBilbiotheque()["images"][_indiceImageSelectionnee]["dateCreation"].asString(),jour,mois,annee) ;
         dateTemp = QDate(QString::fromStdString(annee).toInt(&ok),QString::fromStdString(mois).toInt(&ok),QString::fromStdString(jour).toInt(&ok)) ;
         if(!ok){
             QMessageBox::information(0,"Erreur Date de Creation","Impossible de charger la date d'creation, fichier corrompu.") ;
@@ -452,23 +434,23 @@ void AppMainWindow::on_pushButtonOuvrirImage_clicked(){
 }
 }
 
-void AppMainWindow::on_pushButtonRetourMenuModificationImage_clicked(){
+void MainWindow::on_pushButtonRetourMenuModificationImage_clicked(){
     ui->stackedWidget->setCurrentIndex(2) ;
 }
 
 
-void AppMainWindow::on_doubleSpinBoxMin_valueChanged(double){
+void MainWindow::on_doubleSpinBoxMin_valueChanged(double){
     ui->doubleSpinBoxMax->setMinimum(ui->doubleSpinBoxMin->value()) ;
     if(ui->comboBoxCritereCout->currentIndex()==5){
-                AppMainWindow::on_comboBoxCritereCoutIndexChanged(5) ;
+                MainWindow::on_comboBoxCritereCoutIndexChanged(5) ;
     }
 }
 
-void AppMainWindow::on_doubleSpinBoxMax_valueChanged(double){
+void MainWindow::on_doubleSpinBoxMax_valueChanged(double){
     ui->doubleSpinBoxMin->setMaximum(ui->doubleSpinBoxMax->value()) ;
 
     if(ui->comboBoxCritereCout->currentIndex()==5){
-                AppMainWindow::on_comboBoxCritereCoutIndexChanged(5) ;
+                MainWindow::on_comboBoxCritereCoutIndexChanged(5) ;
     }
 
 }
@@ -479,7 +461,7 @@ void AppMainWindow::on_doubleSpinBoxMax_valueChanged(double){
 
 
 // Agrandissement de l'image (non modifiable)
-void AppMainWindow::on_horizontalSlider_agrandissementNonModifiable_valueChanged(int value){
+void MainWindow::on_horizontalSlider_agrandissementNonModifiable_valueChanged(int value){
     // Sevlaration des variables
     int hauteurImage = ui->graphicsView_contenuImageNonModifiable->scene()->height() ;      // Hauteur de l'image
     int largeurImage = ui->graphicsView_contenuImageNonModifiable->scene()->width() ;       // Largeur de l'image
@@ -507,7 +489,7 @@ void AppMainWindow::on_horizontalSlider_agrandissementNonModifiable_valueChanged
 
 
 // Bouton de sauvegarder les modifications
-void AppMainWindow::on_pushButton_modifier_clicked(){
+void MainWindow::on_pushButton_modifier_clicked(){
     // Declaration des variables
     QString titre = ui->lineEditModificationImageTitre->text() ; // Titre
     int numero = ui->spinBoxModificationImageNumero->value() ; // numéro :
@@ -518,7 +500,7 @@ void AppMainWindow::on_pushButton_modifier_clicked(){
     QString dateCreation = ui->dateEditModificationImageDateCreation->date().toString("dd/MM/yyyy") ;
     Json::Value biblioJson = _objBiblio.getBilbiotheque() ;
 
-    if (_numImageSelected != numero && VerifierNumero(numero,_objBiblio.getBilbiotheque())){
+    if (_numImageSelected != numero && Bibliotheque::VerifierNumero(numero,_objBiblio.getBilbiotheque())){
         QMessageBox::information(0,"Erreur Ajout Image","Le numéro que vous avez choisi existe dèjà!") ;
     }else if( ui->dateEditModificationImageDateAjout->date() < ui->dateEditModificationImageDateCreation->date()){
         QMessageBox::information(0,"Erreur Ajout Image","La date d'ajout ne doit pas etre inférieur à la date de création!") ;
@@ -540,7 +522,7 @@ void AppMainWindow::on_pushButton_modifier_clicked(){
 }
 
 // Agrandissement de l'image
-void AppMainWindow::on_horizontalSlider_agrandissement_valueChanged(int value){
+void MainWindow::on_horizontalSlider_agrandissement_valueChanged(int value){
     // Sevlaration des variables
     int hauteurImage = ui->graphicsView_contenuImage->scene()->height() ;   // Hauteur de l'image
     int largeurImage = ui->graphicsView_contenuImage->scene()->width() ;    // Largeur de l'image
@@ -565,7 +547,7 @@ void AppMainWindow::on_horizontalSlider_agrandissement_valueChanged(int value){
 }
 
 // Passer a la page des traitements de l'image choisie
-void AppMainWindow::on_pushButton_traitementImage_clicked(){
+void MainWindow::on_pushButton_traitementImage_clicked(){
     // Declaration de variable
     Size n ;
     n.height = 1 ;
@@ -623,7 +605,7 @@ void AppMainWindow::on_pushButton_traitementImage_clicked(){
 // -------------Standars-------------
 
 // Retour a la page pour choisir l'image a traiter
-void AppMainWindow::on_pushButton_retour_clicked(){
+void MainWindow::on_pushButton_retour_clicked(){
     // Desactiver les foncitonnalites
     // Luminosite
     ui->groupBox_correction->setChecked(false) ;
@@ -680,7 +662,7 @@ void AppMainWindow::on_pushButton_retour_clicked(){
 }
 
 // Agrandissement de l'image originale
-void AppMainWindow::on_horizontalSlider_imageOriginale_valueChanged(int value){
+void MainWindow::on_horizontalSlider_imageOriginale_valueChanged(int value){
     // Sevlaration des variables
     int hauteurImage = ui->graphicsView_imageOriginale->scene()->height() ;     // Hauteur de l'image
     int largeurImage = ui->graphicsView_imageOriginale->scene()->width() ;      // Largeur de l'image
@@ -705,7 +687,7 @@ void AppMainWindow::on_horizontalSlider_imageOriginale_valueChanged(int value){
 }
 
 // Agrandissement de l'image traitee
-void AppMainWindow::on_horizontalSlider_imageTraitee_valueChanged(int value){
+void MainWindow::on_horizontalSlider_imageTraitee_valueChanged(int value){
     // Sevlaration des variables
     int hauteurImage = ui->graphicsView_imageTraitee->scene()->height() ;   // Hauteur de l'image
     int largeurImage = ui->graphicsView_imageTraitee->scene()->width() ;    // Largeur de l'image
@@ -730,7 +712,7 @@ void AppMainWindow::on_horizontalSlider_imageTraitee_valueChanged(int value){
 }
 
 // Reinitialiser
-void AppMainWindow::on_pushButton_traitementReinitialiser_clicked(){
+void MainWindow::on_pushButton_traitementReinitialiser_clicked(){
     // Declaration de variable
     string nbLigne, nbColonne ;     // Nombre de lignes et de colonnes
     string resolution ;             // Resolution
@@ -775,16 +757,16 @@ void AppMainWindow::on_pushButton_traitementReinitialiser_clicked(){
 }
 
 // Appliquer le traitement
-void AppMainWindow::on_pushButton_traitementAppliquer_clicked(){
+void MainWindow::on_pushButton_traitementAppliquer_clicked(){
     // Declaration des variables
     string nbLigne, nbColonne ;     // Nombre de lignes et de colonnes
     string resolution ;             // Resolution
 
     // Mise a jour l'image originale temporelle
-    imwrite("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png", _imageResultat) ;
-   _imageOriginale= imread("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png") ;
+    imwrite((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString(), _imageResultat) ;
+   _imageOriginale= imread((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString()) ;
     // Convertir en format QT
-    QImage imageOriginaleQT("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png") ;
+    QImage imageOriginaleQT((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg")) ;
     // Histogramme
     _histoImageOriginale= Normalisation(PlotHistogram(_imageOriginale), 255) ;
     QImage histoImageOriginaleQT = QImage((uchar*) _histoImageOriginale.data, _histoImageOriginale.cols, _histoImageOriginale.rows, _histoImageOriginale.step, QImage::Format_RGB888) ;
@@ -815,7 +797,7 @@ void AppMainWindow::on_pushButton_traitementAppliquer_clicked(){
 // -------------Luminosite-------------
 
 // Initialiser
-void AppMainWindow::on_groupBox_correction_clicked(){
+void MainWindow::on_groupBox_correction_clicked(){
     AffichageResultat(_imageOriginale, 1) ;                      // Image originale
     // Si le box est choisi
     if(ui->groupBox_correction->isChecked()){
@@ -836,7 +818,7 @@ void AppMainWindow::on_groupBox_correction_clicked(){
 }
 
 // Bouton : Luminosite
-void AppMainWindow::on_radioButton_luminosite_clicked(){
+void MainWindow::on_radioButton_luminosite_clicked(){
     // Si le bouton est coche
     if(ui->radioButton_luminosite->isChecked()){
         // Desactiver les autres fonctionnalites
@@ -861,7 +843,7 @@ void AppMainWindow::on_radioButton_luminosite_clicked(){
 }
 
 // Modifier la luminosite de l'image
-void AppMainWindow::on_horizontalSlider_luminosite_valueChanged(int value){
+void MainWindow::on_horizontalSlider_luminosite_valueChanged(int value){
     // Application du reglage de luminosite
     _imageResultat = ImageLuminosite(_imageOriginale, value) ;
 
@@ -870,7 +852,7 @@ void AppMainWindow::on_horizontalSlider_luminosite_valueChanged(int value){
 }
 
 // Bouton : Contraste
-void AppMainWindow::on_radioButton_contraste_clicked(){
+void MainWindow::on_radioButton_contraste_clicked(){
     // Si le bouton est coche
     if(ui->radioButton_contraste->isChecked()){
         // Desactiver les autres fonctionnalites
@@ -895,7 +877,7 @@ void AppMainWindow::on_radioButton_contraste_clicked(){
 }
 
 // Modifier le constraste de l'image
-void AppMainWindow::on_horizontalSlider_contraste_valueChanged(int value){
+void MainWindow::on_horizontalSlider_contraste_valueChanged(int value){
     // Application de la normalisation
     _imageResultat = Normalisation(_imageOriginale, value) ;
 
@@ -904,7 +886,7 @@ void AppMainWindow::on_horizontalSlider_contraste_valueChanged(int value){
 }
 
 // Bouton : Ombre
-void AppMainWindow::on_radioButton_ombre_clicked(){
+void MainWindow::on_radioButton_ombre_clicked(){
     // Si le bouton est coche
     if(ui->radioButton_ombre->isChecked()){
         // Desactiver les autres fonctionnalites
@@ -929,13 +911,13 @@ void AppMainWindow::on_radioButton_ombre_clicked(){
 }
 
 // Ombre
-void AppMainWindow::on_horizontalSlider_ombre_valueChanged(int value){
+void MainWindow::on_horizontalSlider_ombre_valueChanged(int value){
     _imageResultat = ImageOmbre(_imageOriginale, value) ;
     AffichageResultat(_imageResultat, 1) ;
 }
 
 // Bouton : Haute lumiere
-void AppMainWindow::on_radioButton_brillance_clicked(){
+void MainWindow::on_radioButton_brillance_clicked(){
     // Si le bouton est coche
     if(ui->radioButton_brillance->isChecked()){
         // Desactiver les autres fonctionnalites
@@ -960,7 +942,7 @@ void AppMainWindow::on_radioButton_brillance_clicked(){
 }
 
 // Haute lumiere
-void AppMainWindow::on_horizontalSlider_brillance_valueChanged(int value){
+void MainWindow::on_horizontalSlider_brillance_valueChanged(int value){
     _imageResultat = ImageHauteLumiere(_imageOriginale, value) ;
     AffichageResultat(_imageResultat, 1) ;
 }
@@ -968,7 +950,7 @@ void AppMainWindow::on_horizontalSlider_brillance_valueChanged(int value){
 // -------------Details-------------
 
 // Initialiser
-void AppMainWindow::on_groupBox_details_clicked(){
+void MainWindow::on_groupBox_details_clicked(){
     AffichageResultat(_imageOriginale, 1) ;                      // Image originale
     // Si le box est choisi
     if(ui->groupBox_details->isChecked()){
@@ -989,7 +971,7 @@ void AppMainWindow::on_groupBox_details_clicked(){
 }
 
 // Bouton nettete
-void AppMainWindow::on_radioButton_nettete_clicked(){
+void MainWindow::on_radioButton_nettete_clicked(){
     if(ui->radioButton_nettete->isChecked()){
         // Desactiver les autres corrections
         ui->radioButton_luminosite->setChecked(false) ;     // Luminosite
@@ -1014,7 +996,7 @@ void AppMainWindow::on_radioButton_nettete_clicked(){
 }
 
 // Modifier la nettete de l'image
-void AppMainWindow::on_horizontalSlider_nettete_valueChanged(int value){
+void MainWindow::on_horizontalSlider_nettete_valueChanged(int value){
     if(ui->radioButton_nettete->isChecked()){
         // Rendre flou
         if(value < 0){
@@ -1037,7 +1019,7 @@ void AppMainWindow::on_horizontalSlider_nettete_valueChanged(int value){
 }
 
 // Bouton bruitage
-void AppMainWindow::on_radioButton_bruitage_clicked(){
+void MainWindow::on_radioButton_bruitage_clicked(){
     if(ui->radioButton_bruitage->isChecked()){
         // Desactiver les autres corrections
         ui->radioButton_nettete->setChecked(false) ;        // Nettete
@@ -1062,7 +1044,7 @@ void AppMainWindow::on_radioButton_bruitage_clicked(){
 }
 
 // Bruiter l'image
-void AppMainWindow::on_horizontalSlider_Bruitage_valueChanged(int value){
+void MainWindow::on_horizontalSlider_Bruitage_valueChanged(int value){
     // Bruiter l'image par un bruit gaussien
     _imageResultat = ImageBruitGaussien(_imageOriginale,0, value) ;
 
@@ -1073,7 +1055,7 @@ void AppMainWindow::on_horizontalSlider_Bruitage_valueChanged(int value){
 // -------------Filtres de couleur-------------
 
 // Initialiser
-void AppMainWindow::on_groupBox_filtres_clicked(){
+void MainWindow::on_groupBox_filtres_clicked(){
     AffichageResultat(_imageOriginale, 1) ;                      // Image originale
     // Si le box est choisi
     if(ui->groupBox_filtres->isChecked()){
@@ -1104,7 +1086,7 @@ void AppMainWindow::on_groupBox_filtres_clicked(){
 }
 
 // Originale
-void AppMainWindow::on_radioButton_originale_clicked(){
+void MainWindow::on_radioButton_originale_clicked(){
     if(ui->radioButton_originale->isChecked()){
         // Desactiver les autres filtres
         ui->radioButton_niveauGris->setChecked(false) ;     // Niveau de gris
@@ -1127,7 +1109,7 @@ void AppMainWindow::on_radioButton_originale_clicked(){
 }
 
 // Image monochrome
-void AppMainWindow::on_radioButton_niveauGris_clicked(){
+void MainWindow::on_radioButton_niveauGris_clicked(){
     ui->radioButton_niveauGris->setChecked(true) ;
     if(ui->radioButton_niveauGris->isChecked()){
         // Desactiver les autres filtres
@@ -1155,7 +1137,7 @@ void AppMainWindow::on_radioButton_niveauGris_clicked(){
 }
 
 // Image sepia
-void AppMainWindow::on_radioButton_sepia_clicked(){
+void MainWindow::on_radioButton_sepia_clicked(){
     ui->radioButton_sepia->setChecked(true) ;
     if(ui->radioButton_sepia->isChecked()){
         // Desactiver les autres filtres
@@ -1181,7 +1163,7 @@ void AppMainWindow::on_radioButton_sepia_clicked(){
 }
 
 // Image inversee
-void AppMainWindow::on_radioButton_inversement_clicked(){
+void MainWindow::on_radioButton_inversement_clicked(){
     ui->radioButton_inversement->setChecked(true) ;
     if(ui->radioButton_inversement->isChecked()){
         // Desactiver les autres filtres
@@ -1207,7 +1189,7 @@ void AppMainWindow::on_radioButton_inversement_clicked(){
 }
 
 // Image rouge
-void AppMainWindow::on_radioButton_rouge_clicked(){
+void MainWindow::on_radioButton_rouge_clicked(){
     ui->radioButton_rouge->setChecked(true) ;
     if(ui->radioButton_rouge->isChecked()){
         // Desactiver les autres filtres
@@ -1233,7 +1215,7 @@ void AppMainWindow::on_radioButton_rouge_clicked(){
 }
 
 // Image verte
-void AppMainWindow::on_radioButton_vert_clicked(){
+void MainWindow::on_radioButton_vert_clicked(){
     ui->radioButton_vert->setChecked(true) ;
     if(ui->radioButton_vert->isChecked()){
         // Desactiver les autres filtres
@@ -1259,7 +1241,7 @@ void AppMainWindow::on_radioButton_vert_clicked(){
 }
 
 // Image bleue
-void AppMainWindow::on_radioButton_bleu_clicked(){
+void MainWindow::on_radioButton_bleu_clicked(){
     ui->radioButton_bleu->setChecked(true) ;
     if(ui->radioButton_bleu->isChecked()){
         // Desactiver les autres filtres
@@ -1285,7 +1267,7 @@ void AppMainWindow::on_radioButton_bleu_clicked(){
 }
 
 // Image jaune
-void AppMainWindow::on_radioButton_jaune_clicked(){
+void MainWindow::on_radioButton_jaune_clicked(){
     ui->radioButton_jaune->setChecked(true) ;
     if(ui->radioButton_jaune->isChecked()){
         // Desactiver les autres filtres
@@ -1302,8 +1284,8 @@ void AppMainWindow::on_radioButton_jaune_clicked(){
 
 
         // Image jaune
-        imwrite("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png", _imageOriginale) ;
-        _imageResultat = ImageJaune(imread("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png")) ;
+        imwrite((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString(), _imageOriginale) ;
+        _imageResultat = ImageJaune(imread((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString())) ;
 
         // Affichage du resultat
         AffichageResultat(_imageResultat, 1) ;
@@ -1311,7 +1293,7 @@ void AppMainWindow::on_radioButton_jaune_clicked(){
 }
 
 // Image cyane
-void AppMainWindow::on_radioButton_cyan_clicked(){
+void MainWindow::on_radioButton_cyan_clicked(){
     ui->radioButton_cyan->setChecked(true) ;
     if(ui->radioButton_cyan->isChecked()){
         // Desactiver les autres filtres
@@ -1330,8 +1312,8 @@ void AppMainWindow::on_radioButton_cyan_clicked(){
 
 
         // Image cyane
-        imwrite("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png", _imageOriginale) ;
-        _imageResultat = ImageCyan(imread("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png")) ;
+        imwrite((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString(), _imageOriginale) ;
+        _imageResultat = ImageCyan(imread((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString())) ;
 
         // Affichage du resultat
         AffichageResultat(_imageResultat, 1) ;
@@ -1339,7 +1321,7 @@ void AppMainWindow::on_radioButton_cyan_clicked(){
 }
 
 // Image magenta
-void AppMainWindow::on_radioButton_magenta_clicked(){
+void MainWindow::on_radioButton_magenta_clicked(){
     ui->radioButton_magenta->setChecked(true) ;
     if(ui->radioButton_magenta->isChecked()){
         // Desactiver les autres filtres
@@ -1357,8 +1339,8 @@ void AppMainWindow::on_radioButton_magenta_clicked(){
         ui->radioButtonEgalisation->setChecked(false) ;             // Egalisation d'histogramme
 
         // Image magenta
-        imwrite("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png", _imageOriginale) ;
-        _imageResultat = ImageMagenta(imread("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png")) ;
+        imwrite((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString(), _imageOriginale) ;
+        _imageResultat = ImageMagenta(imread((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString())) ;
 
         // Affichage du resultat
         AffichageResultat(_imageResultat, 1) ;
@@ -1366,7 +1348,7 @@ void AppMainWindow::on_radioButton_magenta_clicked(){
 }
 
 // Image RGB
-void AppMainWindow::on_radioButton_rgb_clicked(){
+void MainWindow::on_radioButton_rgb_clicked(){
     ui->radioButton_rgb->setChecked(true) ;
     if(ui->radioButton_rgb->isChecked()){
         // Desactiver les autres filtres
@@ -1384,8 +1366,8 @@ void AppMainWindow::on_radioButton_rgb_clicked(){
         ui->radioButtonEgalisation->setChecked(false) ;             // Egalisation d'histogramme
 
         // Image RGB
-        imwrite("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png", _imageOriginale) ;
-        _imageResultat = ImageRGB(imread("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png")) ;
+        imwrite((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString(), _imageOriginale) ;
+        _imageResultat = ImageRGB(imread((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString())) ;
 
         // Affichage du resultat
         AffichageResultat(_imageResultat, 1) ;
@@ -1395,7 +1377,7 @@ void AppMainWindow::on_radioButton_rgb_clicked(){
 // -------------Extraction du canal de couleur-------------
 
 // Initialiser
-void AppMainWindow::on_groupBox_extractionRVB_clicked(){
+void MainWindow::on_groupBox_extractionRVB_clicked(){
     AffichageResultat(_imageOriginale, 1) ;                      // Image originale
     // Si le box est choisi
     if(ui->groupBox_extractionRVB->isChecked()){
@@ -1421,7 +1403,7 @@ void AppMainWindow::on_groupBox_extractionRVB_clicked(){
 }
 
 // Extraction du canal rouge de l'image
-void AppMainWindow::on_radioButton_extractionR_clicked(){
+void MainWindow::on_radioButton_extractionR_clicked(){
     if(ui->radioButton_extractionR->isChecked()){
         // Desactiver les autres filtres
         ui->radioButton_extractionB->setChecked(false) ;    // Canal bleu
@@ -1436,7 +1418,7 @@ void AppMainWindow::on_radioButton_extractionR_clicked(){
 }
 
 // Extraction du canal vert de l'image
-void AppMainWindow::on_radioButton_extractionV_clicked(){
+void MainWindow::on_radioButton_extractionV_clicked(){
     if(ui->radioButton_extractionV->isChecked()){
         // Desactiver les autres filtres
         ui->radioButton_extractionR->setChecked(false) ;    // Canal rouge
@@ -1451,7 +1433,7 @@ void AppMainWindow::on_radioButton_extractionV_clicked(){
 }
 
 // Extraction du canal bleu de l'image
-void AppMainWindow::on_radioButton_extractionB_clicked(){
+void MainWindow::on_radioButton_extractionB_clicked(){
     if(ui->radioButton_extractionB->isChecked()){
         // Desactiver les autres filtres
         ui->radioButton_extractionR->setChecked(false) ;    // Canal rouge
@@ -1468,7 +1450,7 @@ void AppMainWindow::on_radioButton_extractionB_clicked(){
 // -------------Seuillage & Segmentation-------------
 
 // Initialiser
-void AppMainWindow::on_groupBox_seuillageSegmentation_clicked(){
+void MainWindow::on_groupBox_seuillageSegmentation_clicked(){
     AffichageResultat(_imageOriginale, 1) ;                      // Image originale
     // Si le box est choisi
     if(ui->groupBox_seuillageSegmentation->isChecked()){
@@ -1489,7 +1471,7 @@ void AppMainWindow::on_groupBox_seuillageSegmentation_clicked(){
 }
 
 // Initialiser le seuillage
-void AppMainWindow::on_radioButton_seuillage_clicked(){
+void MainWindow::on_radioButton_seuillage_clicked(){
     // Si l'utilisateur choisit le seuillage
     if(ui->radioButton_seuillage->isChecked()){
         ui->radioButton_segmentation->setChecked(false) ;       // Desactiver la segmentation
@@ -1509,7 +1491,7 @@ void AppMainWindow::on_radioButton_seuillage_clicked(){
 }
 
 // Initialiser la segmentation
-void AppMainWindow::on_radioButton_segmentation_clicked(){
+void MainWindow::on_radioButton_segmentation_clicked(){
     if(ui->radioButton_segmentation->isChecked()){
         ui->radioButton_seuillage->setChecked(false) ;
         ui->groupBox_simpleHysteresis->setEnabled(true) ;       // Activer la zone de choix du type de seuils
@@ -1528,7 +1510,7 @@ void AppMainWindow::on_radioButton_segmentation_clicked(){
 }
 
 // Initialiser le sueillage par seuils simples
-void AppMainWindow::on_radioButton_seuillageSimple_clicked(){
+void MainWindow::on_radioButton_seuillageSimple_clicked(){
     // Si l'utilisateur choisit d'appliquer les seuils simples
     if(ui->radioButton_seuillageSimple->isChecked()){
         // Desactiver le seuillage par hysteresis
@@ -1543,7 +1525,7 @@ void AppMainWindow::on_radioButton_seuillageSimple_clicked(){
 }
 
 // Initialiser le seuillage par seuils par hysteresis
-void AppMainWindow::on_radioButton_seuillageHysteresis_clicked(){
+void MainWindow::on_radioButton_seuillageHysteresis_clicked(){
     // Si l'utilisateur choisit d'appliquer les seuils hysteresis
     if(ui->radioButton_seuillageHysteresis->isChecked()){
         // Desactiver le seuillage simple
@@ -1554,7 +1536,7 @@ void AppMainWindow::on_radioButton_seuillageHysteresis_clicked(){
 }
 
 // Seuil bas rouge
-void AppMainWindow::on_verticalSlider_seuilBasR_2_valueChanged(int value){
+void MainWindow::on_verticalSlider_seuilBasR_2_valueChanged(int value){
     // Si l'image est en niveau de gris, les trois seuils sont egaux
     if(VerifierImage(_imageOriginale, _imageResultat)){
         ui->verticalSlider_seuilBasV_2->setSliderPosition(value) ;      // Regler slider du seuil bas - vert
@@ -1591,7 +1573,7 @@ void AppMainWindow::on_verticalSlider_seuilBasR_2_valueChanged(int value){
 }
 
 // Seuil bas vert
-void AppMainWindow::on_verticalSlider_seuilBasV_2_valueChanged(int value){
+void MainWindow::on_verticalSlider_seuilBasV_2_valueChanged(int value){
     // Si l'image est en niveau de gris, les trois seuils sont egaux
     if(VerifierImage(_imageOriginale, _imageResultat)){
         ui->verticalSlider_seuilBasR_2->setSliderPosition(value) ;      // Regler slider du seuil bas - rouge
@@ -1629,7 +1611,7 @@ void AppMainWindow::on_verticalSlider_seuilBasV_2_valueChanged(int value){
 }
 
 // Seuil bas bleu
-void AppMainWindow::on_verticalSlider_seuilBasB_2_valueChanged(int value){
+void MainWindow::on_verticalSlider_seuilBasB_2_valueChanged(int value){
     // Si l'image est en niveau de gris, les trois seuils sont egaux
     if(VerifierImage(_imageOriginale, _imageResultat)){
         ui->verticalSlider_seuilBasR_2->setSliderPosition(value) ;      // Regler slider du seuil bas - rouge
@@ -1666,7 +1648,7 @@ void AppMainWindow::on_verticalSlider_seuilBasB_2_valueChanged(int value){
 }
 
 // Seuil haut rouge
-void AppMainWindow::on_verticalSlider_seuilHautR_2_valueChanged(int value){
+void MainWindow::on_verticalSlider_seuilHautR_2_valueChanged(int value){
     // Si l'image est en niveau de gris, les trois seuils sont egaux
     if(VerifierImage(_imageOriginale, _imageResultat)){
         ui->verticalSlider_seuilHautV_2->setSliderPosition(value) ;     // Regler slider du seuil haut - vert
@@ -1700,7 +1682,7 @@ void AppMainWindow::on_verticalSlider_seuilHautR_2_valueChanged(int value){
 }
 
 // Seuil haut vert
-void AppMainWindow::on_verticalSlider_seuilHautV_2_valueChanged(int value){
+void MainWindow::on_verticalSlider_seuilHautV_2_valueChanged(int value){
     // Si l'image est en niveau de gris, les trois seuils sont egaux
     if(VerifierImage(_imageOriginale, _imageResultat)){
         ui->verticalSlider_seuilHautR_2->setSliderPosition(value) ;     // Regler slider du seuil haut - rouge
@@ -1734,7 +1716,7 @@ void AppMainWindow::on_verticalSlider_seuilHautV_2_valueChanged(int value){
 }
 
 // Seuil haut bleu
-void AppMainWindow::on_verticalSlider_seuilHautB_2_valueChanged(int value){
+void MainWindow::on_verticalSlider_seuilHautB_2_valueChanged(int value){
     // Si l'image est en niveau de gris, les trois seuils sont egaux
     if(VerifierImage(_imageOriginale, _imageResultat)){
         ui->verticalSlider_seuilHautR_2->setSliderPosition(value) ;     // Regler slider du seuil haut - rouge
@@ -1768,37 +1750,37 @@ void AppMainWindow::on_verticalSlider_seuilHautB_2_valueChanged(int value){
 }
 
 // Reinitialiser seuil bas rouge
-void AppMainWindow::on_pushButton_seuilBasR_clicked(){
+void MainWindow::on_pushButton_seuilBasR_clicked(){
     ui->verticalSlider_seuilBasR_2->setRange(0, 255) ;          // Intervalle
     ui->verticalSlider_seuilBasR_2->setValue(0) ;               // Valeur
 }
 
 // Reinitialiser seuil bas vert
-void AppMainWindow::on_pushButton_seuilBasV_clicked(){
+void MainWindow::on_pushButton_seuilBasV_clicked(){
     ui->verticalSlider_seuilBasV_2->setRange(0, 255) ;          // Intervalle
     ui->verticalSlider_seuilBasV_2->setValue(0) ;               // Valeur
 }
 
 // Reinitialiser seuil bas bleu
-void AppMainWindow::on_pushButton_seuilBasB_clicked(){
+void MainWindow::on_pushButton_seuilBasB_clicked(){
     ui->verticalSlider_seuilBasB_2->setRange(0, 255) ;          // Intervalle
     ui->verticalSlider_seuilBasB_2->setValue(0) ;               // Valeur
 }
 
 // Reinitialiser seuil haut rouge
-void AppMainWindow::on_pushButton_seuilHautR_clicked(){
+void MainWindow::on_pushButton_seuilHautR_clicked(){
     ui->verticalSlider_seuilHautR_2->setRange(0, 255) ;         // Intervalle
     ui->verticalSlider_seuilHautR_2->setValue(255) ;            // Valeur
 }
 
 // Reinitialiser seuil haut vert
-void AppMainWindow::on_pushButton_seuilHautV_clicked(){
+void MainWindow::on_pushButton_seuilHautV_clicked(){
     ui->verticalSlider_seuilHautV_2->setRange(0, 255) ;         // Intervalle
     ui->verticalSlider_seuilHautV_2->setValue(255) ;            // Valeur
 }
 
 // Reinitialiser seuil haut bleu
-void AppMainWindow::on_pushButton_seuilHautB_clicked(){
+void MainWindow::on_pushButton_seuilHautB_clicked(){
     ui->verticalSlider_seuilHautB_2->setRange(0, 255) ;         // Intervalle
     ui->verticalSlider_seuilHautB_2->setValue(255) ;            // Valeur
 }
@@ -1806,7 +1788,7 @@ void AppMainWindow::on_pushButton_seuilHautB_clicked(){
 // -------------Contours-------------
 
 // Initialiser
-void AppMainWindow::on_groupBox_contours_clicked(){
+void MainWindow::on_groupBox_contours_clicked(){
     AffichageResultat(_imageOriginale, 1) ;                      // Image originale
     // Si le box est choisi
     if(ui->groupBox_contours->isChecked()){
@@ -1827,10 +1809,10 @@ void AppMainWindow::on_groupBox_contours_clicked(){
 }
 
 // Detection de contours - Gradient
-void AppMainWindow::on_radioButton_contoursGradient_clicked(){
+void MainWindow::on_radioButton_contoursGradient_clicked(){
     this->setCursor(Qt::WaitCursor);
     if(ui->radioButton_contoursGradient->isChecked()){
-        imwrite("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png", _imageOriginale) ;
+        imwrite((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString(), _imageOriginale) ;
         _imageResultat = MonoCouleur(ImageContourGradient(_imageOriginale)) ;
         // Affichage du resultat
         AffichageResultat(_imageResultat, 1) ;
@@ -1839,7 +1821,7 @@ void AppMainWindow::on_radioButton_contoursGradient_clicked(){
 }
 
 // Detection de contours - Laplacien
-void AppMainWindow::on_radioButton_contoursLaplacien_clicked(){
+void MainWindow::on_radioButton_contoursLaplacien_clicked(){
     this->setCursor(Qt::WaitCursor);
     if(ui->radioButton_contoursLaplacien->isChecked()){
         if(ui->groupBox_contours->isChecked()){
@@ -1854,7 +1836,7 @@ void AppMainWindow::on_radioButton_contoursLaplacien_clicked(){
 // -------------Resolution-------------
 
 // Initialiser
-void AppMainWindow::on_groupBox_resolutionQuantification_clicked(){
+void MainWindow::on_groupBox_resolutionQuantification_clicked(){
     AffichageResultat(_imageOriginale, 1) ;                      // Image originale
     // Si le box est choisi
     if(ui->groupBox_resolutionQuantification->isChecked()){
@@ -1875,7 +1857,7 @@ void AppMainWindow::on_groupBox_resolutionQuantification_clicked(){
 }
 
 // Bouton : Resolution
-void AppMainWindow::on_radioButton_resolution_clicked(){
+void MainWindow::on_radioButton_resolution_clicked(){
     if(ui->radioButton_resolution->isChecked()){
         // Desactiver la quantification
         ui->radioButton_quantification->setChecked(false) ;
@@ -1897,21 +1879,21 @@ void AppMainWindow::on_radioButton_resolution_clicked(){
 }
 
 // Bouton : Pixel le plus proche
-void AppMainWindow::on_radioButton_PPP_clicked(){
+void MainWindow::on_radioButton_PPP_clicked(){
     if(ui->radioButton_PPP->isChecked()){
         ui->horizontalSlider_resolution->setValue(0) ;
     }
 }
 
 // Bouton : Bilineaire
-void AppMainWindow::on_radioButton_bipolaire_clicked(){
+void MainWindow::on_radioButton_bipolaire_clicked(){
     if(ui->radioButton_bipolaire->isChecked()){
         ui->horizontalSlider_resolution->setValue(0) ;
     }
 }
 
 // Resolution
-void AppMainWindow::on_horizontalSlider_resolution_valueChanged(int value){
+void MainWindow::on_horizontalSlider_resolution_valueChanged(int value){
     this->setCursor(Qt::WaitCursor);
     // Reduction de resolution
     if(value < 0){
@@ -1939,7 +1921,7 @@ void AppMainWindow::on_horizontalSlider_resolution_valueChanged(int value){
 }
 
 // Bouton : Quantification
-void AppMainWindow::on_radioButton_quantification_clicked(){
+void MainWindow::on_radioButton_quantification_clicked(){
     if(ui->radioButton_quantification->isChecked()){
         // Desactiver le redimensionnement
         ui->radioButton_resolution->setChecked(false) ;
@@ -1959,7 +1941,7 @@ void AppMainWindow::on_radioButton_quantification_clicked(){
 }
 
 // Quantification
-void AppMainWindow::on_horizontalSlider_quantification_valueChanged(int value){
+void MainWindow::on_horizontalSlider_quantification_valueChanged(int value){
     this->setCursor(Qt::WaitCursor);
     if(ui->radioButton_quantification->isChecked()){
         _imageResultat = ImageQuantification(_imageOriginale, value) ;
@@ -1973,7 +1955,7 @@ void AppMainWindow::on_horizontalSlider_quantification_valueChanged(int value){
 // -------------Debruitage-------------
 
 // Initialiser
-void AppMainWindow::on_groupBox_debruitage_clicked(){
+void MainWindow::on_groupBox_debruitage_clicked(){
     AffichageResultat(_imageOriginale, 1) ;                      // Image originale
     // Si le box est choisi
     if(ui->groupBox_debruitage->isChecked()){
@@ -1993,7 +1975,7 @@ void AppMainWindow::on_groupBox_debruitage_clicked(){
 }
 
 // Filtre moyeneur
-void AppMainWindow::on_radioButton_moyenneur_clicked(){
+void MainWindow::on_radioButton_moyenneur_clicked(){
     this->setCursor(Qt::WaitCursor);
     if(ui->radioButton_moyenneur->isChecked() == false){
         ui->radioButton_moyenneur->setChecked(true) ;
@@ -2004,7 +1986,7 @@ void AppMainWindow::on_radioButton_moyenneur_clicked(){
 }
 
 // Filtre gaussien
-void AppMainWindow::on_radioButton_gaussien_clicked(){
+void MainWindow::on_radioButton_gaussien_clicked(){
     this->setCursor(Qt::WaitCursor);
     if(ui->radioButton_median->isChecked() == false){
         ui->radioButton_gaussien->setChecked(true) ;
@@ -2017,7 +1999,7 @@ void AppMainWindow::on_radioButton_gaussien_clicked(){
 }
 
 // Filtre median
-void AppMainWindow::on_radioButton_median_clicked(){
+void MainWindow::on_radioButton_median_clicked(){
     this->setCursor(Qt::WaitCursor);
     if(ui->radioButton_median->isChecked() == false){
         ui->radioButton_median->setChecked(true) ;
@@ -2030,7 +2012,7 @@ void AppMainWindow::on_radioButton_median_clicked(){
 }
 
 // Kuwahara-Nagao
-void AppMainWindow::on_radioButton_kuwahara_clicked(){
+void MainWindow::on_radioButton_kuwahara_clicked(){
     this->setCursor(Qt::WaitCursor);
     if(ui->radioButton_kuwahara->isChecked() == false){
         ui->radioButton_kuwahara->setChecked(true) ;
@@ -2045,7 +2027,7 @@ void AppMainWindow::on_radioButton_kuwahara_clicked(){
 // -------------Couleur-------------
 
 // Initialiser
-void AppMainWindow::on_groupBox_couleur_clicked(){
+void MainWindow::on_groupBox_couleur_clicked(){
     AffichageResultat(_imageOriginale, 1) ;                      // Image originale
     // Si le box est choisi
     if(ui->groupBox_couleur->isChecked()){
@@ -2066,7 +2048,7 @@ void AppMainWindow::on_groupBox_couleur_clicked(){
 }
 
 // Bouton : Temperature
-void AppMainWindow::on_radioButton_temperature_clicked(){
+void MainWindow::on_radioButton_temperature_clicked(){
     // Si la case est cochee
     if(ui->radioButton_temperature->isChecked()){
         // Reinitialiser les autres sliders
@@ -2086,7 +2068,7 @@ void AppMainWindow::on_radioButton_temperature_clicked(){
 }
 
 // Temperature
-void AppMainWindow::on_horizontalSlider_temperature_valueChanged(int value){
+void MainWindow::on_horizontalSlider_temperature_valueChanged(int value){
     // S'il n'y a aucune modification
     if(value ==0){
         _imageResultat = _imageOriginale ;
@@ -2099,7 +2081,7 @@ void AppMainWindow::on_horizontalSlider_temperature_valueChanged(int value){
 }
 
 // Bouton : Vividite
-void AppMainWindow::on_radioButton_vividite_clicked(){
+void MainWindow::on_radioButton_vividite_clicked(){
     // Si la case est cochee
     if(ui->radioButton_vividite->isChecked()){
         // Reinitialiser les autres sliders
@@ -2119,21 +2101,21 @@ void AppMainWindow::on_radioButton_vividite_clicked(){
 }
 
 // Vividite
-void AppMainWindow::on_horizontalSlider_vividite_valueChanged(int value){
-    imwrite("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png", _imageOriginale) ;
+void MainWindow::on_horizontalSlider_vividite_valueChanged(int value){
+    imwrite((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString(), _imageOriginale) ;
     // S'il n'y a aucune modification
     if(value == 0){
         _imageResultat = _imageOriginale ;
     // S'il y a des changements
     }else{
-        _imageResultat = ImageVividite(imread("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png"), value) ;
+        _imageResultat = ImageVividite(imread((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString()), value) ;
     }
     // Affichage du resultat
     AffichageResultat(_imageResultat, 1) ;
 }
 
 // Bouton : Teinte
-void AppMainWindow::on_radioButton_teinte_clicked(){
+void MainWindow::on_radioButton_teinte_clicked(){
     // Si la case est cochee
     if(ui->radioButton_teinte->isChecked()){
         // Reinitialiser les autres sliders
@@ -2153,7 +2135,7 @@ void AppMainWindow::on_radioButton_teinte_clicked(){
 }
 
 // Teinte
-void AppMainWindow::on_horizontalSlider_teinte_valueChanged(int value){
+void MainWindow::on_horizontalSlider_teinte_valueChanged(int value){
     // S'il n'y a aucune modification
     if(value != 0){
         _imageResultat = ImageTeinte(_imageOriginale, value) ;
@@ -2166,7 +2148,7 @@ void AppMainWindow::on_horizontalSlider_teinte_valueChanged(int value){
 }
 
 // Bouton : Saturation
-void AppMainWindow::on_radioButton_saturation_clicked(){
+void MainWindow::on_radioButton_saturation_clicked(){
     // Si la case est cochee
     if(ui->radioButton_saturation->isChecked()){
         // Reinitialiser les autres sliders
@@ -2187,11 +2169,11 @@ void AppMainWindow::on_radioButton_saturation_clicked(){
 }
 
 // Saturation
-void AppMainWindow::on_horizontalSlider_saturation_valueChanged(int value){
-    imwrite("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png", _imageOriginale) ;
+void MainWindow::on_horizontalSlider_saturation_valueChanged(int value){
+    imwrite((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString(), _imageOriginale) ;
     // S'il n'y a aucune modification
     if(value != 0){
-        _imageResultat = ImageSaturation(imread("/home/vm/M2SIA-projet-QT/DATA/Temp/imageOriginale.png"), value) ;
+        _imageResultat = ImageSaturation(imread((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString()), value) ;
     // S'il y a des changements
     }else{
         _imageResultat = _imageOriginale ;
@@ -2203,7 +2185,8 @@ void AppMainWindow::on_horizontalSlider_saturation_valueChanged(int value){
 // -------------Autres-------------
 
 // Generer les icones
-void AppMainWindow::GenererIcone(){
+void MainWindow::GenererIcone(){
+
     // Preparer les icones pour l'espace de travail
     //string cheminExemple = "/home/vm/M2SIA-projet-QT/DATA/Images/rgbexample.jpeg" ;
     //Mat exemple = imread(cheminExemple) ;
@@ -2222,61 +2205,61 @@ void AppMainWindow::GenererIcone(){
     int hauteur = ui->label_mono->height() ;    // Hauteur de la fenetre d'affichage
     int largeur = ui->label_mono->width() ;     // Largeur de la fenetre d'affichage
     // Originale
-    QPixmap exempleOriginale("/home/vm/M2SIA-projet-QT/DATA/icon/rgbexample.jpeg") ;
+    QPixmap exempleOriginale(":/icons/rgbexample.jpeg") ;
     ui->label_original->setPixmap(exempleOriginale.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->label_original->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Mono
-    QPixmap exempleMono("/home/vm/M2SIA-projet-QT/DATA/icon/exempleMono.png") ;
+    QPixmap exempleMono(":/icons/exempleMono.jpeg") ;
     ui->label_mono->setPixmap(exempleMono.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->label_mono->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Sepia
-    QPixmap exempleS("/home/vm/M2SIA-projet-QT/DATA/icon/exempleSepia.png") ;
+    QPixmap exempleS(":/icons/exempleSepia.jpeg") ;
     ui->label_sepia->setPixmap(exempleS.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->label_sepia->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Inversement
-    QPixmap exempleNeg("/home/vm/M2SIA-projet-QT/DATA/icon/exempleNeg.png") ;
+    QPixmap exempleNeg(":/icons/exempleNeg.jpeg") ;
     ui->label_negatif->setPixmap(exempleNeg.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->label_negatif->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Rouge
-    QPixmap exempleR("/home/vm/M2SIA-projet-QT/DATA/icon/exempleR.png") ;
+    QPixmap exempleR(":/icons/exempleR.jpeg") ;
     ui->label_rouge->setPixmap(exempleR.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->label_rouge->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Vert
-    QPixmap exempleV("/home/vm/M2SIA-projet-QT/DATA/icon/exempleV.png") ;
+    QPixmap exempleV(":/icons/exempleV.jpeg") ;
     ui->label_vert->setPixmap(exempleV.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->label_vert->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Bleu
-    QPixmap exempleB("/home/vm/M2SIA-projet-QT/DATA/icon/exempleB.png") ;
+    QPixmap exempleB(":/icons/exempleB.jpeg") ;
     ui->label_bleu->setPixmap(exempleB.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->label_bleu->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Jaune
-    QPixmap exempleJ("/home/vm/M2SIA-projet-QT/DATA/icon/exempleJ.png") ;
+    QPixmap exempleJ(":/icons/exempleJ.jpeg") ;
     ui->label_jaune->setPixmap(exempleJ.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->label_jaune->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Cyan
-    QPixmap exempleC("/home/vm/M2SIA-projet-QT/DATA/icon/exempleC.png") ;
+    QPixmap exempleC(":/icons/exempleC.jpeg") ;
     ui->label_cyan->setPixmap(exempleC.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->label_cyan->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Magenta
-    QPixmap exempleM("/home/vm/M2SIA-projet-QT/DATA/icon/exempleM.png") ;
+    QPixmap exempleM(":/icons/exempleM.jpeg") ;
     ui->label_magenta->setPixmap(exempleM.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->label_magenta->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // RGB
-    QPixmap exempleRGB("/home/vm/M2SIA-projet-QT/DATA/icon/exempleRGB.png") ;
+    QPixmap exempleRGB(":/icons/exempleRGB.jpeg") ;
     ui->label_rgb->setPixmap(exempleRGB.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->label_rgb->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Bruit poivre et sel
-    QPixmap exemplePeS("/home/vm/M2SIA-projet-QT/DATA/icon/exemplePeS.jpeg") ;
+    QPixmap exemplePeS(":/icons/exemplePeS.jpeg") ;
     ui->labelBruitPoivreSel->setPixmap(exemplePeS.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->labelBruitPoivreSel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Egalisation
-    QPixmap exempleEgalisation("/home/vm/M2SIA-projet-QT/DATA/icon/exempleEgalisation.jpeg") ;
+    QPixmap exempleEgalisation(":/icons/exempleEgalisation.jpeg") ;
     ui->labelEgalisation->setPixmap(exempleEgalisation.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->labelEgalisation->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Icones zoom
     int hauteurZoom = ui->label_Zoom->height() ;    // Hauteur de la fenetre d'affichage
     int largeurZoom = ui->label_Zoom->width() ;     // Largeur de la fenetre d'affichage
-    QPixmap zoom("/home/vm/M2SIA-projet-QT/DATA/icon/zoom.png") ;
+    QPixmap zoom(":/icons/zoom.png") ;
     ui->label_Zoom->setPixmap(zoom.scaled(largeurZoom, hauteurZoom, Qt::IgnoreAspectRatio, Qt::SmoothTransformation)) ;
     ui->label_Zoom->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     ui->label_ZoomNonModifiable->setPixmap(zoom.scaled(largeurZoom, hauteurZoom, Qt::IgnoreAspectRatio, Qt::SmoothTransformation)) ;
@@ -2288,7 +2271,7 @@ void AppMainWindow::GenererIcone(){
 }
 
 // Afficher l'image resultante apres un traitement avec inversement les canaux de couleur
-void AppMainWindow::AffichageResultat(const Mat image, const int choix){
+void MainWindow::AffichageResultat(const Mat image, const int choix){
     // Declaration des variables
     Mat imageAffichage = image ;
 
@@ -2318,7 +2301,7 @@ void AppMainWindow::AffichageResultat(const Mat image, const int choix){
 }
 
 // Messages d'aide
-void AppMainWindow::AfficherMessageAide(){
+void MainWindow::AfficherMessageAide(){
     // Box : Luminosite
     AfficherMessageAideLuminosite() ;
     // Box : Couleur
@@ -2363,7 +2346,7 @@ void AppMainWindow::AfficherMessageAide(){
 }
 
 // Messages d'aide : Luminosite
-void AppMainWindow::AfficherMessageAideLuminosite(){
+void MainWindow::AfficherMessageAideLuminosite(){
     ui->groupBox_correction->setToolTip("Modifier les paramètres liés à la luminosité de l'image :\nIntensité, contraste, ombres hautes lumières") ;
     // Intensité
     ui->radioButton_luminosite->setToolTip("Modifier l'intensité lumineuse de l'image") ;
@@ -2380,7 +2363,7 @@ void AppMainWindow::AfficherMessageAideLuminosite(){
 }
 
 // Messages d'aide : Couleur
-void AppMainWindow::AfficherMessageAideCouleur(){
+void MainWindow::AfficherMessageAideCouleur(){
     ui->groupBox_couleur->setToolTip("Modifier les paramètres liés aux couleurs de l'image :\nTempérature, vividité, teinte, saturation") ;
     // Température
     ui->radioButton_temperature->setToolTip("Modifier la température de l'image") ;
@@ -2396,7 +2379,7 @@ void AppMainWindow::AfficherMessageAideCouleur(){
 }
 
 // Messages d'aide : Details
-void AppMainWindow::AfficherMessageAideDetail(){
+void MainWindow::AfficherMessageAideDetail(){
     ui->groupBox_details->setToolTip("Modifier la nettete de l'image\nBruiter l'image (bruit uniforme)") ;
     // Nettete
     ui->radioButton_nettete->setToolTip("Modifier la netteté de l'image") ;
@@ -2407,7 +2390,7 @@ void AppMainWindow::AfficherMessageAideDetail(){
 }
 
 // Messages d'aide : Resolution
-void AppMainWindow::AfficherMessageAideResolution(){
+void MainWindow::AfficherMessageAideResolution(){
     ui->groupBox_resolutionQuantification->setToolTip("Modifier la resolution & Quantification") ;
     // Resolution
     ui->radioButton_resolution->setToolTip("Redimensionner l'image") ;
@@ -2420,7 +2403,7 @@ void AppMainWindow::AfficherMessageAideResolution(){
 }
 
 // Messages d'aide : Extraction
-void AppMainWindow::AfficherMessageAideExtraction(){
+void MainWindow::AfficherMessageAideExtraction(){
     ui->groupBox_extractionRVB->setToolTip("Extraire une composante de couleur de l'image (rouge, verte, bleue)") ;
     // Canal rouge
     ui->radioButton_extractionR->setToolTip("Extraction de la composante rouge de l'image") ;
@@ -2431,7 +2414,7 @@ void AppMainWindow::AfficherMessageAideExtraction(){
 }
 
 // Messages d'aide : Contours
-void AppMainWindow::AfficherMessageAideContour(){
+void MainWindow::AfficherMessageAideContour(){
     ui->groupBox_contours->setToolTip("Détecter les contours de l'image par différents méthodes :\nFiltres gradients, filtre laplacien, transformée de Hough") ;
     // Filtrage de type gradient
     ui->radioButton_contoursGradient->setToolTip("Détection de contours par la norme du gradient") ;
@@ -2440,7 +2423,7 @@ void AppMainWindow::AfficherMessageAideContour(){
 }
 
 // Messages d'aide : Debruitage
-void AppMainWindow::AfficherMessageAideDebruitage(){
+void MainWindow::AfficherMessageAideDebruitage(){
     ui->groupBox_debruitage->setToolTip("Débruiter l'image par différents types de filtre :\nMoyenneur, gaussien (filtres linéaires)\nMédian, Kuwahara-Nagao (non-linéaire)") ;
     // Filtres lineaires
     ui->radioButton_moyenneur->setToolTip("Filtre moyenneur (linéaire)") ;
@@ -2451,7 +2434,7 @@ void AppMainWindow::AfficherMessageAideDebruitage(){
 }
 
 // Messages d'aide : Seuillage et segmentation
-void AppMainWindow::AfficherMessageAideSeuillageSegmentation(){
+void MainWindow::AfficherMessageAideSeuillageSegmentation(){
     ui->groupBox_seuillageSegmentation->setToolTip("Seuiller ou segmenter l'image") ;
     ui->radioButton_seuillage->setToolTip("Seuillage simple ou à hystérésis") ;
     ui->radioButton_segmentation->setToolTip("Segmentation par seuillage simple ou à hystérésis") ;
@@ -2477,7 +2460,7 @@ void AppMainWindow::AfficherMessageAideSeuillageSegmentation(){
 }
 
 // Messages d'aide : Filtres
-void AppMainWindow::AfficherMessageAideFiltre(){
+void MainWindow::AfficherMessageAideFiltre(){
     ui->groupBox_filtres->setToolTip("Appliquer les filtres de couleurs") ;
     // Niveau de gris
     ui->radioButton_niveauGris->setToolTip("Niveau de gris") ;
@@ -2512,7 +2495,7 @@ void AppMainWindow::AfficherMessageAideFiltre(){
 }
 
 // Reinitialisation generale
-void AppMainWindow::Reinitialiser(){
+void MainWindow::Reinitialiser(){
     ReinitialiserLuminosite() ;
     ReinitialiserLuminosite() ;
     ReinitialiserResolution() ;
@@ -2527,7 +2510,7 @@ void AppMainWindow::Reinitialiser(){
 }
 
 // Reinitialiser : Box Luminosite
-void AppMainWindow::ReinitialiserLuminosite(){
+void MainWindow::ReinitialiserLuminosite(){
     ui->radioButton_luminosite->setChecked(false) ;
     ui->radioButton_contraste->setChecked(false) ;
     ui->radioButton_brillance->setChecked(false) ;
@@ -2540,7 +2523,7 @@ void AppMainWindow::ReinitialiserLuminosite(){
 }
 
 // Reinitialiser : Box Couleur
-void AppMainWindow::ReinitialiserCouleur(){
+void MainWindow::ReinitialiserCouleur(){
     ui->horizontalSlider_temperature->setValue(0) ;
     ui->horizontalSlider_vividite->setValue(0) ;
     ui->horizontalSlider_teinte->setValue(0) ;
@@ -2553,7 +2536,7 @@ void AppMainWindow::ReinitialiserCouleur(){
 }
 
 // Reinitialiser : Box Resolution
-void AppMainWindow::ReinitialiserResolution(){
+void MainWindow::ReinitialiserResolution(){
     ui->radioButton_resolution->setChecked(false) ;
     ui->radioButton_PPP->setChecked(false) ;
     ui->radioButton_bipolaire->setChecked(false) ;
@@ -2566,7 +2549,7 @@ void AppMainWindow::ReinitialiserResolution(){
 }
 
 // Reinitialiser : Box Details
-void AppMainWindow::ReinitialiserDetail(){
+void MainWindow::ReinitialiserDetail(){
     ui->radioButton_nettete->setChecked(false) ;
     ui->radioButton_bruitage->setChecked(false) ;
     ui->horizontalSlider_nettete->setValue(0) ;
@@ -2575,7 +2558,7 @@ void AppMainWindow::ReinitialiserDetail(){
 }
 
 // Reinitialiser : Box Extraction
-void AppMainWindow::ReinitialiserExtraction(){
+void MainWindow::ReinitialiserExtraction(){
     ui->radioButton_extractionR->setChecked(false) ;
     ui->radioButton_extractionV->setChecked(false) ;
     ui->radioButton_extractionB->setChecked(false) ;
@@ -2583,14 +2566,14 @@ void AppMainWindow::ReinitialiserExtraction(){
 }
 
 // Reinitialiser : Box Contours
-void AppMainWindow::ReinitialiserContour(){
+void MainWindow::ReinitialiserContour(){
     ui->radioButton_contoursGradient->setChecked(false) ;
     ui->radioButton_contoursLaplacien->setChecked(false) ;
     ui->groupBox_contours->setChecked(false) ;
 }
 
 // Reinitialiser : Box Debruitage
-void AppMainWindow::ReinitialiserDebruitage(){
+void MainWindow::ReinitialiserDebruitage(){
     ui->radioButton_moyenneur->setChecked(false) ;
     ui->radioButton_gaussien->setChecked(false) ;
     ui->radioButton_median->setChecked(false) ;
@@ -2599,7 +2582,7 @@ void AppMainWindow::ReinitialiserDebruitage(){
 }
 
 // Reinitialiser : Box Seuillage et segmentation
-void AppMainWindow::ReinitialiserSeuillageSegmentation(){
+void MainWindow::ReinitialiserSeuillageSegmentation(){
     ui->radioButton_seuillage->setChecked(false) ;
     ui->radioButton_seuillageSimple->setChecked(false) ;
     ui->radioButton_segmentation->setChecked(false) ;
@@ -2614,7 +2597,7 @@ void AppMainWindow::ReinitialiserSeuillageSegmentation(){
 }
 
 // Reinitialiser : Box Filtres
-void AppMainWindow::ReinitialiserFiltre(){
+void MainWindow::ReinitialiserFiltre(){
     ui->radioButton_originale->setChecked(false) ;
     ui->radioButton_niveauGris->setChecked(false) ;
     ui->radioButton_sepia->setChecked(false) ;
@@ -2632,7 +2615,7 @@ void AppMainWindow::ReinitialiserFiltre(){
 }
 
 // Reinitialiser : Box Autres
-void AppMainWindow::ReinitialiserAutre(){
+void MainWindow::ReinitialiserAutre(){
    ui->radioButtonTransformeeHough->setChecked(false) ;
    ui->radioButton_fourier->setChecked(false) ;
    ui->radioButtonKmeans->setChecked(false) ;
@@ -2644,7 +2627,7 @@ void AppMainWindow::ReinitialiserAutre(){
 }
 
 // Transformee de Fourier
-void AppMainWindow::on_radioButton_fourier_clicked(){
+void MainWindow::on_radioButton_fourier_clicked(){
     if(ui->radioButton_fourier->isChecked()){
         // Desactiver les autres fonctionnalites
         ui->spinBoxHough->setEnabled(false) ;
@@ -2656,7 +2639,7 @@ void AppMainWindow::on_radioButton_fourier_clicked(){
 }
 
 // Egalisation d'histogramme
-void AppMainWindow::on_radioButtonEgalisation_clicked(){
+void MainWindow::on_radioButtonEgalisation_clicked(){
     if(ui->radioButtonEgalisation->isChecked()){
         // Desactiver les autres filtres
         ui->radioButton_originale->setChecked(false) ;              // Image originale
@@ -2679,7 +2662,7 @@ void AppMainWindow::on_radioButtonEgalisation_clicked(){
 }
 
 // Bruit poivre et sel
-void AppMainWindow::on_radioButtonBruitPoivreSel_clicked(){
+void MainWindow::on_radioButtonBruitPoivreSel_clicked(){
     if(ui->radioButtonBruitPoivreSel->isChecked()){
         // Desactiver les autres filtres
         ui->radioButton_originale->setChecked(false) ;              // Image originale
@@ -2703,7 +2686,7 @@ void AppMainWindow::on_radioButtonBruitPoivreSel_clicked(){
 }
 
 
-void AppMainWindow::on_groupBox_autre_clicked(){
+void MainWindow::on_groupBox_autre_clicked(){
     AffichageResultat(_imageOriginale, 1) ;                      // Image originale
     // Si le box est choisi
     if(ui->groupBox_couleur->isChecked()){
@@ -2739,7 +2722,7 @@ void AppMainWindow::on_groupBox_autre_clicked(){
 }
 
 // K-means
-void AppMainWindow::on_radioButtonKmeans_clicked(){
+void MainWindow::on_radioButtonKmeans_clicked(){
     if(ui->radioButtonKmeans->isChecked()){
         // Desactiver les autres fonctionnalites
         ui->spinBoxHough->setEnabled(false) ;
@@ -2751,7 +2734,7 @@ void AppMainWindow::on_radioButtonKmeans_clicked(){
 }
 
 // Transformee de Hough
-void AppMainWindow::on_radioButtonTransformeeHough_clicked(){
+void MainWindow::on_radioButtonTransformeeHough_clicked(){
     if(ui->radioButtonTransformeeHough->isChecked()){
         // Desactiver les autres fonctionnalites
         ui->spinBoxKmeans->setEnabled(false) ;
@@ -2763,13 +2746,13 @@ void AppMainWindow::on_radioButtonTransformeeHough_clicked(){
 }
 
 
-void AppMainWindow::on_pushButtonRetourMenuConsultationImage_clicked(){
-    AppMainWindow::on_pushButtonRetourMenuModificationImage_clicked() ;
+void MainWindow::on_pushButtonRetourMenuConsultationImage_clicked(){
+    MainWindow::on_pushButtonRetourMenuModificationImage_clicked() ;
 }
 
-void AppMainWindow::on_pushButton_traitementSauvegarder_clicked()
+void MainWindow::on_pushButton_traitementSauvegarder_clicked()
 {
-    QString fileName = QFileDialog::getSaveFileName(0,tr("Sauvegarder l'image traitée"),"/home/vm/M2SIA-projet-QT/DATA/" ,tr("Fichiers Images (*.png *.jpg *.bmp *.pgm *.jpeg *.tiff)")) ;
+    QString fileName = QFileDialog::getSaveFileName(0,tr("Sauvegarder l'image traitée"), QCoreApplication::applicationDirPath() ,tr("Fichiers Images (*.png *.jpg *.bmp *.pgm *.jpeg *.tiff)")) ;
     if (!fileName.isEmpty()){
         if (fileName.count('.')){
          string fileNameStr = fileName.toStdString() ;
@@ -2780,4 +2763,25 @@ void AppMainWindow::on_pushButton_traitementSauvegarder_clicked()
         imwrite(fileNameStr, _imageResultat) ;
     }
     }
+}
+
+void MainWindow::on_pushButtonAfficherImageTraitee_clicked()
+{
+    // Mise a jour l'image originale temporelle
+    Mat imageResultat = ImageBGRRGB(_imageResultat);
+    QImage imageResultatQT = QImage((uchar*) imageResultat.data, imageResultat.cols, imageResultat.rows, imageResultat.step, QImage::Format_RGB888) ;
+    // Affichage de l'image traitée
+    QGraphicsScene* scene = new QGraphicsScene() ;
+    scene->addPixmap(QPixmap::fromImage(imageResultatQT));
+    ui->graphicsView_contenuImageTraiteeAgrandi->setScene(scene) ;
+    ui->graphicsView_contenuImageTraiteeAgrandi->show() ;
+    ui->graphicsView_contenuImageTraiteeAgrandi->fitInView(scene->sceneRect(), Qt::KeepAspectRatio) ;
+    ui->stackedWidget->setCurrentIndex(7);
+
+
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(6);
 }

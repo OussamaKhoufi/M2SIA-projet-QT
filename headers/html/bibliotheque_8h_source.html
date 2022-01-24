@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Photobox:  Fichier source de bibliotheque.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Photobox
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">bibliotheque.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="bibliotheque_8h.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#pragma once</span></div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// Systeme</span></div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;algorithm&gt;</span> </div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;experimental/filesystem&gt;</span></div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// Json</span></div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;jsoncpp/json/value.h&gt;</span></div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;jsoncpp/json/json.h&gt;</span></div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;rapidjson/document.h&quot;</span></div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;rapidjson/writer.h&quot;</span></div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// Fonctions complementaires</span></div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;headers/complement.h&quot;</span></div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">// QT</span></div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;QDateTime&gt;</span></div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacerapidjson.html">rapidjson</a> ;</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacestd.html">std</a> ;</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div><div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classBibliotheque.html">   36</a></span>&#160;<span class="keyword">class </span><a class="code" href="classBibliotheque.html">Bibliotheque</a>{</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    private :</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">/* Attributs */</span></div><div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classBibliotheque.html#a15a693b9eedd442d0cc00489b5ea6e5e">   43</a></span>&#160;        Json::Value <a class="code" href="classBibliotheque.html#a15a693b9eedd442d0cc00489b5ea6e5e">_bibliotheque</a> ;</div><div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classBibliotheque.html#a9628b7dc59bbb3894c17634addc8016a">   48</a></span>&#160;        <span class="keywordtype">string</span> <a class="code" href="classBibliotheque.html#a9628b7dc59bbb3894c17634addc8016a">_cheminJson</a>;    </div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    public :</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="comment">/*Constructeurs*/</span></div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="classBibliotheque.html">Bibliotheque</a>() ;</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="classBibliotheque.html">Bibliotheque</a>(<span class="keywordtype">string</span> nomBibliotheque) ;</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <a class="code" href="classBibliotheque.html">Bibliotheque</a>(<span class="keyword">const</span> Json::Value jsonBibliotheque) ;     </div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">/*Getters*/</span></div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        Json::Value getBilbiotheque() <span class="keyword">const</span> ;</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordtype">string</span> getCheminJson() <span class="keyword">const</span>;</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment">/*Setters*/</span></div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordtype">void</span> setBilbiotheque(<span class="keyword">const</span> Json::Value jsonBibliotheque) ;</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordtype">void</span> setCheminJson(<span class="keyword">const</span> <span class="keywordtype">string</span> cheminJson) ;</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="comment">/*Methodes*/</span></div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordtype">void</span> AjouterImage(<span class="keywordtype">string</span> cheminAccesContenu,<span class="keywordtype">string</span> titre,<span class="keywordtype">int</span> numero,<span class="keywordtype">double</span> cout,<span class="keywordtype">string</span> source,</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                          <span class="keywordtype">string</span> dateAjout,<span class="keywordtype">string</span> dateCreation,<span class="keywordtype">string</span> acces);           <span class="comment">// Ajouter une image dans la bibliotheque</span></div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment"></span>        <span class="keywordtype">void</span> SupprimerImage(<span class="keywordtype">int</span> numero) ;                                               <span class="comment">// Supprimer une image de la bibliotheque</span></div><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment"></span>        <span class="keywordtype">void</span> Sauvegarder(<span class="keywordtype">string</span> fileName) ;                                             <span class="comment">// Sauvegarder une bibliotheque</span></div><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment"></span>        <span class="keywordtype">void</span> majBiblioSuivantDroitAcces(<span class="keyword">const</span> <span class="keywordtype">bool</span> droitAcces) ;                        <span class="comment">// Creer une sous-bibliotheque avec les images correspondantes au droit d&#39;utilisateur</span></div><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment"></span>        Json::Value ConstruireAfficherSousListeCout(<span class="keyword">const</span> <span class="keywordtype">int</span> choix) ;                  <span class="comment">// Construire et afficher une sous-liste en fonction du cout (4 premieres options)</span></div><div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment"></span>        Json::Value ConstruireAfficherSousListeCout(<span class="keywordtype">double</span> coutMin, <span class="keywordtype">double</span> coutMax) ;   <span class="comment">// Construire et afficher une sous-liste en fonction du cout (derniere option)</span></div><div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment"></span>        Json::Value ConstruireAfficherSousListeDateAjout(<span class="keyword">const</span> <span class="keywordtype">int</span> choix) ;             <span class="comment">// Construire et afficher une sous-liste en fonction de la date d&#39;ajout</span></div><div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment"></span>        Json::Value Trier(<span class="keyword">const</span> <span class="keywordtype">int</span> choix) ;                                             <span class="comment">// Trier l&#39;objet json de la Bibliotheque en fonction des caractéristiques : cout,numero et acces</span></div><div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment"></span>        vector&lt;int&gt; Trier(vector&lt;double&gt; valeurNonTri) ;                                 <span class="comment">// Determiner les indices des elements avant le tri (reel)</span></div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment"></span>        vector&lt;int&gt; Trier(vector&lt;string&gt; valeurNonTri) ;                                 <span class="comment">// Determiner les indices des elements avant le tri (chaine de caracteres)</span></div><div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment"></span>        vector&lt;int&gt; Trier(vector&lt;int&gt; valeurNonTri) ;                                    <span class="comment">// Determiner les indices des elements avant le tri (entier)</span></div><div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        </div><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;};</div><div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div><div class="ttc" id="classBibliotheque_html"><div class="ttname"><a href="classBibliotheque.html">Bibliotheque</a></div><div class="ttdoc">La classe Bibliotheque permet la gestion d&amp;#39;une bibliotheque d&amp;#39;images. </div><div class="ttdef"><b>Definition:</b> bibliotheque.h:36</div></div>
+<div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div></div>
+<div class="ttc" id="classBibliotheque_html_a9628b7dc59bbb3894c17634addc8016a"><div class="ttname"><a href="classBibliotheque.html#a9628b7dc59bbb3894c17634addc8016a">Bibliotheque::_cheminJson</a></div><div class="ttdeci">string _cheminJson</div><div class="ttdoc">Chemin du fichier .json de la bibliotheque. </div><div class="ttdef"><b>Definition:</b> bibliotheque.h:48</div></div>
+<div class="ttc" id="namespacerapidjson_html"><div class="ttname"><a href="namespacerapidjson.html">rapidjson</a></div></div>
+<div class="ttc" id="classBibliotheque_html_a15a693b9eedd442d0cc00489b5ea6e5e"><div class="ttname"><a href="classBibliotheque.html#a15a693b9eedd442d0cc00489b5ea6e5e">Bibliotheque::_bibliotheque</a></div><div class="ttdeci">Json::Value _bibliotheque</div><div class="ttdoc">Objet Json de la bibliotheque. </div><div class="ttdef"><b>Definition:</b> bibliotheque.h:43</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

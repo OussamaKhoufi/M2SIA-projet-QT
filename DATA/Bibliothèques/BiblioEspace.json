@@ -1,0 +1,15 @@
+{
+   "images" : [
+      {
+         "acces" : "R",
+         "cheminAcces" : "/home/vm/M2SIA-projet-QT/DATA/Images/dangerous_dance(copy).png",
+         "cout" : 10,
+         "dateAjout" : "19/01/2022",
+         "dateCreation" : "01/01/2000",
+         "numero" : 0,
+         "source" : "nasa",
+         "titre" : "galaxy"
+      }
+   ],
+   "nbImages" : 1
+}
