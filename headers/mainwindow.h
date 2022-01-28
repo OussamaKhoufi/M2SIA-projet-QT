@@ -10,21 +10,11 @@
 #pragma once
 
 #include <QMainWindow>
-#include <QFile>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QTableWidget>
-#include <QTextStream>
-#include <QGraphicsPixmapItem>
-#include <QPixmap>
-#include <QMessageBox>
-#include <QString>
-#include <QListWidgetItem>
-#include <QDebug>
 #include <QtGui>
 #include <QtWidgets>
 #include "headers/ImageToolBox.h"
 #include "headers/bibliotheque.h"
+
 using namespace std;
 using namespace ImageToolBox;
 

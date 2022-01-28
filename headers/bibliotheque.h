@@ -10,12 +10,8 @@
 #pragma once
 
 // Systeme
-#include <iostream>
-#include <string>
-#include <vector>
 #include <fstream>
-#include <algorithm> 
-#include <experimental/filesystem>
+
 // Json
 #include <jsoncpp/json/value.h>
 #include <jsoncpp/json/json.h>

@@ -1971,7 +1971,7 @@ Mat GradientX(const Mat image, const string typeFiltre){
     }else if(typeFiltre == "Simple"){
         return ImageConvolution(image, GenererFiltre(6)) ;
     }else{
-        cout << "Type de filtre invalide." << endl ;
+        //cout << "Type de filtre invalide." << endl ;
         return image ;
     }
 }
@@ -1983,7 +1983,7 @@ Mat GradientY(const Mat image, const string typeFiltre){
     }else if(typeFiltre == "Simple"){
         return ImageConvolution(image, GenererFiltre(7)) ;
     }else{
-        cout << "Type de filtre invalide." << endl ;
+        //cout << "Type de filtre invalide." << endl ;
         return image ;
     }
 }

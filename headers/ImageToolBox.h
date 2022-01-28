@@ -9,23 +9,12 @@
  */
 #pragma once
 
-
-// Systeme
-#include <iostream>
-//#include <string>
-#include <vector>
-#include <fstream>
-#include <algorithm>
-// Maths
-#include <cmath>
-#include <complex>
-
 // OpenCV
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include <experimental/filesystem>
-#include "headers/bibliotheque.h"
+
+
 
 namespace ImageToolBox {
     using namespace std ;
