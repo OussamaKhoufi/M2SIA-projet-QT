@@ -146,16 +146,8 @@ Mat ImageTeinte(const Mat image, const int valeur){
     // Modifier la teinte
     for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
         for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
-            // Calcul pour verifier la saturation
-            val = imageComposante[0].at<unsigned char>(ligne, colonne) - valeur ;
-            // Si saturation
-            if(val > 179){
-                imageComposante[0].at<unsigned char>(ligne, colonne) = 179 ;
-            }else if(val < 0){
-                imageComposante[0].at<unsigned char>(ligne, colonne) = 0 ;
-            }else{
-                imageComposante[0].at<unsigned char>(ligne, colonne) = val ;
-            }
+            val = (double)imageComposante[0].at<unsigned char>(ligne, colonne) + valeur ;
+            imageComposante[0].at<unsigned char>(ligne, colonne) = (int)val%255 ;
         }
     }
     // Affecter les composante de l'image traitee
@@ -178,45 +170,50 @@ Mat ImageVividite(const Mat image, const int valeur){
     // Declaration des variables
     int c, ligne, colonne ;                     // Indices
     int maxR, maxV, maxB ;                      // Valeurs maximum des composantes
-    int valMin ;                                // Valeur de calcul intermediaire
+    int minR, minV, minB ;                      // Valeurs minimum des composantes
+    int val ;                                   // Valeur de calcul intermediaire
     Mat imageResultante ;                       // Image resultante
     Mat imageComposante[3] ;                    // Composantes de l'image originale
-    vector<int> maxComposante ;                 // Vecteur des valeurs maximum des composantes
-    vector<int> val(3) ;                        // Vecteur des valeurs a ajouter dans les composantes
+    vector<int> vectVal(3) ;                    // Vecteur des valeurs a ajouter dans les composantes
+    vector<int> intervalle(3) ;                 // Intervalle d'intensite de l'histogramme des composantes
     vector<Mat> imageResultanteComposante ;     // Composante de l'image resultante
 
     // Initialisation
     imageResultanteComposante.clear() ;
-    maxComposante.clear() ;
-    val[0] = 0 ;
-    val[1] = 0 ;
-    val[2] = 0 ;
+    vectVal.clear() ;
+    intervalle.clear() ;
+    vectVal[0] = 0 ;
+    vectVal[1] = 0 ;
+    vectVal[2] = 0 ;
 
     //  Decomposition des composantes de couleur
     split(image, imageComposante) ;
 
-    // Determiner les valeurs maximum des composantes
-    maxR = MaxImage(imageComposante[2]) ;       // Rouge
-    maxV = MaxImage(imageComposante[1]) ;       // Vert
-    maxB = MaxImage(imageComposante[0]) ;       // Bleu
+    // Determiner les intervalles d'intensite des composantes
+    // Bleu
+    maxB = MaxImage(imageComposante[0]) ;
+    minB = MinImage(imageComposante[0]) ;
+    intervalle.push_back(maxB - minB) ;
+    // Vert
+    maxV = MaxImage(imageComposante[1]) ;
+    minV = MinImage(imageComposante[1]) ;
+    intervalle.push_back(maxV - minV) ;
+    // Rouge
+    maxR = MaxImage(imageComposante[2]) ;
+    minR = MinImage(imageComposante[2]) ;
+    intervalle.push_back(maxR - minR) ;
 
-    // S'il y a une composante qui n'est pas encore saturee
-    if((maxR != 255) || (maxB != 255) || (maxB != 255)){
-        // Initialiser le vecteur des valeurs maximum des composantes
-        maxComposante.push_back(maxR) ;
-        maxComposante.push_back(maxV) ;
-        maxComposante.push_back(maxB) ;
-        valMin = MinVecteur(maxComposante) ;
-        // Determiner la composante non saturee et affecter les valeurs a ajouter dans les composantes
-        // Canal rouge
-        if(maxR == valMin){
-            val[2] = valeur ;
-        // Canal vert
-        }else if(maxV == valMin){
-            val[1] = valeur ;
-        // Canal bleu
-        }else{
-            val[0] = valeur ;
+    if((intervalle[0] != intervalle[1]) || (intervalle[0] != intervalle[2]) || (intervalle[2] != intervalle[1])){
+        // Determiner l'intervalle la plus petite
+        val = MinVecteur(intervalle) ;
+
+        // Affecter les valeurs aux composantes
+        for(c = 0 ; c < (int)intervalle.size() ; c++){
+            if(intervalle[c] == val){
+                vectVal[c] = valeur ;
+            }else{
+                vectVal[c] = valeur/3 ;
+            }
         }
     }
 
@@ -226,8 +223,8 @@ Mat ImageVividite(const Mat image, const int valeur){
             // Augmenter l'intensite du canal non sature
             for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
                 for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
-                    valMin = VerifierSaturation((int)imageComposante[c].at<unsigned char>(ligne, colonne) + val[c]) ;
-                    imageComposante[c].at<unsigned char>(ligne, colonne) = valMin ;
+                    val = VerifierSaturation((int)imageComposante[c].at<unsigned char>(ligne, colonne) + vectVal[c]) ;
+                    imageComposante[c].at<unsigned char>(ligne, colonne) = val ;
                 }
             }
         }
@@ -239,6 +236,8 @@ Mat ImageVividite(const Mat image, const int valeur){
 
         // Fusion des composantes de couleur
         merge(imageResultanteComposante, imageResultante) ;
+    }else{
+        imageResultante = image ;
     }
 
     // Retour
@@ -278,7 +277,7 @@ Mat ImageMonochrome(const Mat image){
     return imageGris ;
 }
 
-// Monochrome - Sepia
+// Sepia
 Mat ImageSepia(const Mat image){
     // Declaration des variables
     int c, ligne, colonne ;                                         // Indices
@@ -326,7 +325,7 @@ Mat ImageSepia(const Mat image){
     return imageResultante ;
 }
 
-// Inverser une image en niveau de gris
+//Inverser les intensites d'une composante de l'image
 Mat ImageInversementMono(const Mat image){
     // Declaration des variables
     int ligne, colonne ;
@@ -343,7 +342,7 @@ Mat ImageInversementMono(const Mat image){
     return imageInversee ;
 }
 
-// Inverser une image en couleurs
+// Inverser les intensites d'une image
 Mat ImageInversement(const Mat image){
     // Declaration des variables
     int c ;                                     // Indice
@@ -641,7 +640,7 @@ Mat ImageRGB(const Mat image){
 
 //////////////////// Traitement a base d'histogramme ////////////////////
 
-// Normalisation de l'histogramme
+// Normalisation de l'histogramme d'une composante de l'image
 Mat NormalisationMono(const Mat image, const int valeur){
     // Declaration des variables
     int ligne, colonne ;                                // Indices
@@ -678,7 +677,7 @@ Mat NormalisationMono(const Mat image, const int valeur){
     return imageNormalisation ;
 }
 
-// Normalisation de l'histogramme d'une image en couleurs avec valeur reglable
+// Normalisation de l'histogramme d'une image avec valeur reglable
 Mat Normalisation(const Mat image, const int valeur){
     // Declaration des variables
     int c ;                                     // Indice
@@ -705,7 +704,7 @@ Mat Normalisation(const Mat image, const int valeur){
     return imageNormalisation ;
 }
 
-// Egalisation d'une image en niveau de gris
+// Egalisation de l'histogramme d'une composante de l'image avec valeur reglable
 Mat ImageEgalisationMono(const Mat image){
     // Declaration des variables
     int ligne, colonne ;                                    // Indices
@@ -723,7 +722,7 @@ Mat ImageEgalisationMono(const Mat image){
     return imageEgalisation ;
 }
 
-// Egalisation d'une image en couleurs
+// Egalisation de l'histogramme d'une image
 Mat ImageEgalisation(const Mat image){
     // Declaration des variables
     int c ;                                     // Indice
@@ -765,18 +764,9 @@ Mat ImageLuminosite(const Mat image, const int valeur){
         for(ligne = 0 ; ligne < (int)image.size().height ; ligne++){
             for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
                 intensite = (int)imageComposante[c].at<unsigned char>(ligne, colonne) + valeur ;
-                if(intensite < 0){
-                    imageComposante[c].at<unsigned char>(ligne, colonne) = 0 ;
-                }else if(intensite > 255){
-                    imageComposante[c].at<unsigned char>(ligne, colonne) = 255 ;
-                }else{
-                    imageComposante[c].at<unsigned char>(ligne, colonne) = intensite ;
-                }
-
+                imageComposante[c].at<unsigned char>(ligne, colonne) = VerifierSaturation(intensite) ;
             }
         }
-    }
-    for(c = 0 ; c < image.channels() ; c++){
         imageModifComposante.push_back(imageComposante[c]) ;
     }
 
@@ -787,7 +777,7 @@ Mat ImageLuminosite(const Mat image, const int valeur){
     return imageModif ;
 }
 
-// Modifier les basses intensites
+// Modifier les ombres
 Mat ImageOmbre(const Mat image, int valeur){
     // Declaration des variables
     int c, ligne, colonne ;                     // Indices
@@ -807,22 +797,10 @@ Mat ImageOmbre(const Mat image, int valeur){
                 // Si la valeur se trouve dans la zone des basses intensites
                 if(imageComposante[c].at<unsigned char>(ligne, colonne) < 128){
                     intensite = (int)imageComposante[c].at<unsigned char>(ligne, colonne) + valeur ;
-                    // Verifier la saturation
-                    // Si saturation
-                    if(intensite < 0){
-                        imageComposante[c].at<unsigned char>(ligne, colonne) = 0 ;
-                    }else if(intensite > 255){
-                        imageComposante[c].at<unsigned char>(ligne, colonne) = 255 ;
-                    }else{
-                        imageComposante[c].at<unsigned char>(ligne, colonne) = intensite ;
-                    }
+                    imageComposante[c].at<unsigned char>(ligne, colonne) = VerifierSaturation(intensite) ;
                 }
             }
         }
-    }
-
-    // Fusion des composantes de couleur
-    for(c = 0 ; c < image.channels() ; c++){
         imageModifComposante.push_back(imageComposante[c]) ;
     }
 
@@ -833,7 +811,7 @@ Mat ImageOmbre(const Mat image, int valeur){
     return imageModif ;
 }
 
-// Modifier les hautes intensites
+// Modifier les hautes mimieres
 Mat ImageHauteLumiere(const Mat image, int valeur){
     // Declaration des variables
     int c, ligne, colonne ;                     // Indices
@@ -853,22 +831,10 @@ Mat ImageHauteLumiere(const Mat image, int valeur){
                 // Si la valeur se trouve dans la zone des basses intensites
                 if(imageComposante[c].at<unsigned char>(ligne, colonne) >= 128){
                     intensite = (int)imageComposante[c].at<unsigned char>(ligne, colonne) + valeur ;
-                    // Verifier la saturation
-                    // Si saturation
-                    if(intensite < 0){
-                        imageComposante[c].at<unsigned char>(ligne, colonne) = 0 ;
-                    }else if(intensite > 255){
-                        imageComposante[c].at<unsigned char>(ligne, colonne) = 255 ;
-                    }else{
-                        imageComposante[c].at<unsigned char>(ligne, colonne) = intensite ;
-                    }
+                    imageComposante[c].at<unsigned char>(ligne, colonne) = VerifierSaturation(intensite) ; 
                 }
             }
         }
-    }
-
-    // Fusion des composantes de couleur
-    for(c = 0 ; c < image.channels() ; c++){
         imageModifComposante.push_back(imageComposante[c]) ;
     }
 
@@ -881,7 +847,7 @@ Mat ImageHauteLumiere(const Mat image, int valeur){
 
 //////////////////// Debruitage ////////////////////
 
-// Debruitage par filtre median pour une image en niveau de gris
+// Filtrer par filtre median pour une composante de l'image 
 Mat ImageMedianMono(const Mat image){
     // Declaraton des variables
     int ligne, colonne, lig, col ;                      // Indices
@@ -907,7 +873,7 @@ Mat ImageMedianMono(const Mat image){
     return imageMedian ;
 }
 
-// Debruitage par filtre median pour une image en couleurs
+// Filtrer l'image par filtre median 
 Mat ImageMedian(const Mat image){
     // Declaration des variables
     int c ;                                     // Indice
@@ -931,7 +897,7 @@ Mat ImageMedian(const Mat image){
     return imageMedian ;
 }
 
-// Debruitage
+// Filtrage
 Mat ImageFiltrage(const Mat image, const int choix){
     switch(choix){
         // Filtre moyenneur
@@ -968,7 +934,7 @@ Mat ImageLissage(const Mat image, const int valeur){
     return imageResultante ;
 }
 
-// Filtre Kuwahara-Nagao
+// Filtrer par filtre Kuwahara-Nagao sur une composante de l'image
 Mat ImageKuwaharaMono(const Mat image){
     // Declaration des variables
     int ligne, colonne ;                        // Indices
@@ -1142,14 +1108,7 @@ Mat ImageKuwaharaMono(const Mat image){
             // Determiner le domaine ayant la plus faible variance
             indiceMin = MinVecteurIndice(variance) ;
             val = (int)moyenne[indiceMin] ;
-
-            // Verifier la saturation
-            if(val > 255){
-                val = 255 ;
-            }else if(val < 0){
-                val = 0 ;
-            }
-            imageResultante.at<unsigned char>(ligne, colonne) = val ;
+            imageResultante.at<unsigned char>(ligne, colonne) = VerifierSaturation(val) ;
         }
     }
 
@@ -1157,7 +1116,7 @@ Mat ImageKuwaharaMono(const Mat image){
     return imageResultante ;
 }
 
-// Filtre Kuwahara-Nagao
+// Filtrer l'image par filtre Kuwahara-Nagao
 Mat ImageKuwahara(const Mat image){
     // Declaration des variables
     int c ;                                         // Indice
@@ -1299,33 +1258,13 @@ Mat ImageContourLaplace(const Mat image){
     return ImageConvolution(ImageMonochrome(image), GenererFiltre(2)) ;
 }
 
-// Detection de contours
-Mat ImageContour(const Mat image, const int choix){
-    // Declaration de variable
-    Mat imageContour = ImageMonochrome(image) ;
-
-    switch (choix){
-    // Filtres gradients
-    case 1 :
-        return ImageContourGradient(imageContour) ;
-        break ;
-    // Filtre laplacien
-    case 2 :
-        return ImageContourLaplace(imageContour) ;
-        break ;
-    default:
-        return ImageContourGradient(imageContour) ;
-        break;
-    }
-}
-
 // Rehaussement de contours
-Mat ImageRehaussementContour(const Mat image, const int val, const int choix){
+Mat ImageRehaussementContour(const Mat image, const int val){
     // Declaration de variables
     int c ;                                             // Indice
     int nbComposante = image.channels() ;               // Nombre de composantes de couleurs de l'image originale
     Mat imageComposante[nbComposante] ;                 // Composantes de couleurs de l'image originale
-    Mat imageContour = ImageContour(image, choix) ;     // Image de contours
+    Mat imageContour = ImageContourLaplace(image) ;     // Image de contours
     Mat imageRehaussement ;                             // Image resultante
     vector<Mat> imageRehaussementComposante ;           // Composantes de couleurs de l'image resultante
 
@@ -1347,7 +1286,7 @@ Mat ImageRehaussementContour(const Mat image, const int val, const int choix){
 
 //////////////////// Seuillage ////////////////////
 
-// Seuillage d'une image en niveau de gris
+// Seuillage simple d'une composante de l'image 
 Mat ImageSeuillage(const Mat image, const int seuil){
     // Declaration des ariables
     int ligne, colonne ;                        // Indice
@@ -1368,7 +1307,7 @@ Mat ImageSeuillage(const Mat image, const int seuil){
     return imageSeuil ;
 }
 
-// Seuillage d'une image en couleurs
+// Seuillage simple d'une image
 Mat ImageSeuillage(const Mat image, vector<int> seuil){
     // Declaration des variables
     int c ;                                     // Indice
@@ -1395,19 +1334,19 @@ Mat ImageSeuillage(const Mat image, vector<int> seuil){
     return imageSeuillage ;
 }
 
-// Seuillage par hysteresis d'une image en niveau de gris
+// Seuillage par hysteresis d'une composante de l'image
 Mat ImageSeuillage(const Mat image, const int seuilBas, const int seuilHaut){
     return (ImageSeuillage(image, seuilBas) - ImageSeuillage(image, seuilHaut)) ;
 }
 
-// Seuillage par hysteresis d'une image en couleurs (Attention : B, V, R)
+// Seuillage par hysteresis d'une image 
 Mat ImageSeuillage(const Mat image, vector<int> seuilBas, vector<int> seuilHaut){
     return(ImageSeuillage(image, seuilBas) - ImageSeuillage(image, seuilHaut)) ;
 }
 
 //////////////////// Segmentation ////////////////////
 
-// Segmentation d'une image en niveau de gris par seuillage simple
+// Segmentation d'une composante de l'image epar seuillage simple
 Mat ImageSegmentation(const Mat image, const int seuil){
     // Declaration des variables
     int ligne, colonne ;
@@ -1425,7 +1364,7 @@ Mat ImageSegmentation(const Mat image, const int seuil){
     return imageSegmentee ;
 }
 
-// Segmentation d'une image en couleurs par seuillage simple (Attention : B, V, R)
+// Segmentation d'une image par seuillage simple
 Mat ImageSegmentation(const Mat image, vector<int> seuil){
     // Declaration des variables
     int c ;                                     // Indice
@@ -1452,12 +1391,12 @@ Mat ImageSegmentation(const Mat image, vector<int> seuil){
     return imageSegmentee ;
 }
 
-// Segmentation d'une image en niveau de gris par seuillage hysteresis
+// Segmentation d'une composante de l'image par seuillage hysteresis
 Mat ImageSegmentation(const Mat image, const int seuilBas, const int seuilHaut){
     return (ImageSegmentation(image, seuilBas) - ImageSegmentation(image, seuilHaut)) ;
 }
 
-// Segmentation d'une image en couleurs par seuillage hysteresis (Attention : B, V, R)
+// Segmentation d'une image par seuillage hysteresis
 Mat ImageSegmentation(const Mat image, vector<int> seuilBas, vector<int> seuilHaut){
     return (ImageSegmentation(image, seuilBas) - ImageSegmentation(image, seuilHaut)) ;
 }
@@ -1523,7 +1462,7 @@ Mat ImageQuantification(const Mat image, const int valeur){
     return imageResultante ;
 }
 
-// Reduire la dimension de l'image
+// Sous-echantillonnage de l'image
 Mat ImageResolutionReduction(const Mat image, const int valeur){
     // Declaration des variables
     int c, ligne, colonne ;                                 // Indices
@@ -1609,7 +1548,7 @@ Mat InterpolationPPP(const Mat image, const int valeur){
     return imageResultante ;
 }
 
-// Interpolation bilineaire
+// Interpolation bilineaire d'une image
 Mat InterpolationBilineaire(const Mat image, const int valeur){
     // Declaration des variables
     int c ;                                                     // Indices
@@ -1639,7 +1578,7 @@ Mat InterpolationBilineaire(const Mat image, const int valeur){
     return imageResultante ;
 }
 
-// Interpolation bilineaire pour un canal
+// Interpolation bilineaire d'une composante de l'image
 Mat InterpolationBilineaireMono(const Mat image, const int valeur){
     // Declaration des variables
     int ligne, colonne, ligneInter, colonneInter ;              // Indices
@@ -1970,13 +1909,7 @@ Mat MatriceConvolution(const Mat image, const Mat filtre){
                     val += imageMiroir.at<unsigned char>(ligne + lig, colonne + col)*filtre.at<double>(lig, col) ;
                 }
             }
-            // Verifier la saturation
-            if(val < 0){
-                val = 0 ;
-            }else if(val > 255){
-                val = 255 ;
-            }
-            imageConv.at<unsigned char>(ligne, colonne) = val ;
+            imageConv.at<unsigned char>(ligne, colonne) = VerifierSaturation(val) ;
         }
     }
 
@@ -2023,7 +1956,7 @@ Mat MatriceNorme(const Mat imageX, const Mat imageY){
         for(colonne = 0 ; colonne < imageX.size().width ; colonne++){
             x2 = (double)imageX.at<unsigned char>(ligne, colonne)*imageX.at<unsigned char>(ligne, colonne) ;
             y2 = (double)imageY.at<unsigned char>(ligne, colonne)*imageY.at<unsigned char>(ligne, colonne) ;
-            imageNorme.at<unsigned char>(ligne, colonne) = (int)sqrt(x2 + y2) ;
+            imageNorme.at<unsigned char>(ligne, colonne) = VerifierSaturation((int)sqrt(x2 + y2)) ;
         }
     }
 
@@ -2208,7 +2141,7 @@ double VarianceVecteur(const vector<double> vecteur){
     }
 
     // Calculer la variance
-    variance = (double)1/(int)vecteur.size()*somme + moyenne*moyenne ;
+    variance = (double)1/(int)vecteur.size()*somme - moyenne*moyenne ;
 
     // Retour
     return variance ;
@@ -2589,78 +2522,6 @@ Mat GenererFiltre(const int typeFiltre){
     }
 }
 
-// Concatener 2 images de memes dimensions en 1 image (en niveau de gris)
-Mat ConcatenerImageMono(Mat image1, Mat image2){
-    // Declaration des variables
-    int ligne, colonne ;                                // Indices
-    Size dimensionImage ;                               // Dimensions de l'image resultante
-
-    // Calculer les dimensions de l'image resultante
-    dimensionImage.height = image1.size().height ;      // Nombre de lignes
-    dimensionImage.width = image1.size().width*2 ;      // Nombre de colonne
-
-    // Initialisation de l'image resultante
-    Mat imageConcatener(dimensionImage, CV_8U) ;
-
-    // Concatenation
-    // Image 1
-    for(ligne = 0 ; ligne < image1.size().height ; ligne++){
-        for(colonne = 0 ; colonne < image1.size().width ; colonne++){
-            imageConcatener.at<unsigned char>(ligne, colonne) = image1.at<unsigned char>(ligne, colonne) ;
-        }
-    }
-    // Image 2
-    for(ligne = 0 ; ligne < image2.size().height ; ligne++){
-        for(colonne = image2.size().width ; colonne < image2.size().width*2 ; colonne++){
-            imageConcatener.at<unsigned char>(ligne, colonne) = image2.at<unsigned char>(ligne, colonne - image2.size().width) ;
-        }
-    }
-
-    // Retour
-    return imageConcatener ;
-}
-
-// Concatener 2 images de memes dimensions en 1 image (en couleurs)
-Mat ConcatenerImage(Mat image1, Mat image2){
-    // Declaration des variables
-    int c ;                                             // Indice
-    int nbComposante = 3 ;                              // Nombre de composantes de couleur
-    Mat image1Composante[nbComposante] ;                // Des composantes de l'image originale 1
-    Mat image2Composante[nbComposante] ;                // Des composantes de l'image originale 2
-    Size dimensionImage ;                               // Dimensions de l'image resultante
-    vector<Mat> imageConcatComposante ;                 // Des composantes de l'image resultante
-
-    // Calculer les dimensions de l'image resultante
-    dimensionImage.height = image1.size().height ;      // Nombre de lignes
-    dimensionImage.width = image1.size().width*2 ;      // Nombre de colonne
-
-    // Initialisation de l'image resultante
-    Mat imageConcatener(dimensionImage, CV_8UC3) ;
-
-    // Verifier si les images sont en couleurs et corriger si necesaire
-    if(image1.channels() == 1){
-        image1 = MonoCouleur(image1) ;
-    }
-    if(image2.channels() == 1){
-        image2 = MonoCouleur(image2) ;
-    }
-
-    // Decomposition des composantes de couleur
-    split(image1, image1Composante) ;                   // Image 1
-    split(image2, image2Composante) ;                   // Image 2
-
-    // Normalisation sur chaque canal de couleur
-    for(c = 0 ; c < nbComposante ; c++){
-        imageConcatComposante.push_back(ConcatenerImageMono(image1Composante[c], image2Composante[c]))  ;
-    }
-
-    // Fusion des composantes de couleur
-    merge(imageConcatComposante, imageConcatener) ;
-
-    // Retour
-    return imageConcatener ;
-}
-
 // Convertir le format d'une image monochrome en format RVB
 Mat MonoCouleur(const Mat image){
     // Declaration des variables
@@ -2677,47 +2538,6 @@ Mat MonoCouleur(const Mat image){
     merge(imageCouleurComposante, imageCouleur) ;
     // Retour
     return imageCouleur ;
-}
-
- // Saisie et verification de la valeur d'un seuil
-void SaisirSeuil(int& seuil){
-    // Declaration des variables
-    bool validation ;           // Validation les conditions de la saisie du seuil
-    string saisie ;             // Valeur saisie par l'utilisateur
-
-    // Saisie et verification du seuil
-    do{
-        validation = true ;
-        // Saisie de la valeur du seuil
-        saisie.clear() ;
-        cin >> saisie ;
-        // Verifier le format de la valeur saisie
-        // Si le seuil saisi n'est pas un entier
-        if(Bibliotheque::VerifierNumero(saisie, seuil) == false){
-            cout << "Le seuil doit etre un entier. Veuillez reessayer : " ;
-            validation = false ;
-        // Si le seuil n'est pas dans [0,255]
-        }else if((seuil < 0) || (seuil > 255)){
-            cout << "Le seuil doit etre entre entre 0 et 255. Veuillez reessayer : " ;
-            validation = false ;
-        // Sinon : seuil valide
-        }
-    }while(validation == false) ;
-}
-
-// Saisie et verification des valeurs des seuils hysteresis
-void SaisirSeuil(int& seuilBas, int& seuilHaut){
-    // Saisie du seuil bas
-    cout << "Veuillez saisir le seuil bas : " ;
-    SaisirSeuil(seuilBas) ;
-    // Saisie du seuil haut
-    cout << "Veuillez saisir le seuil haut : " ;
-    do{
-        SaisirSeuil(seuilHaut) ;
-        if(seuilHaut < seuilBas){
-            cout << "La valeur du seuil haut doit etre superieure ou egale a la valeur du seuil bas. Veuillez reessayer : " ;
-        }
-    }while(seuilHaut < seuilBas) ;
 }
 
 // Calcul d'histogramme sur un cannal
@@ -2839,57 +2659,6 @@ Mat ImageBGRRGB(const Mat image){
     return imageResultante ;
 }
 
-// Ajouter un bruit sur l'image
-Mat ImageBruitage(const Mat image, const int valeur){
-    // Declaration des variables
-    int c, ligne, colonne ;                     // Indices
-    int val ;                                   // Valeur de calcul intermediaire
-    int nbComposante = image.channels() ;       // Nombre de composantes de couleur
-    Mat imageBruit(image.size(), CV_8U) ;       // Image du bruit
-    Mat imageResultante ;                       // Image resultante
-    Mat imageComposante[nbComposante] ;         // Des composantes de l'image originale
-    vector<Mat> imageResultanteComposante ;     // Des composantes de l'image resultante
-
-    // Initialisation
-    imageResultanteComposante.clear() ;
-
-    // Creer l'image du bruit
-    for(c = 0 ; c < nbComposante ; c++){
-        for(ligne = 0 ; ligne < (int)image.size().height ; ligne ++){
-            for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
-                imageBruit.at<unsigned char>(ligne, colonne) = (double)rand()/RAND_MAX*valeur*2 ;
-            }
-        }
-    }
-
-    // Decomposition des composantes de couleur
-    split(image, imageComposante) ;
-
-    // Convolution sur chaque canal de couleur
-    for(c = 0 ; c < nbComposante ; c++){
-        for(ligne = 0 ; ligne < (int)image.size().height ; ligne ++){
-            for(colonne = 0 ; colonne < (int)image.size().width ; colonne++){
-                val = imageComposante[c].at<unsigned char>(ligne, colonne) + imageBruit.at<unsigned char>(ligne, colonne) ;
-                if(val < 256){
-                    imageComposante[c].at<unsigned char>(ligne, colonne) += imageBruit.at<unsigned char>(ligne, colonne) ;
-                }else{
-                    imageComposante[c].at<unsigned char>(ligne, colonne) = 255 ;
-                }
-            }
-        }
-    }
-
-    // Affecter le vecteur des composantes de l'image resultante
-    for(c = 0 ; c < nbComposante ; c++){
-        imageResultanteComposante.push_back(imageComposante[nbComposante - 1 - c])  ;
-    }
-    // Fusion des composantes de couleur
-    merge(imageResultanteComposante, imageResultante) ;
-
-    // Retour
-    return imageResultante ;
-}
-
 // Verifier la saturation
 int VerifierSaturation(const int valeur){
     if(valeur > 255){
@@ -2901,7 +2670,7 @@ int VerifierSaturation(const int valeur){
     }
 }
 
-// Arranger les differentes parties de la transformee de Fourier
+// Arranger la representation de la transformee de Fourier
 Mat ImageFourierArranger(const Mat image){
     // Declaration des variables
     int ligne, colonne ;

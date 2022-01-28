@@ -1007,7 +1007,7 @@ void MainWindow::on_horizontalSlider_nettete_valueChanged(int value){
             }*/
         // Rehaussement de contours
         }else if(value > 0){
-            _imageResultat = ImageRehaussementContour(_imageOriginale, value*10, 2) ;
+            _imageResultat = ImageRehaussementContour(_imageOriginale, value*10) ;
         // Image de depart
         }else{
             _imageResultat = ImageBGRRGB(_imageOriginale) ;
@@ -1825,7 +1825,7 @@ void MainWindow::on_radioButton_contoursLaplacien_clicked(){
     this->setCursor(Qt::WaitCursor);
     if(ui->radioButton_contoursLaplacien->isChecked()){
         if(ui->groupBox_contours->isChecked()){
-            _imageResultat = MonoCouleur(ImageContour(_imageOriginale, 2)) ;
+            _imageResultat = MonoCouleur(ImageContourLaplace(_imageOriginale)) ;
             // Affichage du resultat
             AffichageResultat(_imageResultat, 1) ;
         }

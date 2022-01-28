@@ -1,5 +1,4 @@
 <map id="bibliotheque.h" name="bibliotheque.h">
-<area shape="rect" id="node2" href="$image_8h_source.html" title="image.h" alt="" coords="68,80,136,107"/>
-<area shape="rect" id="node4" href="$mainwindow_8h_source.html" title="mainwindow.h" alt="" coords="156,155,261,181"/>
-<area shape="rect" id="node3" href="$traitementImage_8h_source.html" title="traitementImage.h" alt="" coords="5,155,132,181"/>
+<area shape="rect" id="node2" href="$ImageToolBox_8h.html" title="Header du namespace ImageToolBox. " alt="" coords="5,80,123,107"/>
+<area shape="rect" id="node3" href="$mainwindow_8h.html" title="Header de la classe MainWindow de QT. " alt="" coords="59,155,165,181"/>
 </map>

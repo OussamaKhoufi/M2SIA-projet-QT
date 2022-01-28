@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['majbibliosuivantdroitacces',['majBiblioSuivantDroitAcces',['../classBibliotheque.html#a61778c23eb938c95b4de4306c14fe754',1,'Bibliotheque']]]
+  ['histogramme',['Histogramme',['../ImageToolBox_8h.html#a1282e097d7e2138715ef3b30f9a4ac04',1,'ImageToolBox']]]
 ];

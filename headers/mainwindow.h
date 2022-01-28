@@ -1,3 +1,12 @@
+/**
+ * @file mainwindow.h
+ * @brief Header de la classe MainWindow de QT
+ * @version 0.1
+ * @date 2022-01-22
+ *
+ * @copyright Copyright (c) 2022
+ *
+ */
 #pragma once
 
 #include <QMainWindow>
@@ -7,11 +16,11 @@
 #include <QTableWidget>
 #include <QTextStream>
 #include <QGraphicsPixmapItem>
-#include <QPixmap>          // Pour afficher les images
-#include <QMessageBox>      // Pour afficher les messages d'erreur
-#include <QString>          // Pour travailler avec les chaines de caracteres
-#include <QListWidgetItem>  // Pour travailler avec les elements dans une liste
-#include <QDebug>           // Pour afficher les messages de debug
+#include <QPixmap>
+#include <QMessageBox>
+#include <QString>
+#include <QListWidgetItem>
+#include <QDebug>
 #include <QtGui>
 #include <QtWidgets>
 #include "headers/ImageToolBox.h"

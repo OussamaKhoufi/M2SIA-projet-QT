@@ -195,20 +195,6 @@ class Bibliotheque{
          */
         static void VerifierExtension (string& nom) ;												        // Verifier l'extension ".json"
         /**
-         * @brief Verifier le format du numero (entier).
-         * @param saisie
-         * @param numero
-         * @return
-         */
-        static bool VerifierNumero(const string saisie, int& numero) ;                         	        // Verifier le format du numero (entier)
-        /**
-         * @brief Verifier le format du numero (reel).
-         * @param saisie
-         * @param numero
-         * @return
-         */
-        static bool VerifierNumero(const string saisie, double& numero) ;                         	        // Verifier le format du numero (reel)
-        /**
          * @brief Verifier l'existance d'une image de numero spécifique dans l'objet json de la bibliotheque.
          * @param numero
          * @param biblio

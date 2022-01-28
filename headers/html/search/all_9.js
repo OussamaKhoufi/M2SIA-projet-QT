@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['sauvegarder',['Sauvegarder',['../classBibliotheque.html#abaf79da5c656d7cccb14b3c3a4b542f6',1,'Bibliotheque']]],
-  ['setbilbiotheque',['setBilbiotheque',['../classBibliotheque.html#a8dc396d28693e921f7fd849944356434',1,'Bibliotheque']]],
-  ['setcheminjson',['setCheminJson',['../classBibliotheque.html#ac9201ed432b00fc3cd2621db1c8df78b',1,'Bibliotheque']]],
-  ['supprimerimage',['SupprimerImage',['../classBibliotheque.html#a3e4940fd008650236beae91780d7b068',1,'Bibliotheque']]]
+  ['normalisation',['Normalisation',['../ImageToolBox_8h.html#a41217fcb585826a2a94ee4ac2d75fc65',1,'ImageToolBox']]],
+  ['normalisationmono',['NormalisationMono',['../ImageToolBox_8h.html#a67f6b69518001f06feb3f493a2bda23f',1,'ImageToolBox']]]
 ];

@@ -1,15 +1,15 @@
 var searchData=
 [
-  ['affichageresultat',['AffichageResultat',['../classAppMainWindow.html#ad781a57c27766f8535efa0f66decb03d',1,'AppMainWindow']]],
-  ['affichermessageaide',['AfficherMessageAide',['../classAppMainWindow.html#a1d2e1ff9d275e8c2f24d68d9629fb057',1,'AppMainWindow']]],
-  ['affichermessageaidecontour',['AfficherMessageAideContour',['../classAppMainWindow.html#a8c81d4f260ba0c0a59300d6d6e796edc',1,'AppMainWindow']]],
-  ['affichermessageaidecouleur',['AfficherMessageAideCouleur',['../classAppMainWindow.html#a49fb213f39d1210bb3b6a29b755422a1',1,'AppMainWindow']]],
-  ['affichermessageaidedebruitage',['AfficherMessageAideDebruitage',['../classAppMainWindow.html#a8d761e67204792d44de364b7b0ab6297',1,'AppMainWindow']]],
-  ['affichermessageaidedetail',['AfficherMessageAideDetail',['../classAppMainWindow.html#af1ad2e5e4ec0a770c7de21882381e9fa',1,'AppMainWindow']]],
-  ['affichermessageaideextraction',['AfficherMessageAideExtraction',['../classAppMainWindow.html#a5c706de91d826442a7a6685080083eac',1,'AppMainWindow']]],
-  ['affichermessageaidefiltre',['AfficherMessageAideFiltre',['../classAppMainWindow.html#ac8c1ab080428c14e0c3a5b24ff2fafda',1,'AppMainWindow']]],
-  ['affichermessageaideluminosite',['AfficherMessageAideLuminosite',['../classAppMainWindow.html#a60a98999477e2832eed0aa60786baacc',1,'AppMainWindow']]],
-  ['affichermessageaideresolution',['AfficherMessageAideResolution',['../classAppMainWindow.html#a9fbe013d6f9fa6585d43e1140d424a9f',1,'AppMainWindow']]],
-  ['affichermessageaideseuillagesegmentation',['AfficherMessageAideSeuillageSegmentation',['../classAppMainWindow.html#a7e13b2d80dad8ff3aec33ccb26b02c7c',1,'AppMainWindow']]],
+  ['affichageresultat',['AffichageResultat',['../classMainWindow.html#a6a5fc1b965e50e296003a94a73fea202',1,'MainWindow']]],
+  ['affichermessageaide',['AfficherMessageAide',['../classMainWindow.html#af468eb0ea0e800a7c54c13da1cafc1e6',1,'MainWindow']]],
+  ['affichermessageaidecontour',['AfficherMessageAideContour',['../classMainWindow.html#ac243627f25330122f272623cc1e87736',1,'MainWindow']]],
+  ['affichermessageaidecouleur',['AfficherMessageAideCouleur',['../classMainWindow.html#a7ff4fa7f02281f49507bc54e980fe759',1,'MainWindow']]],
+  ['affichermessageaidedebruitage',['AfficherMessageAideDebruitage',['../classMainWindow.html#ab3fd048b197f1854d173268ec4de9741',1,'MainWindow']]],
+  ['affichermessageaidedetail',['AfficherMessageAideDetail',['../classMainWindow.html#a3ead1323a922267903ef930220741242',1,'MainWindow']]],
+  ['affichermessageaideextraction',['AfficherMessageAideExtraction',['../classMainWindow.html#a0686a5e005ce5ad4c4bea3a6224b552d',1,'MainWindow']]],
+  ['affichermessageaidefiltre',['AfficherMessageAideFiltre',['../classMainWindow.html#a848fc8dfd5998110e4e9ca090888d1d0',1,'MainWindow']]],
+  ['affichermessageaideluminosite',['AfficherMessageAideLuminosite',['../classMainWindow.html#a6845f6f23cac943966de6cd177263607',1,'MainWindow']]],
+  ['affichermessageaideresolution',['AfficherMessageAideResolution',['../classMainWindow.html#a739230f160f977f84bbd1aa6b8b3bed6',1,'MainWindow']]],
+  ['affichermessageaideseuillagesegmentation',['AfficherMessageAideSeuillageSegmentation',['../classMainWindow.html#aae084a3e268d6651c65cebda3dae97ff',1,'MainWindow']]],
   ['ajouterimage',['AjouterImage',['../classBibliotheque.html#a246e3a8893bb28b0d76845c624a1cd48',1,'Bibliotheque']]]
 ];

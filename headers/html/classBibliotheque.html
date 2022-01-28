@@ -60,6 +60,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Fonctions membres publiques</a> &#124;
+<a href="#pub-static-methods">Fonctions membres publiques statiques</a> &#124;
 <a href="#pri-attribs">Attributs privés</a> &#124;
 <a href="classBibliotheque-members.html">Liste de tous les membres</a>  </div>
   <div class="headertitle">
@@ -142,6 +143,15 @@ Fonctions membres publiques</h2></td></tr>
 <tr class="memitem:a0a0c1d628bfa840f764d4ec483f4b1e6"><td class="memItemLeft" align="right" valign="top">vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBibliotheque.html#a0a0c1d628bfa840f764d4ec483f4b1e6">Trier</a> (vector&lt; int &gt; valeurNonTri)</td></tr>
 <tr class="memdesc:a0a0c1d628bfa840f764d4ec483f4b1e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trier un vecteur d'entiers dans l'ordre décroissant.  <a href="#a0a0c1d628bfa840f764d4ec483f4b1e6">Plus de détails...</a><br /></td></tr>
 <tr class="separator:a0a0c1d628bfa840f764d4ec483f4b1e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Fonctions membres publiques statiques</h2></td></tr>
+<tr class="memitem:af2649bd20b0cf9cd35165abee4a45a12"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBibliotheque.html#af2649bd20b0cf9cd35165abee4a45a12">ExtraireDate</a> (const string date, string &amp;jour, string &amp;mois, string &amp;annee)</td></tr>
+<tr class="memdesc:af2649bd20b0cf9cd35165abee4a45a12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extraire jour, mois, annee a partir d'une date.  <a href="#af2649bd20b0cf9cd35165abee4a45a12">Plus de détails...</a><br /></td></tr>
+<tr class="separator:af2649bd20b0cf9cd35165abee4a45a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66606b7018ddd339af2a608ea4e6de9c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBibliotheque.html#a66606b7018ddd339af2a608ea4e6de9c">VerifierNumero</a> (const int numero, const Json::Value biblio)</td></tr>
+<tr class="memdesc:a66606b7018ddd339af2a608ea4e6de9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verifier l'existance d'une image de numero spécifique dans l'objet json de la bibliotheque.  <a href="#a66606b7018ddd339af2a608ea4e6de9c">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a66606b7018ddd339af2a608ea4e6de9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Attributs privés</h2></td></tr>
@@ -386,6 +396,65 @@ string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
   </dd>
 </dl>
 <dl class="section return"><dt>Renvoie</dt><dd>Json::Value : un objet json contenant la sous liste construite suivant le critère choisi. </dd></dl>
+
+</div>
+</div>
+<a id="af2649bd20b0cf9cd35165abee4a45a12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2649bd20b0cf9cd35165abee4a45a12">&#9670;&nbsp;</a></span>ExtraireDate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Bibliotheque::ExtraireDate </td>
+          <td>(</td>
+          <td class="paramtype">const string&#160;</td>
+          <td class="paramname"><em>date</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string &amp;&#160;</td>
+          <td class="paramname"><em>jour</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string &amp;&#160;</td>
+          <td class="paramname"><em>mois</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string &amp;&#160;</td>
+          <td class="paramname"><em>annee</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Extraire jour, mois, annee a partir d'une date. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">date</td><td></td></tr>
+    <tr><td class="paramname">jour</td><td></td></tr>
+    <tr><td class="paramname">mois</td><td></td></tr>
+    <tr><td class="paramname">annee</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -669,6 +738,52 @@ string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
   </dd>
 </dl>
 <dl class="section return"><dt>Renvoie</dt><dd>vector&lt;int&gt; : un vecteur d'entiers contenant les indices triés du vecteur d'entrée. </dd></dl>
+
+</div>
+</div>
+<a id="a66606b7018ddd339af2a608ea4e6de9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66606b7018ddd339af2a608ea4e6de9c">&#9670;&nbsp;</a></span>VerifierNumero()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Bibliotheque::VerifierNumero </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>numero</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Json::Value&#160;</td>
+          <td class="paramname"><em>biblio</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Verifier l'existance d'une image de numero spécifique dans l'objet json de la bibliotheque. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">numero</td><td></td></tr>
+    <tr><td class="paramname">biblio</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd></dd></dl>
 
 </div>
 </div>

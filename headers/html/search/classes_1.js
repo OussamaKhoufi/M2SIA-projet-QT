@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bibliotheque',['Bibliotheque',['../classBibliotheque.html',1,'']]]
+  ['mainwindow',['MainWindow',['../classMainWindow.html',1,'']]]
 ];

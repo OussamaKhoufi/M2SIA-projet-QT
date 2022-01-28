@@ -62,6 +62,13 @@ vector$<$ int $>$ \hyperlink{classBibliotheque_af95534b5f7fba8f1a6dcd1215bd55f96
 \begin{DoxyCompactList}\small\item\em Trier un vecteur de chaines characteres dans l\textquotesingle{}ordre décroissant. \end{DoxyCompactList}\item 
 vector$<$ int $>$ \hyperlink{classBibliotheque_a0a0c1d628bfa840f764d4ec483f4b1e6}{Trier} (vector$<$ int $>$ valeur\+Non\+Tri)
 \begin{DoxyCompactList}\small\item\em Trier un vecteur d\textquotesingle{}entiers dans l\textquotesingle{}ordre décroissant. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Fonctions membres publiques statiques}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{classBibliotheque_af2649bd20b0cf9cd35165abee4a45a12}{Extraire\+Date} (const string date, string \&jour, string \&mois, string \&annee)
+\begin{DoxyCompactList}\small\item\em Extraire jour, mois, annee a partir d\textquotesingle{}une date. \end{DoxyCompactList}\item 
+static bool \hyperlink{classBibliotheque_a66606b7018ddd339af2a608ea4e6de9c}{Verifier\+Numero} (const int numero, const Json\+::\+Value biblio)
+\begin{DoxyCompactList}\small\item\em Verifier l\textquotesingle{}existance d\textquotesingle{}une image de numero spécifique dans l\textquotesingle{}objet json de la bibliotheque. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Attributs privés}
 \begin{DoxyCompactItemize}
 \item 
@@ -203,6 +210,27 @@ Construire une sous liste d\textquotesingle{}images de la \hyperlink{classBiblio
 \begin{DoxyReturn}{Renvoie}
 Json\+::\+Value \+: un objet json contenant la sous liste construite suivant le critère choisi. 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classBibliotheque_af2649bd20b0cf9cd35165abee4a45a12}\label{classBibliotheque_af2649bd20b0cf9cd35165abee4a45a12}} 
+\index{Bibliotheque@{Bibliotheque}!Extraire\+Date@{Extraire\+Date}}
+\index{Extraire\+Date@{Extraire\+Date}!Bibliotheque@{Bibliotheque}}
+\subsubsection{\texorpdfstring{Extraire\+Date()}{ExtraireDate()}}
+{\footnotesize\ttfamily static void Bibliotheque\+::\+Extraire\+Date (\begin{DoxyParamCaption}\item[{const string}]{date,  }\item[{string \&}]{jour,  }\item[{string \&}]{mois,  }\item[{string \&}]{annee }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Extraire jour, mois, annee a partir d\textquotesingle{}une date. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em date} & \\
+\hline
+{\em jour} & \\
+\hline
+{\em mois} & \\
+\hline
+{\em annee} & \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classBibliotheque_a24b9cdc62d7bf2628e13ac9049dccaf3}\label{classBibliotheque_a24b9cdc62d7bf2628e13ac9049dccaf3}} 
 \index{Bibliotheque@{Bibliotheque}!get\+Bilbiotheque@{get\+Bilbiotheque}}
 \index{get\+Bilbiotheque@{get\+Bilbiotheque}!Bibliotheque@{Bibliotheque}}
@@ -380,6 +408,26 @@ Trier un vecteur d\textquotesingle{}entiers dans l\textquotesingle{}ordre décro
 \end{DoxyParams}
 \begin{DoxyReturn}{Renvoie}
 vector$<$int$>$ \+: un vecteur d\textquotesingle{}entiers contenant les indices triés du vecteur d\textquotesingle{}entrée. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classBibliotheque_a66606b7018ddd339af2a608ea4e6de9c}\label{classBibliotheque_a66606b7018ddd339af2a608ea4e6de9c}} 
+\index{Bibliotheque@{Bibliotheque}!Verifier\+Numero@{Verifier\+Numero}}
+\index{Verifier\+Numero@{Verifier\+Numero}!Bibliotheque@{Bibliotheque}}
+\subsubsection{\texorpdfstring{Verifier\+Numero()}{VerifierNumero()}}
+{\footnotesize\ttfamily static bool Bibliotheque\+::\+Verifier\+Numero (\begin{DoxyParamCaption}\item[{const int}]{numero,  }\item[{const Json\+::\+Value}]{biblio }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Verifier l\textquotesingle{}existance d\textquotesingle{}une image de numero spécifique dans l\textquotesingle{}objet json de la bibliotheque. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em numero} & \\
+\hline
+{\em biblio} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+
 \end{DoxyReturn}
 
 
