@@ -2,47 +2,26 @@
 \label{ImageToolBox_8h}\index{Image\+Tool\+Box.\+h@{Image\+Tool\+Box.\+h}}
 
 
-Header du namespace Image\+Tool\+Box.  
+Header du namespace Image\+Tool\+Box contenant les différentes fonctions de traitement d\textquotesingle{}images.  
 
 
-{\ttfamily \#include $<$iostream$>$}\newline
-{\ttfamily \#include $<$string$>$}\newline
-{\ttfamily \#include $<$vector$>$}\newline
-{\ttfamily \#include $<$fstream$>$}\newline
-{\ttfamily \#include $<$algorithm$>$}\newline
-{\ttfamily \#include $<$cmath$>$}\newline
-{\ttfamily \#include $<$complex$>$}\newline
-{\ttfamily \#include $<$jsoncpp/json/value.\+h$>$}\newline
-{\ttfamily \#include $<$jsoncpp/json/json.\+h$>$}\newline
-{\ttfamily \#include \char`\"{}rapidjson/document.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}rapidjson/writer.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$opencv2/core/core.\+hpp$>$}\newline
 {\ttfamily \#include $<$opencv2/highgui/highgui.\+hpp$>$}\newline
 {\ttfamily \#include $<$opencv2/imgproc/imgproc.\+hpp$>$}\newline
-{\ttfamily \#include $<$experimental/filesystem$>$}\newline
-{\ttfamily \#include \char`\"{}headers/bibliotheque.\+h\char`\"{}}\newline
-Graphe des dépendances par inclusion de Image\+Tool\+Box.\+h\+:
-\nopagebreak
+Graphe des dépendances par inclusion de Image\+Tool\+Box.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{ImageToolBox_8h__incl}
 \end{center}
 \end{figure}
-Ce graphe montre quels fichiers incluent directement ou indirectement ce fichier \+:
-\nopagebreak
+Ce graphe montre quels fichiers incluent directement ou indirectement ce fichier \+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=168pt]{ImageToolBox_8h__dep__incl}
 \end{center}
 \end{figure}
-\subsection*{Macros}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{ImageToolBox_8h_ae3b21f339690a966e921fe2545939862}\label{ImageToolBox_8h_ae3b21f339690a966e921fe2545939862}} 
-\#define {\bfseries json\+\_\+char}~T\+C\+H\+AR
-\end{DoxyCompactItemize}
 \subsection*{Fonctions}
 \begin{DoxyCompactItemize}
 \item 
@@ -114,7 +93,7 @@ Mat \hyperlink{ImageToolBox_8h_af4c775b3cfe9eee037b773aa7a64457e}{Image\+Tool\+B
 \begin{DoxyCompactList}\small\item\em Détecter les contours dans l\textquotesingle{}image par la norme du gradient (filtres gradients 3x3) \end{DoxyCompactList}\item 
 Mat \hyperlink{ImageToolBox_8h_a9e7de80e685011b2f9359c9dd71f7a73}{Image\+Tool\+Box\+::\+Image\+Contour\+Laplace} (const Mat image)
 \begin{DoxyCompactList}\small\item\em Détecter les contours dans l\textquotesingle{}image par un filtre laplacien (3x3) \end{DoxyCompactList}\item 
-Mat \hyperlink{ImageToolBox_8h_aea6bb5426267ff811c98091d99353b48}{Image\+Tool\+Box\+::\+Image\+Rehaussement\+Contour} (const Mat image, const int val, const int choix)
+Mat \hyperlink{ImageToolBox_8h_ad84ad18114374057f34dbf768eb023bb}{Image\+Tool\+Box\+::\+Image\+Rehaussement\+Contour} (const Mat image, const int val)
 \begin{DoxyCompactList}\small\item\em Rehausser les contours de l\textquotesingle{}image en rajoutant d\textquotesingle{}une valeur d\textquotesingle{}intensité lumineuse sur les pixels des contours détéctés par un filtre choisi (3x3) \end{DoxyCompactList}\item 
 Mat \hyperlink{ImageToolBox_8h_a7d1e3341d7f49b5e3a018554fb00cdea}{Image\+Tool\+Box\+::\+Image\+Seuillage} (const Mat image, const int seuil)
 \begin{DoxyCompactList}\small\item\em Seuiller d\textquotesingle{}une composante de l\textquotesingle{}image avec un seui de valeur réglable. \end{DoxyCompactList}\item 
@@ -215,7 +194,7 @@ Mat \hyperlink{ImageToolBox_8h_add7af4ead9829a856b445e291318994e}{Image\+Tool\+B
 
 
 \subsection{Description détaillée}
-Header du namespace Image\+Tool\+Box. 
+Header du namespace Image\+Tool\+Box contenant les différentes fonctions de traitement d\textquotesingle{}images. 
 
 \begin{DoxyVersion}{Version}
 0.\+1 
@@ -933,11 +912,11 @@ Modifier le nombre de bits à coder les intensités lumineuses de l\textquotesin
 \begin{DoxyReturn}{Renvoie}
 Image quantifiée 
 \end{DoxyReturn}
-\mbox{\Hypertarget{ImageToolBox_8h_file_aea6bb5426267ff811c98091d99353b48}\label{ImageToolBox_8h_file_aea6bb5426267ff811c98091d99353b48}} 
+\mbox{\Hypertarget{ImageToolBox_8h_file_ad84ad18114374057f34dbf768eb023bb}\label{ImageToolBox_8h_file_ad84ad18114374057f34dbf768eb023bb}} 
 \index{Image\+Tool\+Box.\+h@{Image\+Tool\+Box.\+h}!Image\+Rehaussement\+Contour@{Image\+Rehaussement\+Contour}}
 \index{Image\+Rehaussement\+Contour@{Image\+Rehaussement\+Contour}!Image\+Tool\+Box.\+h@{Image\+Tool\+Box.\+h}}
 \subsubsection{\texorpdfstring{Image\+Rehaussement\+Contour()}{ImageRehaussementContour()}}
-{\footnotesize\ttfamily Mat Image\+Tool\+Box\+::\+Image\+Rehaussement\+Contour (\begin{DoxyParamCaption}\item[{const Mat}]{image,  }\item[{const int}]{val,  }\item[{const int}]{choix }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily Mat Image\+Tool\+Box\+::\+Image\+Rehaussement\+Contour (\begin{DoxyParamCaption}\item[{const Mat}]{image,  }\item[{const int}]{val }\end{DoxyParamCaption})}
 
 
 
@@ -1045,7 +1024,7 @@ Ajuster la saturation d\textquotesingle{}une composante de l\textquotesingle{}im
 \begin{DoxyParams}{Paramètres}
 {\em image} & Composante de l\textquotesingle{}image de départ \\
 \hline
-{\em valeur} & Valeur de la saturation à adjuster \\
+{\em valeur} & Valeur de la saturation à ajuster \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Renvoie}
@@ -1171,7 +1150,7 @@ Seuiller d\textquotesingle{}une composante de l\textquotesingle{}image avec un s
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Renvoie}
-Composante de l\textquotesingle{}image suillée 
+Composante de l\textquotesingle{}image seuillée 
 \end{DoxyReturn}
 \mbox{\Hypertarget{ImageToolBox_8h_file_a5ef757c9b5de9fb9d8db7eb095b84204}\label{ImageToolBox_8h_file_a5ef757c9b5de9fb9d8db7eb095b84204}} 
 \index{Image\+Tool\+Box.\+h@{Image\+Tool\+Box.\+h}!Image\+Seuillage@{Image\+Seuillage}}
@@ -1271,7 +1250,7 @@ Ajuster la temperature de l\textquotesingle{}image.
 \begin{DoxyParams}{Paramètres}
 {\em image} & Image de départ (dimensions quelconques) \\
 \hline
-{\em valeur} & Valeur de la température à adjuster \\
+{\em valeur} & Valeur de la température à ajuster \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Renvoie}

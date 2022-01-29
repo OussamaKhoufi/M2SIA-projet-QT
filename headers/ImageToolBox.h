@@ -23,7 +23,7 @@ namespace ImageToolBox {
     /**
      * @brief Ajuster la temperature de l'image
      * @param image Image de départ (dimensions quelconques)
-     * @param valeur Valeur de la température à adjuster
+     * @param valeur Valeur de la température à ajuster
      * @return Image avec température ajustée
      */
     Mat ImageTemperature(const Mat image, const int valeur) ;               // Modifier la temperature de l'image
@@ -39,7 +39,7 @@ namespace ImageToolBox {
     /**
      * @brief Ajuster la saturation d'une composante de l'image
      * @param image Composante de l'image de départ
-     * @param valeur Valeur de la saturation à adjuster
+     * @param valeur Valeur de la saturation à ajuster
      * @return Composante de l'image avec la saturation ajustée
      */
     Mat ImageSaturationElement(const Mat image, const int valeur) ;         // Calcul elementaire pour la modification la saturation

@@ -30,7 +30,7 @@ var searchData=
   ['imagemonochrome',['ImageMonochrome',['../ImageToolBox_8h.html#af5c13d5031a214a04e534605c75e5850',1,'ImageToolBox']]],
   ['imageombre',['ImageOmbre',['../ImageToolBox_8h.html#a656e1e221891d290e8c82ae66ca4c68b',1,'ImageToolBox']]],
   ['imagequantification',['ImageQuantification',['../ImageToolBox_8h.html#a0817ef801078f740b09029ee054ed4c1',1,'ImageToolBox']]],
-  ['imagerehaussementcontour',['ImageRehaussementContour',['../ImageToolBox_8h.html#aea6bb5426267ff811c98091d99353b48',1,'ImageToolBox']]],
+  ['imagerehaussementcontour',['ImageRehaussementContour',['../ImageToolBox_8h.html#ad84ad18114374057f34dbf768eb023bb',1,'ImageToolBox']]],
   ['imageresolutionreduction',['ImageResolutionReduction',['../ImageToolBox_8h.html#ad3060691d16fe608aa5fcd4f715f9c8a',1,'ImageToolBox']]],
   ['imagergb',['ImageRGB',['../ImageToolBox_8h.html#ab51b91eec0f177cd9448148e500c8c56',1,'ImageToolBox']]],
   ['imagerouge',['ImageRouge',['../ImageToolBox_8h.html#a23b7c155298aba8b4211add64433b596',1,'ImageToolBox']]],

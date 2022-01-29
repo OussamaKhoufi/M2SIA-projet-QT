@@ -221,10 +221,10 @@ void MainWindow::on_tableBiblioRowClicked(int row, int){
     ui->pushButtonSupprimerImage->setEnabled(_droitAcces) ;
     ui->pushButtonOuvrirImage->setEnabled(true) ;
     QTableWidgetItem *item = ui->tableWidgetBiblio->item(row,2) ;
-    _numImageSelected = item->text().toInt() ;
+    _numImageSelectionnee = item->text().toInt() ;
 
     for (int c = 0 ; c < _objBiblio.getBilbiotheque()["nbImages"].asInt() ; c++){
-        if (_numImageSelected == _objBiblio.getBilbiotheque()["images"][c]["numero"].asInt()){
+        if (_numImageSelectionnee == _objBiblio.getBilbiotheque()["images"][c]["numero"].asInt()){
             _indiceImageSelectionnee = c ;
             break ;
         }
@@ -237,7 +237,7 @@ void MainWindow::on_pushButtonSupprimerImage_clicked(){
     QMessageBox::StandardButton reply ;
       reply = QMessageBox::question(0, "Supprression de l'image", "Etes-vous sûr de vouloir supprimer cette image?",QMessageBox::Yes | QMessageBox::No) ;
       if (reply == QMessageBox::Yes){
-          _objBiblio.SupprimerImage(_numImageSelected) ;
+          _objBiblio.SupprimerImage(_numImageSelectionnee) ;
           updateTableWidgetBiblio() ;
       }
 }
@@ -303,7 +303,7 @@ void MainWindow::on_pushButtonAjouterImage_clicked(){
     // Charger l image à ajouter
     QString fileName = QFileDialog::getOpenFileName(0,tr("Choisir une image à ajouter"), QCoreApplication::applicationDirPath() ,tr("Fichiers Images (*.png *.jpg *.bmp *.pgm *.jpeg *.tiff)")) ;
     if (!fileName.isEmpty()){
-        _ImageAjouteeFileName = fileName.toStdString() ;
+        _ImageAjouteeNomFichier = fileName.toStdString() ;
         QPixmap pix(fileName) ;
         ui->labelImageAjoutee->setStyleSheet("image:url("+fileName+") ;") ;
         ui->labelImageAjoutee->setPixmap(pix.scaled(ui->labelImageAjoutee->width(),ui->labelImageAjoutee->height(),Qt::KeepAspectRatio)) ;
@@ -330,7 +330,7 @@ void MainWindow::on_pushButtonAjoutImageAjouter_clicked(){
     }else if( ui->dateEditAjoutImageDateAjout->date() < ui->dateEditAjoutImageDateCreation->date()){
         QMessageBox::information(0,"Erreur Ajout Image","La date d'ajout ne doit pas etre inférieur à la date de création!") ;
     }else if (source.length() && titre.length()){
-    _objBiblio.AjouterImage(_ImageAjouteeFileName,titre.toStdString(),numero,cout,source.toStdString(),dateAjout.toStdString(),dateCreation.toStdString(),acces) ;
+    _objBiblio.AjouterImage(_ImageAjouteeNomFichier,titre.toStdString(),numero,cout,source.toStdString(),dateAjout.toStdString(),dateCreation.toStdString(),acces) ;
     updateTableWidgetBiblio() ;
     ui->stackedWidget->setCurrentIndex(2) ;          // Aller au menu bibliothèque
     }else{
@@ -500,7 +500,7 @@ void MainWindow::on_pushButton_modifier_clicked(){
     QString dateCreation = ui->dateEditModificationImageDateCreation->date().toString("dd/MM/yyyy") ;
     Json::Value biblioJson = _objBiblio.getBilbiotheque() ;
 
-    if (_numImageSelected != numero && Bibliotheque::VerifierNumero(numero,_objBiblio.getBilbiotheque())){
+    if (_numImageSelectionnee != numero && Bibliotheque::VerifierNumero(numero,_objBiblio.getBilbiotheque())){
         QMessageBox::information(0,"Erreur Ajout Image","Le numéro que vous avez choisi existe dèjà!") ;
     }else if( ui->dateEditModificationImageDateAjout->date() < ui->dateEditModificationImageDateCreation->date()){
         QMessageBox::information(0,"Erreur Ajout Image","La date d'ajout ne doit pas etre inférieur à la date de création!") ;

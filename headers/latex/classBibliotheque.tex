@@ -67,6 +67,8 @@ vector$<$ int $>$ \hyperlink{classBibliotheque_a0a0c1d628bfa840f764d4ec483f4b1e6
 \item 
 static void \hyperlink{classBibliotheque_af2649bd20b0cf9cd35165abee4a45a12}{Extraire\+Date} (const string date, string \&jour, string \&mois, string \&annee)
 \begin{DoxyCompactList}\small\item\em Extraire jour, mois, annee a partir d\textquotesingle{}une date. \end{DoxyCompactList}\item 
+static void \hyperlink{classBibliotheque_a0756c71060d89b307c1a051fdeee6051}{Verifier\+Extension} (string \&nom)
+\begin{DoxyCompactList}\small\item\em Verifier l\textquotesingle{}extension \char`\"{}.\+json\char`\"{}. \end{DoxyCompactList}\item 
 static bool \hyperlink{classBibliotheque_a66606b7018ddd339af2a608ea4e6de9c}{Verifier\+Numero} (const int numero, const Json\+::\+Value biblio)
 \begin{DoxyCompactList}\small\item\em Verifier l\textquotesingle{}existance d\textquotesingle{}une image de numero spécifique dans l\textquotesingle{}objet json de la bibliotheque. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Attributs privés}
@@ -409,6 +411,21 @@ Trier un vecteur d\textquotesingle{}entiers dans l\textquotesingle{}ordre décro
 \begin{DoxyReturn}{Renvoie}
 vector$<$int$>$ \+: un vecteur d\textquotesingle{}entiers contenant les indices triés du vecteur d\textquotesingle{}entrée. 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classBibliotheque_a0756c71060d89b307c1a051fdeee6051}\label{classBibliotheque_a0756c71060d89b307c1a051fdeee6051}} 
+\index{Bibliotheque@{Bibliotheque}!Verifier\+Extension@{Verifier\+Extension}}
+\index{Verifier\+Extension@{Verifier\+Extension}!Bibliotheque@{Bibliotheque}}
+\subsubsection{\texorpdfstring{Verifier\+Extension()}{VerifierExtension()}}
+{\footnotesize\ttfamily static void Bibliotheque\+::\+Verifier\+Extension (\begin{DoxyParamCaption}\item[{string \&}]{nom }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Verifier l\textquotesingle{}extension \char`\"{}.\+json\char`\"{}. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em nom} & \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classBibliotheque_a66606b7018ddd339af2a608ea4e6de9c}\label{classBibliotheque_a66606b7018ddd339af2a608ea4e6de9c}} 
 \index{Bibliotheque@{Bibliotheque}!Verifier\+Numero@{Verifier\+Numero}}
 \index{Verifier\+Numero@{Verifier\+Numero}!Bibliotheque@{Bibliotheque}}

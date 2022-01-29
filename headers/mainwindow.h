@@ -34,110 +34,110 @@ public:
 
 private slots:
     /**
-     * @brief on_pushButtonIdentifier_clicked
+     * @brief Slot du bouton identification : Menu Identification
      */
-    void on_pushButtonIdentifier_clicked();             // button identification
+    void on_pushButtonIdentifier_clicked();
     /**
-     * @brief on_pushButtonQuitter_clicked
+     * @brief Slot du bouton Quitter : Menu Identification
      */
-    void on_pushButtonQuitter_clicked();                // Button Quitter l'application
+    void on_pushButtonQuitter_clicked();
     /**
-     * @brief on_pushButtonChargerBiblio_clicked
+     * @brief Slot du bouton Charger une bibliothèque : Menu Pricipal
      */
-    void on_pushButtonChargerBiblio_clicked();          // Button charger une bibliothèque
+    void on_pushButtonChargerBiblio_clicked();
     /**
-     * @brief on_pushButtonRetourIdentification_clicked
+     * @brief Slot du bouton Retour : Menu Pricipal
      */
-    void on_pushButtonRetourIdentification_clicked();   // button retour au menu identification
+    void on_pushButtonRetourIdentification_clicked();
     /**
-     * @brief on_tableBiblioRowClicked
+     * @brief Slot Selection d'une image de la bibliotheque : Menu Bibliothèque
      */
     void on_tableBiblioRowClicked(int , int);
     /**
-     * @brief on_pushButtonSauvegarder_clicked
+     * @brief Slot Bouton Sauvegarder la bibliotheque : Menu Bibliothèque
      */
     void on_pushButtonSauvegarder_clicked();
     /**
-     * @brief on_pushButtonSupprimerImage_clicked
+     * @brief Slot Supprimer l'image selectionnee de la bibliotheque : Menu Bibliothèque
      */
     void on_pushButtonSupprimerImage_clicked();
     /**
-     * @brief on_pushButtonRetourMenuPrincipal_clicked
+     * @brief Slot Bouton de Retour : Menu Bibliotheque
      */
     void on_pushButtonRetourMenuPrincipal_clicked();
     /**
-     * @brief on_lineEditMdp_returnPressed
+     * @brief Slot liée à un clique sur la touche entrée après avoir écrit le mdp : Envoi un signal click sur le bouton S'identifier
      */
     void on_lineEditMdp_returnPressed();
     /**
-     * @brief on_comboBoxTrierIndexChanged
+     * @brief Slot Critère tri qui déclence le tri de la bibliotheque à chaque fois que le critère a changé
      */
     void on_comboBoxTrierIndexChanged(int);
     /**
-     * @brief on_comboBoxCritereCoutIndexChanged
+     * @brief Slot comboBox Critère Cout qui construit la sous-liste à chaque fois que le critère a changé
      */
     void on_comboBoxCritereCoutIndexChanged(int);
     /**
-     * @brief on_comboBoxCritereDateAjoutIndexChanged
+     * @brief Slot comboBox Critère Date d'Ajout qui construit la sous-liste à chaque fois que le critère a changé
      */
     void on_comboBoxCritereDateAjoutIndexChanged(int);
     /**
-     * @brief on_pushButtonAjouterImage_clicked
+     * @brief Slot Bouton Ajouter une image à la bibliothèque chargé : Menu Ajout Image
      */
     void on_pushButtonAjouterImage_clicked();
     /**
-     * @brief on_pushButtonAjoutImageAnnuler_clicked
+     * @brief Slot Bouton Annuler l'ajout de l'image et retourner au Menu Bibliothèque
      */
     void on_pushButtonAjoutImageAnnuler_clicked();
     /**
-     * @brief on_pushButtonAjoutImageAjouter_clicked
+     * @brief Slot Ajouter l'image choisi à la bibliothèque après vérification de son descripteur rempli par l'utilisateur : Menu Ajout Image
      */
     void on_pushButtonAjoutImageAjouter_clicked();
     /**
-     * @brief on_pushButtonCreerBiblio_clicked
+     * @brief Slot Bouton Creer une nouvelle bibliotheque : Menu Principal
      */
     void on_pushButtonCreerBiblio_clicked();
     /**
-     * @brief on_pushButtonSauvegarderSousListe_clicked
+     * @brief Slot Bouton Sauvegarder la sous-liste en tant que bibliothèque dans un nouveau fichier : Menu Bibliothèque
      */
     void on_pushButtonSauvegarderSousListe_clicked();
     /**
-     * @brief on_pushButtonOuvrirImage_clicked
+     * @brief Slot Bouton Ouvrir l'image sélectionnée de la bibliothèque : Menu Bibliothèque
      */
     void on_pushButtonOuvrirImage_clicked();
     /**
-     * @brief on_pushButtonRetourMenuModificationImage_clicked
+     * @brief Slot Bouton Retour : Menu Modification Image
      */
     void on_pushButtonRetourMenuModificationImage_clicked();
     /**
-     * @brief on_doubleSpinBoxMin_valueChanged
+     * @brief Slot SpinBox de la valeur min  du critère de construction de sous-liste : Menu Bibliotheque
      */
     void on_doubleSpinBoxMin_valueChanged(double);
     /**
-     * @brief on_doubleSpinBoxMax_valueChanged
+     * @brief Slot SpinBox de la valeur max  du critère de construction de sous-liste : Menu Bibliotheque
      */
     void on_doubleSpinBoxMax_valueChanged(double);
 
     // Page Consultation Image --------------------------------
     // Agrandissement de l'image
     /**
-     * @brief on_horizontalSlider_agrandissementNonModifiable_valueChanged
+     * @brief Slot Slider lié au zoom de l'image affiché : Menu Consultation Image
      */
     void on_horizontalSlider_agrandissementNonModifiable_valueChanged(int) ;
     // Page Image modifiable--------------------------------
     // Bouton de sauvegarder les modifications
     /**
-     * @brief on_pushButton_modifier_clicked
+     * @brief Slot Bouton Sauvegarder Descripteur de l'image selectionnée : Menu Modification Image
      */
     void on_pushButton_modifier_clicked() ;
     // Agrandissement de l'image
     /**
-     * @brief on_horizontalSlider_agrandissement_valueChanged
+     * @brief Slot Slider lié au zoom de l'image affiché : Menu Modification Image
      */
     void on_horizontalSlider_agrandissement_valueChanged(int) ;
     // Passer a la page des traitements de l'image choisie
     /**
-     * @brief on_pushButton_traitementImage_clicked
+     * @brief Slot Bouton Traiter l'image selectionnée : Menu Modification Image
      */
     void on_pushButton_traitementImage_clicked() ;
 
@@ -146,27 +146,27 @@ private slots:
 
     // Retour a la page pour choisir l'image a traiter
     /**
-     * @brief on_pushButton_retour_clicked
+     * @brief Retour a la page pour choisir l'image a traiter
      */
     void on_pushButton_retour_clicked() ;
     // Agrandissement de l'image originale
     /**
-     * @brief on_horizontalSlider_imageOriginale_valueChanged
+     * @brief Agrandissement de l'image originale
      */
     void on_horizontalSlider_imageOriginale_valueChanged(int) ;
     // Agrandissement de l'image traitee
     /**
-     * @brief on_horizontalSlider_imageTraitee_valueChanged
+     * @brief  Agrandissement de l'image traitee
      */
     void on_horizontalSlider_imageTraitee_valueChanged(int) ;
     // Reinitialiser l'image originale
     /**
-     * @brief on_pushButton_traitementReinitialiser_clicked
+     * @brief Reinitialiser l'image originale
      */
     void on_pushButton_traitementReinitialiser_clicked() ;
     // Sauvegarder temporellement l'image de resultat
     /**
-     * @brief on_pushButton_traitementAppliquer_clicked
+     * @brief Sauvegarder temporellement l'image de resultat
      */
     void on_pushButton_traitementAppliquer_clicked() ;
 
@@ -174,47 +174,47 @@ private slots:
 
     // Initialiser
     /**
-     * @brief on_groupBox_correction_clicked
+     * @brief Initialiser Luminosite
      */
     void on_groupBox_correction_clicked() ;
     // Bouton : Intensite lumineuse
     /**
-     * @brief on_radioButton_luminosite_clicked
+     * @brief Bouton : Intensite lumineuse
      */
     void on_radioButton_luminosite_clicked() ;
     // Intensite lumineuse
     /**
-     * @brief on_horizontalSlider_luminosite_valueChanged
+     * @brief Intensite lumineuse
      */
     void on_horizontalSlider_luminosite_valueChanged(int) ;
     // Bouton : Contraste
     /**
-     * @brief on_radioButton_contraste_clicked
+     * @brief Bouton : Contraste
      */
     void on_radioButton_contraste_clicked() ;
     // Contraste
     /**
-     * @brief on_horizontalSlider_contraste_valueChanged
+     * @brief Contraste
      */
     void on_horizontalSlider_contraste_valueChanged(int) ;
     // Bouton : Ombre
     /**
-     * @brief on_radioButton_ombre_clicked
+     * @brief  Bouton : Ombre
      */
     void on_radioButton_ombre_clicked() ;
     // Ombre
     /**
-     * @brief on_horizontalSlider_ombre_valueChanged
+     * @brief Ombre
      */
     void on_horizontalSlider_ombre_valueChanged(int) ;
     // Bouton : Haute lumiere
     /**
-     * @brief on_radioButton_brillance_clicked
+     * @brief Slot Bouton : Haute lumiere
      */
     void on_radioButton_brillance_clicked() ;
     // Haute lumiere
     /**
-     * @brief on_horizontalSlider_brillance_valueChanged
+     * @brief Slot Slider Haute lumiere
      */
     void on_horizontalSlider_brillance_valueChanged(int) ;
 
@@ -222,27 +222,27 @@ private slots:
 
     // Initialiser
     /**
-     * @brief on_groupBox_details_clicked
+     * @brief Initialiser Details
      */
     void on_groupBox_details_clicked() ;
     // Bouton : Nettete
     /**
-     * @brief on_radioButton_nettete_clicked
+     * @brief Bouton : Nettete
      */
     void on_radioButton_nettete_clicked() ;
     // Nettete
     /**
-     * @brief on_horizontalSlider_nettete_valueChanged
+     * @brief Nettete
      */
     void on_horizontalSlider_nettete_valueChanged(int) ;
     // Bouton : Bruitage
     /**
-     * @brief on_radioButton_bruitage_clicked
+     * @brief  Bouton : Bruitage
      */
     void on_radioButton_bruitage_clicked() ;
     // Bruitage
     /**
-     * @brief on_horizontalSlider_Bruitage_valueChanged
+     * @brief Bruitage
      */
     void on_horizontalSlider_Bruitage_valueChanged(int) ;
 
@@ -250,63 +250,63 @@ private slots:
 
     // Initialiser
     /**
-     * @brief on_groupBox_filtres_clicked
+     * @brief Initialiser Filtres de couleur
      */
     void on_groupBox_filtres_clicked() ;
     // Image originale
     /**
-     * @brief on_radioButton_originale_clicked
+     * @brief Image originale
      */
     void on_radioButton_originale_clicked() ;
     // Image en niveau de gris
     /**
-     * @brief on_radioButton_niveauGris_clicked
+     * @brief Image en niveau de gris
      */
     void on_radioButton_niveauGris_clicked() ;
     // Image inversee
     /**
-     * @brief on_radioButton_inversement_clicked
+     * @brief Image inversee
      */
     void on_radioButton_inversement_clicked() ;
     // Image rouge
     /**
-     * @brief on_radioButton_rouge_clicked
+     * @brief Image rouge
      */
     void on_radioButton_rouge_clicked() ;
     // Image verte
     /**
-     * @brief on_radioButton_vert_clicked
+     * @brief Image verte
      */
     void on_radioButton_vert_clicked() ;
     // Image bleue
     /**
-     * @brief on_radioButton_bleu_clicked
+     * @brief Image bleue
      */
     void on_radioButton_bleu_clicked() ;
     // Image jaune
     /**
-     * @brief on_radioButton_jaune_clicked
+     * @brief Image jaune
      */
     void on_radioButton_jaune_clicked() ;
     // Image cyane
     /**
-     * @brief on_radioButton_cyan_clicked
+     * @brief Image cyane
      */
     void on_radioButton_cyan_clicked() ;
     // Image sepia
     /**
-     * @brief on_radioButton_sepia_clicked
+     * @brief  Image sepia
      */
     void on_radioButton_sepia_clicked() ;
     // Image magenta
     /**
 
-     * @brief on_radioButton_magenta_clicked
+     * @brief  Image magenta
      */
     void on_radioButton_magenta_clicked() ;
     // Image RGB
     /**
-     * @brief on_radioButton_rgb_clicked
+     * @brief Image RGB
      */
     void on_radioButton_rgb_clicked() ;
 
@@ -314,22 +314,22 @@ private slots:
 
     // Initialiser
     /**
-    * @brief on_groupBox_extractionRVB_clicked
+    * @brief Initialiser Extraction du canal de couleur
     */
    void on_groupBox_extractionRVB_clicked();
     // Extraction canal rouge
    /**
-     * @brief on_radioButton_extractionR_clicked
+     * @brief Extraction canal rouge
      */
     void on_radioButton_extractionR_clicked() ;
     // Extraction canal vert
     /**
-     * @brief on_radioButton_extractionV_clicked
+     * @brief Extraction canal vert
      */
     void on_radioButton_extractionV_clicked() ;
     // Extraction canal bleu
     /**
-     * @brief on_radioButton_extractionB_clicked
+     * @brief Extraction canal bleu
      */
     void on_radioButton_extractionB_clicked() ;
 
@@ -337,88 +337,88 @@ private slots:
 
     // Initialiser
     /**
-     * @brief on_groupBox_seuillageSegmentation_clicked
+     * @brief Initialiser Seuillage & Segmentation
      */
     void on_groupBox_seuillageSegmentation_clicked();
     // Seuillage
     /**
-     * @brief on_radioButton_seuillage_clicked
+     * @brief Seuillage
      */
     void on_radioButton_seuillage_clicked() ;
     // Segmentation
     /**
-     * @brief on_radioButton_segmentation_clicked
+     * @brief Segmentation
      */
     void on_radioButton_segmentation_clicked() ;
     // Seuils simples
     /**
-     * @brief on_radioButton_seuillageSimple_clicked
+     * @brief Seuils simples
      */
     void on_radioButton_seuillageSimple_clicked() ;
     // Seuils par hysteresis
     /**
-     * @brief on_radioButton_seuillageHysteresis_clicked
+     * @brief Seuils par hysteresis
      */
     void on_radioButton_seuillageHysteresis_clicked() ;
     // Seuil bas rouge
     /**
-     * @brief on_verticalSlider_seuilBasR_2_valueChanged
+     * @brief Seuil bas rouge
      */
     void on_verticalSlider_seuilBasR_2_valueChanged(int) ;
     // Seuil bas vert
     /**
-     * @brief on_verticalSlider_seuilBasV_2_valueChanged
+     * @brief Seuil bas vert
      */
     void on_verticalSlider_seuilBasV_2_valueChanged(int) ;
     // Seuil bas bleu
     /**
-     * @brief on_verticalSlider_seuilBasB_2_valueChanged
+     * @brief Seuil bas bleu
      */
     void on_verticalSlider_seuilBasB_2_valueChanged(int) ;
     // Seuil haut rouge
     /**
-     * @brief on_verticalSlider_seuilHautR_2_valueChanged
+     * @brief Seuil haut rouge
      */
     void on_verticalSlider_seuilHautR_2_valueChanged(int) ;
     // Seuil haut vert
     /**
-     * @brief on_verticalSlider_seuilHautV_2_valueChanged
+     * @brief Seuil haut vert
      */
     void on_verticalSlider_seuilHautV_2_valueChanged(int) ;
     // Seuil haut bleu
     /**
-     * @brief on_verticalSlider_seuilHautB_2_valueChanged
+     * @brief Seuil haut bleu
      */
     void on_verticalSlider_seuilHautB_2_valueChanged(int) ;
 
     // Reinitialiser seuil bas rouge
     /**
-     * @brief on_pushButton_seuilBasR_clicked
+     * @brief Reinitialiser seuil bas rouge
      */
     void on_pushButton_seuilBasR_clicked() ;
     // Reinitialiser seuil bas vert
     /**
-     * @brief on_pushButton_seuilBasV_clicked
+     * @brief Reinitialiser seuil bas vert
      */
     void on_pushButton_seuilBasV_clicked() ;
     // Reinitialiser seuil bas bleu
     /**
-     * @brief on_pushButton_seuilBasB_clicked
+     * @brief Reinitialiser seuil bas bleu
      */
     void on_pushButton_seuilBasB_clicked() ;
     // Reinitialiser seuil haut rouge
     /**
-     * @brief on_pushButton_seuilHautR_clicked
+     * @brief Reinitialiser seuil haut rouge
      */
     void on_pushButton_seuilHautR_clicked() ;
     // Reinitialiser seuil haut vert
     /**
-     * @brief on_pushButton_seuilHautV_clicked
+     * @brief Reinitialiser seuil haut vert
      */
     void on_pushButton_seuilHautV_clicked() ;
     // Reinitialiser seuil haut bleu
     /**
-     * @brief on_pushButton_seuilHautB_clicked
+     * @brief Reinitialiser seuil haut bleu
      */
     void on_pushButton_seuilHautB_clicked() ;
 
@@ -426,17 +426,17 @@ private slots:
 
     // Initialiser
     /**
-     * @brief on_groupBox_contours_clicked
+     * @brief Initialiser Contours
      */
     void on_groupBox_contours_clicked() ;
     // Contours par filtres gradients
     /**
-     * @brief on_radioButton_contoursGradient_clicked
+     * @brief Contours par filtres gradients
      */
     void on_radioButton_contoursGradient_clicked() ;
     // Contours par filtre laplacien
     /**
-     * @brief on_radioButton_contoursLaplacien_clicked
+     * @brief Contours par filtre laplacien
      */
     void on_radioButton_contoursLaplacien_clicked() ;
 
@@ -444,67 +444,65 @@ private slots:
 
     // Initialiser
     /**
-     * @brief on_groupBox_resolutionQuantification_clicked
+     * @brief Initialiser Resolution
      */
     void on_groupBox_resolutionQuantification_clicked();
     // Bouton : Resolution
     /**
-     * @brief on_radioButton_resolution_clicked
+     * @brief Bouton : Resolution
      */
     void on_radioButton_resolution_clicked();
     // Bouton : Interpolation par pixel le plus proche
     /**
-     * @brief on_radioButton_PPP_clicked
+     * @brief Bouton : Interpolation par pixel le plus proche
      */
     void on_radioButton_PPP_clicked() ;
     // Bouton : Interpolation bilineaire
     /**
-     * @brief on_radioButton_bipolaire_clicked
+     * @brief Bouton : Interpolation bilineaire
      */
     void on_radioButton_bipolaire_clicked() ;
     // Resolution
     /**
-     * @brief on_horizontalSlider_resolution_valueChanged
-     * @param value
+     * @brief Resolution
      */
-    void on_horizontalSlider_resolution_valueChanged(int value) ;
+    void on_horizontalSlider_resolution_valueChanged(int ) ;
     // Bouton : Quantification
     /**
-     * @brief on_radioButton_quantification_clicked
+     * @brief Bouton : Quantification
      */
     void on_radioButton_quantification_clicked() ;
     // Quantification
     /**
-     * @brief on_horizontalSlider_quantification_valueChanged
-     * @param value
+     * @brief Quantification
      */
-    void on_horizontalSlider_quantification_valueChanged(int value) ;
+    void on_horizontalSlider_quantification_valueChanged(int ) ;
 
     // -------------Debruitage-------------
 
     // Initialiser
     /**
-     * @brief on_groupBox_debruitage_clicked
+     * @brief Initialiser Debruitage
      */
     void on_groupBox_debruitage_clicked() ;
     // Filtre moyeneur
     /**
-     * @brief on_radioButton_moyenneur_clicked
+     * @brief Filtre moyeneur
      */
     void on_radioButton_moyenneur_clicked() ;
     // Filtre gaussien
     /**
-     * @brief on_radioButton_gaussien_clicked
+     * @brief Filtre gaussien
      */
     void on_radioButton_gaussien_clicked() ;
     // Filtre median
     /**
-     * @brief on_radioButton_median_clicked
+     * @brief Filtre median
      */
     void on_radioButton_median_clicked() ;
     // Filtre de Kuwahara-Nagao
     /**
-     * @brief on_radioButton_kuwahara_clicked
+     * @brief Filtre de Kuwahara-Nagao
      */
     void on_radioButton_kuwahara_clicked();
 
@@ -512,313 +510,302 @@ private slots:
 
     // Initialiser
     /**
-     * @brief on_groupBox_couleur_clicked
+     * @brief Initialiser Couleur
      */
     void on_groupBox_couleur_clicked() ;
     // Bouton : Temperature
     /**
-     * @brief on_radioButton_temperature_clicked
+     * @brief Bouton : Temperature
      */
     void on_radioButton_temperature_clicked() ;
     // Temperature
     /**
-     * @brief on_horizontalSlider_temperature_valueChanged
-     * @param value
+     * @brief Temperature
      */
-    void on_horizontalSlider_temperature_valueChanged(int value) ;
+    void on_horizontalSlider_temperature_valueChanged(int ) ;
     // Bouton : Vividite
     /**
-     * @brief on_radioButton_vividite_clicked
+     * @brief Bouton : Vividite
      */
     void on_radioButton_vividite_clicked() ;
     // Vividite
     /**
-     * @brief on_horizontalSlider_vividite_valueChanged
-     * @param value
+     * @brief Vividite
      */
-    void on_horizontalSlider_vividite_valueChanged(int value) ;
+    void on_horizontalSlider_vividite_valueChanged(int ) ;
     // Bouton : Teinte
     /**
-     * @brief on_radioButton_teinte_clicked
+     * @brief Bouton : Teinte
      */
     void on_radioButton_teinte_clicked() ;
     // Teinte
     /**
-     * @brief on_horizontalSlider_teinte_valueChanged
-     * @param value
+     * @brief Teinte
      */
-    void on_horizontalSlider_teinte_valueChanged(int value) ;
+    void on_horizontalSlider_teinte_valueChanged(int ) ;
     // Bouton : Saturation
     /**
-     * @brief on_radioButton_saturation_clicked
+     * @brief Bouton : Saturation
      */
     void on_radioButton_saturation_clicked() ;
     // Saturation
     /**
-     * @brief on_horizontalSlider_saturation_valueChanged
-     * @param value
+     * @brief Saturation
      */
-    void on_horizontalSlider_saturation_valueChanged(int value) ;
+    void on_horizontalSlider_saturation_valueChanged(int ) ;
 
 
     //-------------Autres-------------
     // Generer les icones
     /**
-     * @brief GenererIcone
+     * @brief  Generer les icones
      */
     void GenererIcone() ;
     // Afficher l'image resultante apres un traitement avec inversement des canaux de couleur
     /**
-     * @brief AffichageResultat
+     * @brief Afficher l'image resultante apres un traitement avec inversement des canaux de couleur
      * @param image
      * @param choix
      */
     void AffichageResultat(const Mat image, const int choix) ;
     // Messages d'aide
     /**
-     * @brief AfficherMessageAide
+     * @brief Messages d'aide
      */
     void AfficherMessageAide() ;
     // Messages d'aide : Luminosite
     /**
-     * @brief AfficherMessageAideLuminosite
+     * @brief Messages d'aide : Luminosite
      */
     void AfficherMessageAideLuminosite() ;
     // Messages d'aide : Couleur
     /**
-     * @brief AfficherMessageAideCouleur
+     * @brief Messages d'aide : Couleur
      */
     void AfficherMessageAideCouleur() ;
     // Messages d'aide : Details
     /**
-     * @brief AfficherMessageAideDetail
+     * @brief Messages d'aide : Details
      */
     void AfficherMessageAideDetail() ;
 
     // Messages d'aide : Resolution
     /**
-     * @brief AfficherMessageAideResolution
+     * @brief Messages d'aide : Resolution
      */
     void AfficherMessageAideResolution() ;
     // Messages d'aide : Extraction
     /**
-     * @brief AfficherMessageAideExtraction
+     * @brief Messages d'aide : Extraction
      */
     void AfficherMessageAideExtraction() ;
 
     // Messages d'aide : Contours
     /**
-     * @brief AfficherMessageAideContour
+     * @brief Messages d'aide : Contours
      */
     void AfficherMessageAideContour() ;
 
 
     // Messages d'aide : Debruitage
     /**
-     * @brief AfficherMessageAideDebruitage
+     * @brief Messages d'aide : Debruitage
      */
     void AfficherMessageAideDebruitage() ;
 
     // Messages d'aide : Seuillage et segmentation
     /**
-     * @brief AfficherMessageAideSeuillageSegmentation
+     * @brief Messages d'aide : Seuillage et segmentation
      */
     void AfficherMessageAideSeuillageSegmentation() ;
 
     // Messages d'aide : Filtres
     /**
-     * @brief AfficherMessageAideFiltre
+     * @brief Messages d'aide : Filtres
      */
     void AfficherMessageAideFiltre() ;
 
-
-
-
-
     // Reinitialisation generale
     /**
-     * @brief Reinitialiser
+     * @brief  Reinitialisation generale
      */
     void Reinitialiser() ;
 
     // Reinitialiser : Box Luminosite
     /**
-     * @brief ReinitialiserLuminosite
+     * @brief Reinitialiser : Box Luminosite
      */
     void ReinitialiserLuminosite() ;
+
     // Reinitialiser : Box Couleur
     /**
-     * @brief ReinitialiserCouleur
+     * @brief Reinitialiser : Box Couleur
      */
     void ReinitialiserCouleur() ;
 
     // Reinitialiser : Box Resolution
     /**
-     * @brief ReinitialiserResolution
+     * @brief Reinitialiser : Box Resolution
      */
     void ReinitialiserResolution() ;
 
     // Reinitialiser : Box Details
     /**
-     * @brief ReinitialiserDetail
+     * @brief Reinitialiser : Box Details
      */
     void ReinitialiserDetail() ;
 
     // Reinitialiser : Box Extraction
 
     /**
-     * @brief ReinitialiserExtraction
+     * @brief Reinitialiser : Box Extraction
      */
     void ReinitialiserExtraction() ;
 
     // Reinitialiser : Box Contours
     /**
-     * @brief ReinitialiserContour
+     * @brief Reinitialiser : Box Contours
      */
     void ReinitialiserContour() ;
 
     // Reinitialiser : Box Debruitage
     /**
-     * @brief ReinitialiserDebruitage
+     * @brief Reinitialiser : Box Debruitage
      */
     void ReinitialiserDebruitage() ;
 
     // Reinitialiser : Box Seuillage et segmentation
     /**
-     * @brief ReinitialiserSeuillageSegmentation
+     * @brief  Reinitialiser : Box Seuillage et segmentation
      */
     void ReinitialiserSeuillageSegmentation() ;
 
     // Reinitialiser : Box Filtres
     /**
-     * @brief ReinitialiserFiltre
+     * @brief  Reinitialiser : Box Filtres
      */
     void ReinitialiserFiltre() ;
 
     /**
-     * @brief on_radioButton_fourier_clicked
+     * @brief Transformée de Frourier
      */
     void on_radioButton_fourier_clicked() ;
 
-
     /**
-     * @brief on_radioButtonEgalisation_clicked
+     * @brief Egalisation d'image
      */
     void on_radioButtonEgalisation_clicked() ;
+
     /**
-     * @brief on_radioButtonBruitPoivreSel_clicked
+     * @brief Bruit poivre et sel
      */
     void on_radioButtonBruitPoivreSel_clicked() ;
 
-
-
-
     /**
-     * @brief on_groupBox_autre_clicked
+     * @brief autres filtres
      */
     void on_groupBox_autre_clicked();
     // Reinitialiser : Box Autres
     /**
-     * @brief ReinitialiserAutre
+     * @brief Reinitialiser : Box Autres
      */
     void ReinitialiserAutre() ;
 
     /**
-     * @brief on_radioButtonKmeans_clicked
+     * @brief Bouton K-means
      */
     void on_radioButtonKmeans_clicked();
 
-
     /**
-     * @brief on_radioButtonTransformeeHough_clicked
+     * @brief Transformée de Hough
      */
     void on_radioButtonTransformeeHough_clicked();
 
-
-
-
-
-
     /**
-     * @brief on_pushButtonRetourMenuConsultationImage_clicked
+     * @brief Bouton Retour : Menu Consultation Image
      */
     void on_pushButtonRetourMenuConsultationImage_clicked();
 
 
     /**
-     * @brief on_pushButton_traitementSauvegarder_clicked
+     * @brief Sauvegarder l'image traitée : Menu Traitment Image
      */
     void on_pushButton_traitementSauvegarder_clicked();
 
     /**
-     * @brief on_pushButtonAfficherImageTraitee_clicked
+     * @brief Afficher Image Traitée (version agrandi)
      */
     void on_pushButtonAfficherImageTraitee_clicked();
-
+    
+    /**
+     * @brief Slot du bouton Retour après agrandissement de l'image traitée
+     */
     void on_pushButton_clicked();
+
+    /**
+     * @brief mise à jour du tableau des descripteurs après chargement de la bibliothèque
+     */
+    void updateTableWidgetBiblio();
+
+    /**
+     * @brief mise à jour du tableau de la sous liste de la bibliothèque
+     */
+    void updateTableWidgetSousListeBiblio(Json::Value);
 
 private:
 
     Ui::MainWindow *ui;
     /**
-     * @brief _objBiblio
+     * @brief Objet de classe Bibliothèque contenant la bibliothèque chargée par l'utilisateur
      */
-    Bibliotheque _objBiblio;          // Objet de classe Bibliothèque
+    Bibliotheque _objBiblio;         
     /**
-     * @brief _droitAcces
+     * @brief droit d'acces de l'utilisateur, true : utilisateur niveau 2 , false : utilisateur niveau 1
      */
-    bool _droitAcces;                 // droit d'acces de l'utilisateur, true : utilisateur niveau 2 , false : utilisateur niveau 1
+    bool _droitAcces;              
     /**
-     * @brief _numImageSelected
+     * @brief  numéro de l'image selectionnee par l'utilisateur
      */
-    int _numImageSelected;            // numéro de l'image selectionnee par l'utilisateur
+    int _numImageSelectionnee;      
     /**
-     * @brief _ImageAjouteeFileName
+     * @brief  Nom du Fichier de l'Image Ajoutee 
      */
-    string _ImageAjouteeFileName;     //
+    string _ImageAjouteeNomFichier;    
     /**
-     * @brief _objSousListeBiblio
+     * @brief Objet de classe Bibliothèque contenant la sous-liste construite à partir de la bibliothèque chargée par l'utilisateur
      */
     Bibliotheque _objSousListeBiblio ;
     /**
-     * @brief _indiceImageSelectionnee
+     * @brief Indice de l'image choisi dans la bibliotheque 
      */
-    int _indiceImageSelectionnee ;   // Indice de l'image choisi dans la bibliotheque
+    int _indiceImageSelectionnee ;   
     /**
-     * @brief _imageOriginale
+     * @brief Image originale
      */
-    Mat _imageOriginale ;            // Image originale
+    Mat _imageOriginale ;            
     /**
-    * @brief _histoImageOriginale
+    * @brief Histogramme de l'image originale du menu Traitement d'image
     */
-   Mat _histoImageOriginale ;       // Histogramme de l'image originale
+   Mat _histoImageOriginale ;      
 
    /**
-     * @brief _imageResultat
+     * @brief Image resultante après traitement d'image 
      */
-    Mat _imageResultat ;             // Image resultante
+    Mat _imageResultat ;             
     /**
-     * @brief _histoImageResultat
+     * @brief Histogramme de l'image resultante après traitement d'image 
      */
-    Mat _histoImageResultat ;        // Histogramme de l'image resultante
+    Mat _histoImageResultat ;        
     /**
-     * @brief _seuilBas
+     * @brief Vecteur des Seuils bas du menu Traitement d'image
      */
-    vector<int> _seuilBas ;          // Seuils bas
+    vector<int> _seuilBas ;         
     /**
-     * @brief _seuilHaut
+     * @brief Vecteur des Seuils hauts du menu Traitement d'image
      */
-    vector<int> _seuilHaut;          // Seuils hauts
+    vector<int> _seuilHaut;         
 
 
-    /**
-     * @brief updateTableWidgetBiblio
-     */
-    void updateTableWidgetBiblio();                     // mise à jour du tableau des descripteurs après chargement de la bibliothèque
-    /**
-     * @brief updateTableWidgetSousListeBiblio
-     */
-    void updateTableWidgetSousListeBiblio(Json::Value);            // mise à jour du tableau de la sous liste de la bibliothèque
 
 
 };

@@ -59,38 +59,21 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Fonctions</a>  </div>
   <div class="headertitle">
 <div class="title">Référence du fichier ImageToolBox.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Header du namespace ImageToolBox.  
+<p>Header du namespace ImageToolBox contenant les différentes fonctions de traitement d'images.  
 <a href="#details">Plus de détails...</a></p>
-<div class="textblock"><code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
-<code>#include &lt;vector&gt;</code><br />
-<code>#include &lt;fstream&gt;</code><br />
-<code>#include &lt;algorithm&gt;</code><br />
-<code>#include &lt;cmath&gt;</code><br />
-<code>#include &lt;complex&gt;</code><br />
-<code>#include &lt;jsoncpp/json/value.h&gt;</code><br />
-<code>#include &lt;jsoncpp/json/json.h&gt;</code><br />
-<code>#include &quot;rapidjson/document.h&quot;</code><br />
-<code>#include &quot;rapidjson/writer.h&quot;</code><br />
-<code>#include &lt;opencv2/core/core.hpp&gt;</code><br />
+<div class="textblock"><code>#include &lt;opencv2/core/core.hpp&gt;</code><br />
 <code>#include &lt;opencv2/highgui/highgui.hpp&gt;</code><br />
 <code>#include &lt;opencv2/imgproc/imgproc.hpp&gt;</code><br />
-<code>#include &lt;experimental/filesystem&gt;</code><br />
-<code>#include &quot;<a class="el" href="bibliotheque_8h_source.html">headers/bibliotheque.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Graphe des dépendances par inclusion de ImageToolBox.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="ImageToolBox_8h__incl.png" border="0" usemap="#ImageToolBox_8h" alt=""/></div>
-<map name="ImageToolBox_8h" id="ImageToolBox_8h">
-<area shape="rect" id="node17" href="bibliotheque_8h.html" title="Header de la classe Bibliotheque. " alt="" coords="429,80,581,107"/>
-</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 Ce graphe montre quels fichiers incluent directement ou indirectement ce fichier :</div>
@@ -103,12 +86,6 @@ Ce graphe montre quels fichiers incluent directement ou indirectement ce fichier
 </div>
 <p><a href="ImageToolBox_8h_source.html">Aller au code source de ce fichier.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ae3b21f339690a966e921fe2545939862"><td class="memItemLeft" align="right" valign="top"><a id="ae3b21f339690a966e921fe2545939862"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>json_char</b>&#160;&#160;&#160;TCHAR</td></tr>
-<tr class="separator:ae3b21f339690a966e921fe2545939862"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Fonctions</h2></td></tr>
 <tr class="memitem:addd661843fdb0c511f46875651edcbd6"><td class="memItemLeft" align="right" valign="top">Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ImageToolBox_8h.html#addd661843fdb0c511f46875651edcbd6">ImageToolBox::ImageTemperature</a> (const Mat image, const int valeur)</td></tr>
@@ -213,9 +190,9 @@ Fonctions</h2></td></tr>
 <tr class="memitem:a9e7de80e685011b2f9359c9dd71f7a73"><td class="memItemLeft" align="right" valign="top">Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ImageToolBox_8h.html#a9e7de80e685011b2f9359c9dd71f7a73">ImageToolBox::ImageContourLaplace</a> (const Mat image)</td></tr>
 <tr class="memdesc:a9e7de80e685011b2f9359c9dd71f7a73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Détecter les contours dans l'image par un filtre laplacien (3x3)  <a href="ImageToolBox_8h.html#a9e7de80e685011b2f9359c9dd71f7a73">Plus de détails...</a><br /></td></tr>
 <tr class="separator:a9e7de80e685011b2f9359c9dd71f7a73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea6bb5426267ff811c98091d99353b48"><td class="memItemLeft" align="right" valign="top">Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ImageToolBox_8h.html#aea6bb5426267ff811c98091d99353b48">ImageToolBox::ImageRehaussementContour</a> (const Mat image, const int val, const int choix)</td></tr>
-<tr class="memdesc:aea6bb5426267ff811c98091d99353b48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rehausser les contours de l'image en rajoutant d'une valeur d'intensité lumineuse sur les pixels des contours détéctés par un filtre choisi (3x3)  <a href="ImageToolBox_8h.html#aea6bb5426267ff811c98091d99353b48">Plus de détails...</a><br /></td></tr>
-<tr class="separator:aea6bb5426267ff811c98091d99353b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad84ad18114374057f34dbf768eb023bb"><td class="memItemLeft" align="right" valign="top">Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ImageToolBox_8h.html#ad84ad18114374057f34dbf768eb023bb">ImageToolBox::ImageRehaussementContour</a> (const Mat image, const int val)</td></tr>
+<tr class="memdesc:ad84ad18114374057f34dbf768eb023bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rehausser les contours de l'image en rajoutant d'une valeur d'intensité lumineuse sur les pixels des contours détéctés par un filtre choisi (3x3)  <a href="ImageToolBox_8h.html#ad84ad18114374057f34dbf768eb023bb">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ad84ad18114374057f34dbf768eb023bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d1e3341d7f49b5e3a018554fb00cdea"><td class="memItemLeft" align="right" valign="top">Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ImageToolBox_8h.html#a7d1e3341d7f49b5e3a018554fb00cdea">ImageToolBox::ImageSeuillage</a> (const Mat image, const int seuil)</td></tr>
 <tr class="memdesc:a7d1e3341d7f49b5e3a018554fb00cdea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seuiller d'une composante de l'image avec un seui de valeur réglable.  <a href="ImageToolBox_8h.html#a7d1e3341d7f49b5e3a018554fb00cdea">Plus de détails...</a><br /></td></tr>
 <tr class="separator:a7d1e3341d7f49b5e3a018554fb00cdea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -362,7 +339,7 @@ Fonctions</h2></td></tr>
 <tr class="separator:add7af4ead9829a856b445e291318994e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
-<div class="textblock"><p>Header du namespace ImageToolBox. </p>
+<div class="textblock"><p>Header du namespace ImageToolBox contenant les différentes fonctions de traitement d'images. </p>
 <dl class="section version"><dt>Version</dt><dd>0.1 </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2022-01-22</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2022 </dd></dl>
@@ -1567,8 +1544,8 @@ Fonctions</h2></td></tr>
 
 </div>
 </div>
-<a id="file_aea6bb5426267ff811c98091d99353b48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#file_aea6bb5426267ff811c98091d99353b48">&#9670;&nbsp;</a></span>ImageRehaussementContour()</h2>
+<a id="file_ad84ad18114374057f34dbf768eb023bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_ad84ad18114374057f34dbf768eb023bb">&#9670;&nbsp;</a></span>ImageRehaussementContour()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1583,13 +1560,7 @@ Fonctions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>val</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>choix</em>&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1772,7 +1743,7 @@ Fonctions</h2></td></tr>
 <dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
     <tr><td class="paramname">image</td><td>Composante de l'image de départ </td></tr>
-    <tr><td class="paramname">valeur</td><td>Valeur de la saturation à adjuster </td></tr>
+    <tr><td class="paramname">valeur</td><td>Valeur de la saturation à ajuster </td></tr>
   </table>
   </dd>
 </dl>
@@ -2007,7 +1978,7 @@ Fonctions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Renvoie</dt><dd>Composante de l'image suillée </dd></dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Composante de l'image seuillée </dd></dl>
 
 </div>
 </div>
@@ -2207,7 +2178,7 @@ Fonctions</h2></td></tr>
 <dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
     <tr><td class="paramname">image</td><td>Image de départ (dimensions quelconques) </td></tr>
-    <tr><td class="paramname">valeur</td><td>Valeur de la température à adjuster </td></tr>
+    <tr><td class="paramname">valeur</td><td>Valeur de la température à ajuster </td></tr>
   </table>
   </dd>
 </dl>
