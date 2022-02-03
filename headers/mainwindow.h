@@ -169,6 +169,16 @@ private slots:
      * @brief Sauvegarder temporellement l'image de resultat
      */
     void on_pushButton_traitementAppliquer_clicked() ;
+    // Sauvegarder l'image traitee
+    /**
+     * @brief Sauvegarder l'image traitée : Menu Traitment Image
+     */
+    void on_pushButton_traitementSauvegarder_clicked();
+    // Afficher l'image traitee
+    /**
+     * @brief Afficher Image Traitée (version agrandi)
+     */
+    void on_pushButtonAfficherImageTraitee_clicked();
 
     // -------------Luminosite-------------
 
@@ -218,7 +228,7 @@ private slots:
      */
     void on_horizontalSlider_brillance_valueChanged(int) ;
 
-    // -------------Details-------------
+    // -------------Contours-------------
 
     // Initialiser
     /**
@@ -235,16 +245,21 @@ private slots:
      * @brief Nettete
      */
     void on_horizontalSlider_nettete_valueChanged(int) ;
-    // Bouton : Bruitage
+    // Bouton : Contours
     /**
-     * @brief  Bouton : Bruitage
+     * @brief Initialiser Contours
      */
-    void on_radioButton_bruitage_clicked() ;
-    // Bruitage
+    void on_groupBox_contours_clicked() ;
+    // Contours par filtres gradients
     /**
-     * @brief Bruitage
+     * @brief Contours par filtres gradients
      */
-    void on_horizontalSlider_Bruitage_valueChanged(int) ;
+    void on_radioButton_contoursGradient_clicked() ;
+    // Contours par filtre laplacien
+    /**
+     * @brief Contours par filtre laplacien
+     */
+    void on_radioButton_contoursLaplacien_clicked() ;
 
     // -------------Filtres de couleur-------------
 
@@ -309,6 +324,16 @@ private slots:
      * @brief Image RGB
      */
     void on_radioButton_rgb_clicked() ;
+    // Egalisation
+    /**
+     * @brief Egalisation d'image
+     */
+    void on_radioButtonEgalisation_clicked() ;
+    // Bruit poivre et sel
+    /**
+     * @brief Bruit poivre et sel
+     */
+    void on_radioButtonBruitPoivreSel_clicked() ;
 
     // -------------Extraction du canal de couleur-------------
 
@@ -422,24 +447,6 @@ private slots:
      */
     void on_pushButton_seuilHautB_clicked() ;
 
-    // -------------Contours-------------
-
-    // Initialiser
-    /**
-     * @brief Initialiser Contours
-     */
-    void on_groupBox_contours_clicked() ;
-    // Contours par filtres gradients
-    /**
-     * @brief Contours par filtres gradients
-     */
-    void on_radioButton_contoursGradient_clicked() ;
-    // Contours par filtre laplacien
-    /**
-     * @brief Contours par filtre laplacien
-     */
-    void on_radioButton_contoursLaplacien_clicked() ;
-
     //-------------Resolution-------------
 
     // Initialiser
@@ -478,9 +485,21 @@ private slots:
      */
     void on_horizontalSlider_quantification_valueChanged(int ) ;
 
-    // -------------Debruitage-------------
+    // -------------Bruitage et debruitage-------------
 
     // Initialiser
+    void on_groupBox_bruitageDebruitage_clicked() ;
+    // Bouton : Bruitage
+    /**
+     * @brief  Bouton : Bruitage
+     */
+    void on_radioButton_bruitage_clicked() ;
+    // Bruitage
+    /**
+     * @brief Bruitage
+     */
+    void on_horizontalSlider_Bruitage_valueChanged(int) ;
+    // Bouton : Debruitage
     /**
      * @brief Initialiser Debruitage
      */
@@ -554,14 +573,42 @@ private slots:
      */
     void on_horizontalSlider_saturation_valueChanged(int ) ;
 
-
     //-------------Autres-------------
+
+    // Initialiser
+    /**
+     * @brief autres filtres
+     */
+    void on_groupBox_autre_clicked();
+    // Transformee de Fourier
+    /**
+     * @brief Transformée de Frourier
+     */
+    void on_radioButton_fourier_clicked() ;
+    // K-means
+    /**
+     * @brief radioBouton K-means
+     */
+    void on_radioButtonKmeans_clicked();
+    // Bouton : Transformee de Hough
+    /**
+     * @brief Transformée de Hough
+     */
+    void on_radioButtonTransformeeHough_clicked();
+    // Transformee de Hough
+    /**
+     * @brief Bouton OK pour appliquer la transformée de Hough
+     */
+    void on_pushButton_Appliquer_Hough_clicked();
+
+    //-------------Complements-------------
+
     // Generer les icones
     /**
      * @brief  Generer les icones
      */
     void GenererIcone() ;
-    // Afficher l'image resultante apres un traitement avec inversement des canaux de couleur
+    // Afficher l'image resultante apres un traitement
     /**
      * @brief Afficher l'image resultante apres un traitement avec inversement des canaux de couleur
      * @param image
@@ -599,26 +646,21 @@ private slots:
      * @brief Messages d'aide : Extraction
      */
     void AfficherMessageAideExtraction() ;
-
     // Messages d'aide : Contours
     /**
      * @brief Messages d'aide : Contours
      */
     void AfficherMessageAideContour() ;
-
-
     // Messages d'aide : Debruitage
     /**
      * @brief Messages d'aide : Debruitage
      */
     void AfficherMessageAideDebruitage() ;
-
     // Messages d'aide : Seuillage et segmentation
     /**
      * @brief Messages d'aide : Seuillage et segmentation
      */
     void AfficherMessageAideSeuillageSegmentation() ;
-
     // Messages d'aide : Filtres
     /**
      * @brief Messages d'aide : Filtres
@@ -630,116 +672,68 @@ private slots:
      * @brief  Reinitialisation generale
      */
     void Reinitialiser() ;
-
     // Reinitialiser : Box Luminosite
     /**
      * @brief Reinitialiser : Box Luminosite
      */
     void ReinitialiserLuminosite() ;
-
     // Reinitialiser : Box Couleur
     /**
      * @brief Reinitialiser : Box Couleur
      */
     void ReinitialiserCouleur() ;
-
     // Reinitialiser : Box Resolution
     /**
      * @brief Reinitialiser : Box Resolution
      */
     void ReinitialiserResolution() ;
-
     // Reinitialiser : Box Details
     /**
      * @brief Reinitialiser : Box Details
      */
     void ReinitialiserDetail() ;
-
+    // Reinitialiser : Box Bruitage et debruitage
+    /**
+     * @brief RReinitialiser : Box Bruitage et debruitage
+     */
+    void ReinitialiserBruitageDebruitage() ;
     // Reinitialiser : Box Extraction
-
     /**
      * @brief Reinitialiser : Box Extraction
      */
     void ReinitialiserExtraction() ;
-
     // Reinitialiser : Box Contours
     /**
      * @brief Reinitialiser : Box Contours
      */
     void ReinitialiserContour() ;
-
     // Reinitialiser : Box Debruitage
     /**
      * @brief Reinitialiser : Box Debruitage
      */
     void ReinitialiserDebruitage() ;
-
     // Reinitialiser : Box Seuillage et segmentation
     /**
      * @brief  Reinitialiser : Box Seuillage et segmentation
      */
     void ReinitialiserSeuillageSegmentation() ;
-
     // Reinitialiser : Box Filtres
     /**
      * @brief  Reinitialiser : Box Filtres
      */
     void ReinitialiserFiltre() ;
-
-    /**
-     * @brief Transformée de Frourier
-     */
-    void on_radioButton_fourier_clicked() ;
-
-    /**
-     * @brief Egalisation d'image
-     */
-    void on_radioButtonEgalisation_clicked() ;
-
-    /**
-     * @brief Bruit poivre et sel
-     */
-    void on_radioButtonBruitPoivreSel_clicked() ;
-
-    /**
-     * @brief autres filtres
-     */
-    void on_groupBox_autre_clicked();
-
+    // Reinitialiser : Box Autres
     /**
      * @brief Reinitialiser : Box Autres
      */
     void ReinitialiserAutre() ;
 
-    /**
-     * @brief radioBouton K-means
-     */
-    void on_radioButtonKmeans_clicked();
-    /**
-     * @brief Bouton OK pour appliquer la transformée de Hough
-     */
-    void on_pushButton_Appliquer_Hough_clicked();
-    /**
-     * @brief Transformée de Hough
-     */
-    void on_radioButtonTransformeeHough_clicked();
 
     /**
      * @brief Bouton Retour : Menu Consultation Image
      */
     void on_pushButtonRetourMenuConsultationImage_clicked();
 
-
-    /**
-     * @brief Sauvegarder l'image traitée : Menu Traitment Image
-     */
-    void on_pushButton_traitementSauvegarder_clicked();
-
-    /**
-     * @brief Afficher Image Traitée (version agrandi)
-     */
-    void on_pushButtonAfficherImageTraitee_clicked();
-    
     /**
      * @brief Slot du bouton Retour après agrandissement de l'image traitée
      */

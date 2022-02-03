@@ -19,9 +19,14 @@
 #include "rapidjson/writer.h"
 // QT
 #include <QDateTime>
+// OpenCV
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 using namespace rapidjson ;
 using namespace std ;
+using namespace cv ;
 
 /**
  * @class Bibliotheque 

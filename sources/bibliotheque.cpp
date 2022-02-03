@@ -470,10 +470,10 @@ Json::Value Bibliotheque::Trier(const int choix){
 
 }
 
-// Determiner les indices des elements avant le tri (chaine de caracteres)
+// Determiner les indices des elements avant le tri (double)
 vector<int> Bibliotheque::Trier(vector<double>valeurNonTri){
     // Declaration des variables
-    int c, k ;                      // Indices
+    //int c, k ;                      // Indices
     vector<double> valeurTri ;      // Vecteur des valeurs triees
     vector<int> indice ;            // Vecteur des indices pour le tri de la bibliotheque
 
@@ -481,7 +481,8 @@ vector<int> Bibliotheque::Trier(vector<double>valeurNonTri){
     indice.clear() ;
     valeurTri.clear() ;
 
-    // Initialiser le vecteur des titres tries 
+    sortIdx(valeurNonTri, indice, CV_SORT_DESCENDING) ;
+    /* // Initialiser le vecteur des titres tries
     valeurTri = valeurNonTri ;     
 
     // Trier les titres dans l'ordre decroissant
@@ -505,12 +506,12 @@ vector<int> Bibliotheque::Trier(vector<double>valeurNonTri){
             }
         }
     }    
-
+*/
     // Retour
     return indice ;
 }
 
-// Determiner les indices des elements avant le tri (reel)
+// Determiner les indices des elements avant le tri (chaine de caractères)
 vector<int> Bibliotheque::Trier(vector<string>valeurNonTri){
     // Declaration des variables
     int c, k ;                      // Indices
@@ -553,13 +554,15 @@ vector<int> Bibliotheque::Trier(vector<string>valeurNonTri){
 // Determiner les indices des elements avant le tri (entier)
 vector<int> Bibliotheque::Trier(vector<int>valeurNonTri){
     // Declaration des variables
-    int c, k ;                      // Indices
+    //int c, k ;                      // Indices
     vector<int> valeurTri ;         // Vecteur des valeurs triees
     vector<int> indice ;            // Vecteur des indices pour le tri de la bibliotheque
     // Initialisation
     indice.clear() ;
     valeurTri.clear() ;
-    // Initialiser le vecteur des titres tries 
+
+    sortIdx(valeurNonTri, indice, CV_SORT_DESCENDING) ;
+/*    // Initialiser le vecteur des titres tries
     valeurTri = valeurNonTri ;     
 
     // Trier les titres dans l'ordre decroissant
@@ -583,7 +586,7 @@ vector<int> Bibliotheque::Trier(vector<int>valeurNonTri){
             }
         }
     }    
-
+*/
     // Retour
     return indice ;
 }

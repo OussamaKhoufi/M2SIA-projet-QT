@@ -607,55 +607,7 @@ void MainWindow::on_pushButton_traitementImage_clicked(){
 // Retour a la page pour choisir l'image a traiter
 void MainWindow::on_pushButton_retour_clicked(){
     // Desactiver les foncitonnalites
-    // Luminosite
-    ui->groupBox_correction->setChecked(false) ;
-    ui->horizontalSlider_luminosite->setValue(0) ;      // Luminosite
-    ui->horizontalSlider_contraste->setValue(0) ;       // Contraste
-    ui->horizontalSlider_brillance->setValue(0) ;       // Haute lumiere
-    ui->horizontalSlider_ombre->setValue(0) ;           // Ombre
-
-    // Couleur
-    ui->groupBox_couleur->setChecked(false) ;
-    ui->horizontalSlider_temperature->setValue(0) ;     // Temperature
-    ui->horizontalSlider_teinte->setValue(0) ;          // Teinte
-    ui->horizontalSlider_saturation->setValue(0) ;      // Saturation
-    ui->horizontalSlider_vividite->setValue(0) ;        // Vividite
-
-    // Details
-    ui->groupBox_details->setChecked(false) ;
-    ui->horizontalSlider_nettete->setValue(0) ;         // Nettete
-    ui->horizontalSlider_Bruitage->setValue(0) ;        // Bruitage
-
-    // Resolution
-    ui->groupBox_resolutionQuantification->setChecked(false) ;
-    ui->horizontalSlider_resolution->setValue(0) ;      // Resolution
-    ui->horizontalSlider_quantification->setValue(8) ;  // Quantification
-
-    // Extraction
-    ui->groupBox_extractionRVB->setChecked(false) ;
-
-    // Contours
-    ui->groupBox_contours->setChecked(false) ;
-
-    // Debruitage
-    ui->groupBox_debruitage->setChecked(false) ;
-
-    // Seuillage et segmentation
-    ui->groupBox_seuillageSegmentation->setChecked(false) ;
-    // Seuils bas
-    ui->verticalSlider_seuilBasB_2->setValue(0) ;       // Bleu
-    ui->verticalSlider_seuilBasR_2->setValue(0) ;       // Rouge
-    ui->verticalSlider_seuilBasV_2->setValue(0) ;       // Vert
-    // Seuils hauts
-    ui->verticalSlider_seuilHautB_2->setValue(256) ;    // Bleu
-    ui->verticalSlider_seuilHautR_2->setValue(256) ;    // Rouge
-    ui->verticalSlider_seuilHautV_2->setValue(256) ;    // Vert
-
-    // Filtres
-    ui->groupBox_filtres->setChecked(false) ;
-
-    // Autres
-    ui->groupBox_autre->setChecked(false) ;
+    Reinitialiser() ;
 
     // Passer a la page precedente
     ui->stackedWidget->setCurrentIndex(5) ;
@@ -794,6 +746,39 @@ void MainWindow::on_pushButton_traitementAppliquer_clicked(){
     ui->label_resolutionTraitee->setText(QString::fromStdString(resolution)) ;
 }
 
+// Sauvegarder l'image traitee
+void MainWindow::on_pushButton_traitementSauvegarder_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(0,tr("Sauvegarder l'image traitée"), QCoreApplication::applicationDirPath() ,tr("Fichiers Images (*.png *.jpg *.bmp *.pgm *.jpeg *.tiff)")) ;
+    if (!fileName.isEmpty()){
+        if (fileName.count('.')){
+         string fileNameStr = fileName.toStdString() ;
+         imwrite(fileNameStr, _imageResultat) ;
+    }else{
+        fileName.append(".jpg");
+        string fileNameStr = fileName.toStdString() ;
+        imwrite(fileNameStr, _imageResultat) ;
+    }
+    }
+}
+
+// Afficher l'image traitee
+void MainWindow::on_pushButtonAfficherImageTraitee_clicked()
+{
+    // Mise a jour l'image originale temporelle
+    Mat imageResultat = ImageBGRRGB(_imageResultat);
+    QImage imageResultatQT = QImage((uchar*) imageResultat.data, imageResultat.cols, imageResultat.rows, imageResultat.step, QImage::Format_RGB888) ;
+    // Affichage de l'image traitée
+    QGraphicsScene* scene = new QGraphicsScene() ;
+    scene->addPixmap(QPixmap::fromImage(imageResultatQT));
+    ui->graphicsView_contenuImageTraiteeAgrandi->setScene(scene) ;
+    ui->graphicsView_contenuImageTraiteeAgrandi->show() ;
+    ui->graphicsView_contenuImageTraiteeAgrandi->fitInView(scene->sceneRect(), Qt::KeepAspectRatio) ;
+    ui->stackedWidget->setCurrentIndex(7);
+
+
+}
+
 // -------------Luminosite-------------
 
 // Initialiser
@@ -878,11 +863,13 @@ void MainWindow::on_radioButton_contraste_clicked(){
 
 // Modifier le constraste de l'image
 void MainWindow::on_horizontalSlider_contraste_valueChanged(int value){
+    this->setCursor(Qt::WaitCursor);
     // Application de la normalisation
     _imageResultat = Normalisation(_imageOriginale, value) ;
 
     // Affichage du resultat
     AffichageResultat(_imageResultat, 1) ;
+    this->setCursor(Qt::ArrowCursor);
 }
 
 // Bouton : Ombre
@@ -951,18 +938,17 @@ void MainWindow::on_horizontalSlider_brillance_valueChanged(int value){
 
 // Initialiser
 void MainWindow::on_groupBox_details_clicked(){
-    AffichageResultat(_imageOriginale, 1) ;                      // Image originale
+    AffichageResultat(_imageOriginale, 1) ;     // Image originale
     // Si le box est choisi
     if(ui->groupBox_details->isChecked()){
         // Desactiver les autres fonctionnalites
-        ReinitialiserContour() ;                // Contours
         ReinitialiserFiltre() ;                 // Filtres
         ReinitialiserExtraction() ;             // Extraction
         ReinitialiserSeuillageSegmentation() ;  // Seuillage et segmentation
         ReinitialiserResolution() ;             // Resolution
         ReinitialiserLuminosite() ;             // Luminosite
         ReinitialiserCouleur() ;                // Couleur
-        ReinitialiserDebruitage() ;             // Debruitage
+        ReinitialiserBruitageDebruitage() ;     // Bruitage et debruitage
         ReinitialiserAutre() ;                  // Autres
     // Sinon : Reinitialiser
     }else{
@@ -973,22 +959,11 @@ void MainWindow::on_groupBox_details_clicked(){
 // Bouton nettete
 void MainWindow::on_radioButton_nettete_clicked(){
     if(ui->radioButton_nettete->isChecked()){
-        // Desactiver les autres corrections
-        ui->radioButton_luminosite->setChecked(false) ;     // Luminosite
-        ui->radioButton_contraste->setChecked(false) ;      // Contraste
-        ui->radioButton_bruitage->setChecked(false) ;       // Bruitage
-
         // Activer et initialiser le slider
         ui->horizontalSlider_nettete->setEnabled(true) ;
         ui->horizontalSlider_nettete->setValue(0) ;
 
-        // Remettre a zero les autres sliders
-        ui->horizontalSlider_contraste->setValue(0) ;       // Contraste
-        ui->horizontalSlider_contraste->setEnabled(0) ;
-        ui->horizontalSlider_luminosite->setValue(0) ;      // Luminosite
-        ui->horizontalSlider_luminosite->setEnabled(false) ;
-        ui->horizontalSlider_Bruitage->setValue(0) ;        // Bruitage
-        ui->horizontalSlider_Bruitage->setEnabled(false) ;
+        ReinitialiserContour() ;
 
         // Initialiser l'image traitee
         AffichageResultat(_imageOriginale, 1) ;
@@ -997,6 +972,7 @@ void MainWindow::on_radioButton_nettete_clicked(){
 
 // Modifier la nettete de l'image
 void MainWindow::on_horizontalSlider_nettete_valueChanged(int value){
+        this->setCursor(Qt::WaitCursor);
     if(ui->radioButton_nettete->isChecked()){
         // Rendre flou
         if(value < 0){
@@ -1010,33 +986,93 @@ void MainWindow::on_horizontalSlider_nettete_valueChanged(int value){
             _imageResultat = ImageRehaussementContour(_imageOriginale, value*10) ;
         // Image de depart
         }else{
-            _imageResultat = ImageBGRRGB(_imageOriginale) ;
+            _imageResultat = _imageOriginale ;
         }
 
         // Affichage du resultat
-        AffichageResultat(_imageResultat, 0) ;
+        AffichageResultat(_imageResultat, 1) ;
+    }
+        this->setCursor(Qt::ArrowCursor);
+}
+
+// Bouton : Detection de contours
+void MainWindow::on_groupBox_contours_clicked(){
+    AffichageResultat(_imageOriginale, 1) ;                      // Image originale
+    // Si le box est choisi
+    if(ui->groupBox_contours->isChecked()){
+        // Desactiver les autres fonctionnalites
+        ui->radioButton_nettete->setEnabled(false) ;
+        ui->radioButton_nettete->setChecked(false) ;
+        ui->radioButton_nettete->setEnabled(true) ;
+        ui->horizontalSlider_nettete->setEnabled(false) ;
+        ui->horizontalSlider_nettete->setValue(0) ;
+
+    // Sinon : Reinitialiser
+    }else{
+        ReinitialiserContour() ;
+    }
+}
+
+// Detection de contours - Gradient
+void MainWindow::on_radioButton_contoursGradient_clicked(){
+    this->setCursor(Qt::WaitCursor);
+    if(ui->radioButton_contoursGradient->isChecked()){
+        ui->radioButton_contoursLaplacien->setChecked(false) ;
+        imwrite((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString(), _imageOriginale) ;
+        _imageResultat = MonoCouleur(ImageContourGradient(_imageOriginale)) ;
+        // Affichage du resultat
+        AffichageResultat(_imageResultat, 1) ;
+    }
+    this->setCursor(Qt::ArrowCursor);
+}
+
+// Detection de contours - Laplacien
+void MainWindow::on_radioButton_contoursLaplacien_clicked(){
+    this->setCursor(Qt::WaitCursor);
+    if(ui->radioButton_contoursLaplacien->isChecked()){
+        if(ui->groupBox_contours->isChecked()){
+            ui->radioButton_contoursGradient->setChecked(false) ;
+            _imageResultat = MonoCouleur(ImageContourLaplace(_imageOriginale)) ;
+            // Affichage du resultat
+            AffichageResultat(_imageResultat, 1) ;
+        }
+    }
+    this->setCursor(Qt::ArrowCursor);
+}
+
+// -------------Bruitage et debruitage-------------
+
+// Initialiser
+void MainWindow::on_groupBox_bruitageDebruitage_clicked(){
+    AffichageResultat(_imageOriginale, 1) ;     // Image originale
+    // Si le box est choisi
+    if(ui->groupBox_bruitageDebruitage->isChecked()){
+        // Desactiver les autres fonctionnalites
+        ReinitialiserFiltre() ;                 // Filtres
+        ReinitialiserExtraction() ;             // Extraction
+        ReinitialiserSeuillageSegmentation() ;  // Seuillage et segmentation
+        ReinitialiserResolution() ;             // Resolution
+        ReinitialiserLuminosite() ;             // Luminosite
+        ReinitialiserCouleur() ;                // Couleur
+        ReinitialiserDetail() ;                 // Contours
+        ReinitialiserAutre() ;                  // Autres
+    // Sinon : Reinitialiser
+    }else{
+        ReinitialiserBruitageDebruitage() ;
     }
 }
 
 // Bouton bruitage
 void MainWindow::on_radioButton_bruitage_clicked(){
+    AffichageResultat(_imageOriginale, 1) ;     // Image originale
     if(ui->radioButton_bruitage->isChecked()){
         // Desactiver les autres corrections
-        ui->radioButton_nettete->setChecked(false) ;        // Nettete
-        ui->radioButton_luminosite->setChecked(false) ;     // Luminosite
-        ui->radioButton_contraste->setChecked(false) ;      // Contraste
+        ui->groupBox_debruitage->setChecked(false) ;
+        ReinitialiserDebruitage() ;
 
         // Activer et initialiser le slider
         ui->horizontalSlider_Bruitage->setEnabled(true) ;
         ui->horizontalSlider_Bruitage->setValue(0) ;
-
-        // Remettre a zero les autres sliders
-        ui->horizontalSlider_nettete->setValue(0) ;         // Nettete
-        ui->horizontalSlider_nettete->setEnabled(false) ;
-        ui->horizontalSlider_luminosite->setValue(0) ;      // Luminosite
-        ui->horizontalSlider_luminosite->setEnabled(false) ;
-        ui->horizontalSlider_contraste->setValue(0) ;       // Contraste
-        ui->horizontalSlider_contraste->setEnabled(false) ;
 
         // Initialiser l'image traitee
         AffichageResultat(_imageOriginale, 1) ;
@@ -1052,7 +1088,109 @@ void MainWindow::on_horizontalSlider_Bruitage_valueChanged(int value){
     AffichageResultat(_imageResultat, 1) ;
 }
 
-// -------------Filtres de couleur-------------
+// Bouton : Debruitage
+void MainWindow::on_groupBox_debruitage_clicked(){
+    AffichageResultat(_imageOriginale, 1) ;     // Image originale
+    // Si le box est choisi
+    if(ui->groupBox_debruitage->isChecked()){
+        // Desactiver les aures fonctionnalites
+        ui->radioButton_bruitage->setChecked(false) ;
+        ui->horizontalSlider_Bruitage->setEnabled(false) ;
+        ui->horizontalSlider_Bruitage->setValue(0) ;
+
+        // Activer les fonctionnalites
+        ui->radioButton_moyenneur->setEnabled(true) ;
+        ui->radioButton_gaussien->setEnabled(true) ;
+        ui->radioButton_median->setEnabled(true) ;
+        ui->radioButton_kuwahara->setEnabled(true) ;
+    // Sinon : Reinitialiser
+    }else{
+        ReinitialiserDebruitage() ;
+    }
+}
+
+// Filtre moyeneur
+void MainWindow::on_radioButton_moyenneur_clicked(){
+    this->setCursor(Qt::WaitCursor);
+    if(ui->radioButton_moyenneur->isChecked() == false){
+        ui->radioButton_gaussien->setChecked(false) ;
+        ui->radioButton_median->setChecked(false) ;
+        ui->radioButton_kuwahara->setChecked(false) ;
+        ui->radioButton_moyenneur->setChecked(true) ;
+    }
+    if(ui->radioButton_moyenneur->isChecked()){
+        ui->radioButton_gaussien->setChecked(false) ;
+        ui->radioButton_median->setChecked(false) ;
+        ui->radioButton_kuwahara->setChecked(false) ;
+
+        ui->radioButton_moyenneur->setChecked(true) ;
+        _imageResultat = ImageFiltrage(_imageOriginale, 1) ;
+        AffichageResultat(_imageResultat, 1) ;
+    }
+    this->setCursor(Qt::ArrowCursor);
+}
+
+// Filtre gaussien
+void MainWindow::on_radioButton_gaussien_clicked(){
+    this->setCursor(Qt::WaitCursor);
+    if(ui->radioButton_gaussien->isChecked() == false){
+        ui->radioButton_moyenneur->setChecked(false) ;
+        ui->radioButton_median->setChecked(false) ;
+        ui->radioButton_kuwahara->setChecked(false) ;
+        ui->radioButton_gaussien->setChecked(true) ;
+    }
+    if(ui->radioButton_gaussien->isChecked()){
+        ui->radioButton_moyenneur->setChecked(false) ;
+        ui->radioButton_median->setChecked(false) ;
+        ui->radioButton_kuwahara->setChecked(false) ;
+
+        _imageResultat = ImageFiltrage(_imageOriginale, 2) ;
+        AffichageResultat(_imageResultat, 1) ;
+    }
+    this->setCursor(Qt::ArrowCursor);
+}
+
+// Filtre median
+void MainWindow::on_radioButton_median_clicked(){
+    this->setCursor(Qt::WaitCursor) ;
+    if(ui->radioButton_median->isChecked() == false){
+        ui->radioButton_moyenneur->setChecked(false) ;
+        ui->radioButton_gaussien->setChecked(false) ;
+        ui->radioButton_kuwahara->setChecked(false) ;
+        ui->radioButton_median->setChecked(true) ;
+    }
+    if(ui->radioButton_median->isChecked()){
+        ui->radioButton_moyenneur->setChecked(false) ;
+        ui->radioButton_gaussien->setChecked(false) ;
+        ui->radioButton_kuwahara->setChecked(false) ;
+
+        _imageResultat = ImageMedian(_imageOriginale) ;
+        AffichageResultat(_imageResultat, 1) ;
+    }
+    this->setCursor(Qt::ArrowCursor) ;
+}
+
+// Kuwahara-Nagao
+void MainWindow::on_radioButton_kuwahara_clicked(){
+    this->setCursor(Qt::WaitCursor);
+    if(ui->radioButton_kuwahara->isChecked() == false){
+        ui->radioButton_moyenneur->setChecked(false) ;
+        ui->radioButton_gaussien->setChecked(false) ;
+        ui->radioButton_median->setChecked(false) ;
+        ui->radioButton_kuwahara->setChecked(true) ;
+    }
+    if(ui->radioButton_kuwahara->isChecked()){
+        ui->radioButton_moyenneur->setChecked(false) ;
+        ui->radioButton_gaussien->setChecked(false) ;
+        ui->radioButton_median->setChecked(false) ;
+
+        _imageResultat = ImageKuwahara(_imageOriginale) ;
+        AffichageResultat(_imageResultat, 1) ;
+    }
+    this->setCursor(Qt::ArrowCursor);
+}
+
+// -------------Effets-------------
 
 // Initialiser
 void MainWindow::on_groupBox_filtres_clicked(){
@@ -1062,11 +1200,10 @@ void MainWindow::on_groupBox_filtres_clicked(){
         // Desactiver les autres fonctionnalites
         ReinitialiserLuminosite() ;             // Luminosite
         ReinitialiserCouleur() ;                // Couleur
-        ReinitialiserDetail() ;                 // Details
+        ReinitialiserDetail() ;                 // COntours
+        ReinitialiserBruitageDebruitage() ;     // Bruitage et debruitage
         ReinitialiserResolution() ;             // Resolution
-        ReinitialiserContour() ;                // Contours
         ReinitialiserExtraction() ;             // Extraction
-        ReinitialiserDebruitage() ;             // Debruitage
         ReinitialiserSeuillageSegmentation() ;  // Seuillage et segmentation
         ReinitialiserAutre() ;                  // Autres
         // Si l'image est en niveau de gris : Desactiver les filtres en couleurs
@@ -1374,6 +1511,56 @@ void MainWindow::on_radioButton_rgb_clicked(){
     }
 }
 
+// Egalisation d'histogramme
+void MainWindow::on_radioButtonEgalisation_clicked(){
+    this->setCursor(Qt::WaitCursor);
+    if(ui->radioButtonEgalisation->isChecked()){
+        // Desactiver les autres filtres
+        ui->radioButton_originale->setChecked(false) ;              // Image originale
+        ui->radioButton_sepia->setChecked(false) ;                  // Sepia
+        ui->radioButton_inversement->setChecked(false) ;            // Inversement
+        ui->radioButton_rouge->setChecked(false) ;                  // Rouge
+        ui->radioButton_vert->setChecked(false) ;                   // Vert
+        ui->radioButton_bleu->setChecked(false) ;                   // Bleu
+        ui->radioButton_cyan->setChecked(false) ;                   // Cyan
+        ui->radioButton_jaune->setChecked(false) ;                  // Jaune
+        ui->radioButton_magenta->setChecked(false) ;                // Magenta
+        ui->radioButton_rgb->setChecked(false) ;                    // RGB
+        ui->radioButton_niveauGris->setChecked(false) ;             // Nilveau de gris
+        ui->radioButtonBruitPoivreSel->setChecked(false) ;          // Bruit poivre et sel
+
+        // Ajouter du bruit gaussien dans l'image
+        imwrite((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString(), _imageOriginale) ;
+        _imageResultat = ImageEgalisation(imread((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString())) ;
+        AffichageResultat(_imageResultat, 1) ;
+    }
+    this->setCursor(Qt::ArrowCursor);
+}
+
+// Bruit poivre et sel
+void MainWindow::on_radioButtonBruitPoivreSel_clicked(){
+    if(ui->radioButtonBruitPoivreSel->isChecked()){
+        // Desactiver les autres filtres
+        ui->radioButton_originale->setChecked(false) ;              // Image originale
+        ui->radioButton_sepia->setChecked(false) ;                  // Sepia
+        ui->radioButton_inversement->setChecked(false) ;            // Inversement
+        ui->radioButton_rouge->setChecked(false) ;                  // Rouge
+        ui->radioButton_vert->setChecked(false) ;                   // Vert
+        ui->radioButton_bleu->setChecked(false) ;                   // Bleu
+        ui->radioButton_cyan->setChecked(false) ;                   // Cyan
+        ui->radioButton_jaune->setChecked(false) ;                  // Jaune
+        ui->radioButton_magenta->setChecked(false) ;                // Magenta
+        ui->radioButton_rgb->setChecked(false) ;                    // RGB
+        ui->radioButton_niveauGris->setChecked(false) ;             // Nilveau de gris
+        ui->radioButtonEgalisation->setChecked(false) ;           // Bruit gaussien
+
+        // Ajouter du bruit poivre et sel dans l'image
+        _imageResultat = ImageBruitPoivreSel(_imageOriginale) ;
+        AffichageResultat(_imageResultat, 1) ;
+    }
+
+}
+
 // -------------Extraction du canal de couleur-------------
 
 // Initialiser
@@ -1384,10 +1571,9 @@ void MainWindow::on_groupBox_extractionRVB_clicked(){
         // Desactiver les autres fonctionnalites
         ReinitialiserLuminosite() ;             // Luminosite
         ReinitialiserCouleur() ;                // Couleur
-        ReinitialiserDetail() ;                 // Details
+        ReinitialiserDetail() ;                 // Contours
         ReinitialiserResolution() ;             // Resolution
-        ReinitialiserContour() ;                // Contours
-        ReinitialiserDebruitage() ;             // Debruitage
+        ReinitialiserBruitageDebruitage() ;     // Bruitage et debruitage
         ReinitialiserSeuillageSegmentation() ;  // Seuillage et segmentation
         ReinitialiserFiltre() ;                 // Filtres
         ReinitialiserAutre() ;                  // Autres
@@ -1457,11 +1643,10 @@ void MainWindow::on_groupBox_seuillageSegmentation_clicked(){
         // Desactiver les autres fonctionnalites
         ReinitialiserLuminosite() ;             // Luminosite
         ReinitialiserCouleur() ;                // Couleur
-        ReinitialiserDetail() ;                 // Details
+        ReinitialiserDetail() ;                 // Contours
         ReinitialiserResolution() ;             // Resolution
-        ReinitialiserContour() ;                // Contours
         ReinitialiserExtraction() ;             // Extraction
-        ReinitialiserDebruitage() ;             // Debruitage
+        ReinitialiserBruitageDebruitage() ;     // Bruitage et debruitage
         ReinitialiserFiltre() ;                 // Filtres
         ReinitialiserAutre() ;                  // Autres
     // Sinon : Reinitialiser
@@ -1481,12 +1666,21 @@ void MainWindow::on_radioButton_seuillage_clicked(){
         // Initialiser les sliders
         // Seuils bas
         ui->verticalSlider_seuilBasR_2->setValue(0) ;           // Rouge
+        ui->verticalSlider_seuilBasR_2->setEnabled(true) ;
         ui->verticalSlider_seuilBasV_2->setValue(0) ;           // Vert
+        ui->verticalSlider_seuilBasV_2->setEnabled(true) ;
         ui->verticalSlider_seuilBasB_2->setValue(0) ;           // Bleu
+        ui->verticalSlider_seuilBasB_2->setEnabled(true) ;
         // Seuils hauts
         ui->verticalSlider_seuilHautR_2->setValue(256) ;        // Rouge
+        ui->verticalSlider_seuilHautR_2->setEnabled(true) ;
         ui->verticalSlider_seuilHautV_2->setValue(256) ;        // Vert
+        ui->verticalSlider_seuilHautV_2->setEnabled(true) ;
         ui->verticalSlider_seuilHautB_2->setValue(256) ;        // Bleu
+        ui->verticalSlider_seuilHautB_2->setEnabled(true) ;
+    }else{
+        ReinitialiserSeuillageSegmentation() ;
+        ui->groupBox_seuillageSegmentation->setChecked(true) ;
     }
 }
 
@@ -1500,12 +1694,21 @@ void MainWindow::on_radioButton_segmentation_clicked(){
         // Initialiser les sliders
         // Seuils bas
         ui->verticalSlider_seuilBasR_2->setValue(0) ;           // Rouge
+        ui->verticalSlider_seuilBasR_2->setEnabled(true) ;
         ui->verticalSlider_seuilBasV_2->setValue(0) ;           // Vert
+        ui->verticalSlider_seuilBasV_2->setEnabled(true) ;
         ui->verticalSlider_seuilBasB_2->setValue(0) ;           // Bleu
+        ui->verticalSlider_seuilBasB_2->setEnabled(true) ;
         // Seuils hauts
         ui->verticalSlider_seuilHautR_2->setValue(256) ;        // Rouge
+        ui->verticalSlider_seuilHautR_2->setEnabled(true) ;
         ui->verticalSlider_seuilHautV_2->setValue(256) ;        // Vert
+        ui->verticalSlider_seuilHautV_2->setEnabled(true) ;
         ui->verticalSlider_seuilHautB_2->setValue(256) ;        // Bleu
+        ui->verticalSlider_seuilHautB_2->setEnabled(true) ;
+    }else{
+        ReinitialiserSeuillageSegmentation() ;
+        ui->groupBox_seuillageSegmentation->setChecked(true) ;
     }
 }
 
@@ -1785,54 +1988,6 @@ void MainWindow::on_pushButton_seuilHautB_clicked(){
     ui->verticalSlider_seuilHautB_2->setValue(255) ;            // Valeur
 }
 
-// -------------Contours-------------
-
-// Initialiser
-void MainWindow::on_groupBox_contours_clicked(){
-    AffichageResultat(_imageOriginale, 1) ;                      // Image originale
-    // Si le box est choisi
-    if(ui->groupBox_contours->isChecked()){
-        // Desactiver les autres fonctionnalites
-        ReinitialiserLuminosite() ;             // Luminosite
-        ReinitialiserCouleur() ;                // Couleur
-        ReinitialiserDetail() ;                 // Detais
-        ReinitialiserResolution() ;             // Resolution
-        ReinitialiserExtraction() ;             // Extraction
-        ReinitialiserDebruitage() ;             // Devruitage
-        ReinitialiserSeuillageSegmentation() ;  // Seuillage et segmentation
-        ReinitialiserFiltre() ;                 // Filtres
-        ReinitialiserAutre() ;                  // Autres
-    // Sinon : Reinitialiser
-    }else{
-        ReinitialiserContour() ;
-    }
-}
-
-// Detection de contours - Gradient
-void MainWindow::on_radioButton_contoursGradient_clicked(){
-    this->setCursor(Qt::WaitCursor);
-    if(ui->radioButton_contoursGradient->isChecked()){
-        imwrite((QCoreApplication::applicationDirPath()+"/DATA/Images/imageTemp.jpg").toStdString(), _imageOriginale) ;
-        _imageResultat = MonoCouleur(ImageContourGradient(_imageOriginale)) ;
-        // Affichage du resultat
-        AffichageResultat(_imageResultat, 1) ;
-    }
-    this->setCursor(Qt::ArrowCursor);
-}
-
-// Detection de contours - Laplacien
-void MainWindow::on_radioButton_contoursLaplacien_clicked(){
-    this->setCursor(Qt::WaitCursor);
-    if(ui->radioButton_contoursLaplacien->isChecked()){
-        if(ui->groupBox_contours->isChecked()){
-            _imageResultat = MonoCouleur(ImageContourLaplace(_imageOriginale)) ;
-            // Affichage du resultat
-            AffichageResultat(_imageResultat, 1) ;
-        }
-    }
-    this->setCursor(Qt::ArrowCursor);
-}
-
 // -------------Resolution-------------
 
 // Initialiser
@@ -1843,10 +1998,9 @@ void MainWindow::on_groupBox_resolutionQuantification_clicked(){
         // Desactiver les autres fonctionnalites
         ReinitialiserLuminosite() ;             // Luminosite
         ReinitialiserCouleur() ;                // Couleur
-        ReinitialiserDetail() ;                 // Details
-        ReinitialiserContour() ;                // Contours
+        ReinitialiserDetail() ;                 // Contours
+        ReinitialiserBruitageDebruitage() ;     // Bruitage et debruitage
         ReinitialiserExtraction() ;             // Extraction
-        ReinitialiserDebruitage() ;             // Debruitage
         ReinitialiserSeuillageSegmentation() ;  // Seuillage et segmentation
         ReinitialiserFiltre() ;                 // Filtres
         ReinitialiserAutre() ;                  // Autres
@@ -1881,14 +2035,18 @@ void MainWindow::on_radioButton_resolution_clicked(){
 
 // Bouton : Pixel le plus proche
 void MainWindow::on_radioButton_PPP_clicked(){
+    ui->radioButton_PPP->setChecked(true) ;
     if(ui->radioButton_PPP->isChecked()){
+        ui->radioButton_bipolaire->setChecked(false) ;
         ui->horizontalSlider_resolution->setValue(0) ;
     }
 }
 
 // Bouton : Bilineaire
 void MainWindow::on_radioButton_bipolaire_clicked(){
+    ui->radioButton_bipolaire->setChecked(true) ;
     if(ui->radioButton_bipolaire->isChecked()){
+        ui->radioButton_PPP->setChecked(false) ;
         ui->horizontalSlider_resolution->setValue(0) ;
     }
 }
@@ -1923,9 +2081,12 @@ void MainWindow::on_horizontalSlider_resolution_valueChanged(int value){
 
 // Bouton : Quantification
 void MainWindow::on_radioButton_quantification_clicked(){
+    this->setCursor(Qt::WaitCursor);
     if(ui->radioButton_quantification->isChecked()){
         // Desactiver le redimensionnement
         ui->radioButton_resolution->setChecked(false) ;
+        ui->radioButton_PPP->setChecked(false) ;
+        ui->radioButton_bipolaire->setChecked(false) ;
         ui->horizontalSlider_resolution->setValue(0) ;
         ui->groupBox_interpolation->setEnabled(false) ;
 
@@ -1939,6 +2100,7 @@ void MainWindow::on_radioButton_quantification_clicked(){
         ui->horizontalSlider_quantification->setValue(8) ;
         AffichageResultat(_imageOriginale, 1) ;
     }
+    this->setCursor(Qt::ArrowCursor);
 }
 
 // Quantification
@@ -1953,95 +2115,23 @@ void MainWindow::on_horizontalSlider_quantification_valueChanged(int value){
     this->setCursor(Qt::ArrowCursor);
 }
 
-// -------------Debruitage-------------
-
-// Initialiser
-void MainWindow::on_groupBox_debruitage_clicked(){
-    AffichageResultat(_imageOriginale, 1) ;                      // Image originale
-    // Si le box est choisi
-    if(ui->groupBox_debruitage->isChecked()){
-        // Desactiver les aures fonctionnalites
-        ReinitialiserLuminosite() ;             // Luminosite
-        ReinitialiserCouleur() ;                // Couleur
-        ReinitialiserDetail() ;                 // Details
-        ReinitialiserResolution() ;             // Resolution
-        ReinitialiserExtraction() ;             // Extraction
-        ReinitialiserContour() ;                // Contours
-        ReinitialiserSeuillageSegmentation() ;  // Seuillage et segmentation
-        ReinitialiserFiltre() ;                 // Filtres
-    // Sinon : Reinitialiser
-    }else{
-        ReinitialiserDebruitage() ;
-    }
-}
-
-// Filtre moyeneur
-void MainWindow::on_radioButton_moyenneur_clicked(){
-    this->setCursor(Qt::WaitCursor);
-    if(ui->radioButton_moyenneur->isChecked() == false){
-        ui->radioButton_moyenneur->setChecked(true) ;
-        _imageResultat = ImageFiltrage(_imageOriginale, 1) ;
-        AffichageResultat(_imageResultat, 1) ;
-    }
-    this->setCursor(Qt::ArrowCursor);
-}
-
-// Filtre gaussien
-void MainWindow::on_radioButton_gaussien_clicked(){
-    this->setCursor(Qt::WaitCursor);
-    if(ui->radioButton_median->isChecked() == false){
-        ui->radioButton_gaussien->setChecked(true) ;
-    }
-    if(ui->radioButton_gaussien->isChecked()){
-        _imageResultat = ImageFiltrage(_imageOriginale, 2) ;
-        AffichageResultat(_imageResultat, 1) ;
-    }
-    this->setCursor(Qt::ArrowCursor);
-}
-
-// Filtre median
-void MainWindow::on_radioButton_median_clicked(){
-    this->setCursor(Qt::WaitCursor);
-    if(ui->radioButton_median->isChecked() == false){
-        ui->radioButton_median->setChecked(true) ;
-    }
-    if(ui->radioButton_median->isChecked()){
-        _imageResultat = ImageMedian(_imageOriginale) ;
-        AffichageResultat(_imageResultat, 1) ;
-    }
-    this->setCursor(Qt::ArrowCursor);
-}
-
-// Kuwahara-Nagao
-void MainWindow::on_radioButton_kuwahara_clicked(){
-    this->setCursor(Qt::WaitCursor);
-    if(ui->radioButton_kuwahara->isChecked() == false){
-        ui->radioButton_kuwahara->setChecked(true) ;
-    }
-    if(ui->radioButton_kuwahara->isChecked()){
-        _imageResultat = ImageKuwahara(_imageOriginale) ;
-        AffichageResultat(_imageResultat, 1) ;
-    }
-    this->setCursor(Qt::ArrowCursor);
-}
-
 // -------------Couleur-------------
 
 // Initialiser
 void MainWindow::on_groupBox_couleur_clicked(){
-    AffichageResultat(_imageOriginale, 1) ;                      // Image originale
+    AffichageResultat(_imageOriginale, 1) ;     // Image originale
     // Si le box est choisi
     if(ui->groupBox_couleur->isChecked()){
         // Desactiver les autres fonctionnalites
         ReinitialiserLuminosite() ;             // Luminosite
-        ReinitialiserDetail() ;                 // Details
+        ReinitialiserDetail() ;                 // Contours
         ReinitialiserResolution() ;             // Resolution
-        ReinitialiserExtraction() ;              // Extraction
-        ReinitialiserContour() ;                // Contours
-        ReinitialiserDebruitage() ;             // Debruitage
+        ReinitialiserExtraction() ;             // Extraction
+        ReinitialiserBruitageDebruitage() ;     // Bruitage et debruitage
         ReinitialiserSeuillageSegmentation() ;  // Seuillage et segmentation
         ReinitialiserFiltre() ;                 // Filtres
         ReinitialiserAutre() ;                  // Autres
+
     // Sinon : Reinitialiser
     }else{
         ReinitialiserCouleur() ;
@@ -2054,17 +2144,24 @@ void MainWindow::on_radioButton_temperature_clicked(){
     if(ui->radioButton_temperature->isChecked()){
         // Reinitialiser les autres sliders
         // Teinte
+        ui->radioButton_teinte->setChecked(false) ;
         ui->horizontalSlider_teinte->setValue(0) ;
         ui->horizontalSlider_teinte->setEnabled(false) ;
         // Saturation
+        ui->radioButton_saturation->setChecked(false) ;
         ui->horizontalSlider_saturation->setValue(0) ;
         ui->horizontalSlider_saturation->setEnabled(false) ;
         // Vividite
+        ui->radioButton_vividite->setChecked(false) ;
         ui->horizontalSlider_vividite->setValue(0) ;
         ui->horizontalSlider_vividite->setEnabled(false) ;
 
         // Activer le slider
         ui->horizontalSlider_temperature->setEnabled(true) ;
+        ui->horizontalSlider_temperature->setValue(0) ;
+    }else{
+        ui->horizontalSlider_temperature->setEnabled(false) ;
+        ui->horizontalSlider_temperature->setValue(0) ;
     }
 }
 
@@ -2087,17 +2184,26 @@ void MainWindow::on_radioButton_vividite_clicked(){
     if(ui->radioButton_vividite->isChecked()){
         // Reinitialiser les autres sliders
         // Temperature
+        ui->radioButton_temperature->setChecked(false) ;
         ui->horizontalSlider_temperature->setValue(0) ;
         ui->horizontalSlider_temperature->setEnabled(false) ;
         // Saturation
+        ui->radioButton_saturation->setChecked(false) ;
         ui->horizontalSlider_saturation->setValue(0) ;
         ui->horizontalSlider_saturation->setEnabled(false) ;
         // Teinte
+        ui->radioButton_teinte->setChecked(false) ;
         ui->horizontalSlider_teinte->setValue(0) ;
         ui->horizontalSlider_teinte->setEnabled(false) ;
 
-        // Activer le slider
-        ui->horizontalSlider_vividite->setEnabled(true) ;
+        if(VerifierImage(_imageOriginale, _imageOriginale) == false){
+            // Activer le slider
+            ui->horizontalSlider_vividite->setEnabled(true) ;
+            ui->horizontalSlider_vividite->setValue(0) ;
+        }
+    }else{
+        ui->horizontalSlider_vividite->setEnabled(false) ;
+        ui->horizontalSlider_vividite->setValue(0) ;
     }
 }
 
@@ -2121,17 +2227,24 @@ void MainWindow::on_radioButton_teinte_clicked(){
     if(ui->radioButton_teinte->isChecked()){
         // Reinitialiser les autres sliders
         // Temperature
+        ui->radioButton_temperature->setChecked(false) ;
         ui->horizontalSlider_temperature->setValue(0) ;
         ui->horizontalSlider_temperature->setEnabled(false) ;
         // Saturation
+        ui->radioButton_saturation->setChecked(false) ;
         ui->horizontalSlider_saturation->setValue(0) ;
         ui->horizontalSlider_saturation->setEnabled(false) ;
         // Vividite
+        ui->radioButton_vividite->setChecked(false) ;
         ui->horizontalSlider_vividite->setValue(0) ;
         ui->horizontalSlider_vividite->setEnabled(false) ;
 
         // Activer le slider
         ui->horizontalSlider_teinte->setEnabled(true) ;
+        ui->horizontalSlider_teinte->setValue(0) ;
+    }else{
+        ui->horizontalSlider_teinte->setEnabled(false) ;
+        ui->horizontalSlider_teinte->setValue(0) ;
     }
 }
 
@@ -2154,17 +2267,25 @@ void MainWindow::on_radioButton_saturation_clicked(){
     if(ui->radioButton_saturation->isChecked()){
         // Reinitialiser les autres sliders
         // Teinte
+        ui->radioButton_teinte->setChecked(false) ;
         ui->horizontalSlider_teinte->setValue(0) ;
         ui->horizontalSlider_teinte->setEnabled(false) ;
         // Temperature
+        ui->radioButton_temperature->setChecked(false) ;
         ui->horizontalSlider_temperature->setValue(0) ;
         ui->horizontalSlider_temperature->setEnabled(false) ;
         // Vividite
+        ui->radioButton_vividite->setChecked(false) ;
         ui->horizontalSlider_vividite->setValue(0) ;
         ui->horizontalSlider_vividite->setEnabled(false) ;
 
-        // Activer le slider
-        ui->horizontalSlider_saturation->setEnabled(true) ;
+        if(VerifierImage(_imageOriginale, _imageOriginale) == false){
+            // Activer le slider
+            ui->horizontalSlider_saturation->setEnabled(true) ;
+            ui->horizontalSlider_saturation->setValue(0) ;
+        }
+    }else{
+        ui->horizontalSlider_saturation->setEnabled(false) ;
         ui->horizontalSlider_saturation->setValue(0) ;
     }
 }
@@ -2185,9 +2306,94 @@ void MainWindow::on_horizontalSlider_saturation_valueChanged(int value){
 
 // -------------Autres-------------
 
+// Initialiser
+void MainWindow::on_groupBox_autre_clicked(){
+    AffichageResultat(_imageOriginale, 1) ;     // Image originale
+    // Si le box est choisi
+    if(ui->groupBox_autre->isChecked()){
+        // Desactiver les autres fonctionnalites
+        ReinitialiserLuminosite() ;             // Luminosite
+        ReinitialiserCouleur() ;                // Couleurs
+        ReinitialiserDetail() ;                 // Contours
+        ReinitialiserBruitageDebruitage() ;     // Bruitage et debruitage
+        ReinitialiserResolution() ;             // Resolution
+        ReinitialiserExtraction() ;             // Extraction
+        ReinitialiserSeuillageSegmentation() ;  // Seuillage et segmentation
+        ReinitialiserFiltre() ;                 // Filtres
+    // Sinon : Reinitialiser
+    }else{
+        ReinitialiserAutre() ;
+    }
+}
+
+// Transformee de Fourier
+void MainWindow::on_radioButton_fourier_clicked(){
+    if(ui->radioButton_fourier->isChecked()){
+        // Desactiver les autres fonctionnalites
+        ui->radioButtonTransformeeHough->setChecked(false) ;
+        ui->spinBoxHough->setEnabled(false) ;
+        ui->spinBoxHough->setValue(0) ;
+        ui->spinBoxHough_seuil_theta->setEnabled(false) ;
+        ui->spinBoxHough_seuil_theta->setValue(0) ;
+
+        ui->radioButtonKmeans->setChecked(false) ;
+        ui->spinBoxKmeans->setEnabled(false) ;
+        ui->spinBoxKmeans->setValue(0) ;
+
+        QMessageBox::information(0, "Transformée de Fourier", "Cette fonctionnalité va arriver bientôt dans la version suivante.") ;
+    }
+}
+
+// K-means
+void MainWindow::on_radioButtonKmeans_clicked(){
+    if(ui->radioButtonKmeans->isChecked()){
+        QMessageBox::information(0, "Segmentation par K-means", "Cette fonctionnalité va arriver bientôt dans la version suivante.") ;
+        // Desactiver les autres fonctionnalites
+        ui->radioButtonTransformeeHough->setChecked(false) ;
+        ui->spinBoxHough->setEnabled(false) ;
+        ui->spinBoxHough->setValue(0) ;
+        ui->spinBoxHough_seuil_theta->setEnabled(false) ;
+        ui->spinBoxHough_seuil_theta->setValue(0) ;
+
+        ui->radioButton_fourier->setChecked(false) ;
+        // Initialiser le critere
+        ui->spinBoxKmeans->setEnabled(true) ;
+        ui->spinBoxKmeans->setValue(0) ;
+    }
+}
+
+// Bouton : Transformee de Hough
+void MainWindow::on_radioButtonTransformeeHough_clicked(){
+    if(ui->radioButtonTransformeeHough->isChecked()){
+        // Desactiver les autres fonctionnalites
+        ui->radioButtonKmeans->setChecked(false) ;
+        ui->spinBoxKmeans->setEnabled(false) ;
+        ui->spinBoxKmeans->setValue(0) ;
+
+        ui->radioButton_fourier->setChecked(false) ;
+
+        // Initialiser le critere
+        ui->spinBoxHough->setEnabled(true) ;
+        ui->spinBoxHough_seuil_theta->setEnabled(true);
+        ui->spinBoxHough->setValue(0) ;
+        ui->spinBoxHough_seuil_theta->setValue(0) ;
+    }
+}
+
+// Transformee de Hough
+void MainWindow::on_pushButton_Appliquer_Hough_clicked(){
+    this->setCursor(Qt::WaitCursor);
+    if(ui->radioButtonTransformeeHough->isChecked()){
+        _imageResultat = TransformeedeHough(_imageOriginale, ui->spinBoxHough_seuil_theta->value(), ui->spinBoxHough->value()) ;
+        AffichageResultat(_imageResultat,1);
+    }
+    this->setCursor(Qt::ArrowCursor);
+}
+
+// -------------Complements-------------
+
 // Generer les icones
 void MainWindow::GenererIcone(){
-
     // Preparer les icones pour l'espace de travail
     //string cheminExemple = "/home/vm/M2SIA-projet-QT/DATA/Images/rgbexample.jpeg" ;
     //Mat exemple = imread(cheminExemple) ;
@@ -2500,42 +2706,57 @@ void MainWindow::AfficherMessageAideFiltre(){
 
 // Reinitialisation generale
 void MainWindow::Reinitialiser(){
-    ReinitialiserLuminosite() ;
-    ReinitialiserLuminosite() ;
-    ReinitialiserResolution() ;
-    ReinitialiserDetail() ;
-    ReinitialiserExtraction() ;
-    ReinitialiserContour() ;
-    ReinitialiserDebruitage() ;
-    ReinitialiserSeuillageSegmentation() ;
-    ReinitialiserFiltre() ;
-    ReinitialiserAutre() ;
+    ReinitialiserLuminosite() ;             // Luminosite
+    ReinitialiserCouleur() ;                // Couleurs
+    ReinitialiserResolution() ;             // Resolution
+    ReinitialiserDetail() ;                 // COntours
+    ReinitialiserExtraction() ;             // Extraction
+    ReinitialiserBruitageDebruitage();      // Bruitage et debruitage
+    ReinitialiserSeuillageSegmentation() ;  // Segmentation et seuillage
+    ReinitialiserFiltre() ;                 // Effets
+    ReinitialiserAutre() ;                  // Autres
     AffichageResultat(_imageOriginale, 1) ;
 }
 
 // Reinitialiser : Box Luminosite
 void MainWindow::ReinitialiserLuminosite(){
     ui->radioButton_luminosite->setChecked(false) ;
-    ui->radioButton_contraste->setChecked(false) ;
-    ui->radioButton_brillance->setChecked(false) ;
-    ui->radioButton_ombre->setChecked(false) ;
     ui->horizontalSlider_luminosite->setValue(0) ;
+    ui->horizontalSlider_luminosite->setEnabled(false) ;
+
+    ui->radioButton_contraste->setChecked(false) ;
     ui->horizontalSlider_contraste->setValue(0) ;
+    ui->horizontalSlider_contraste->setEnabled(false) ;
+
+    ui->radioButton_brillance->setChecked(false) ;
     ui->horizontalSlider_brillance->setValue(0) ;
+    ui->horizontalSlider_brillance->setEnabled(false) ;
+
+    ui->radioButton_ombre->setChecked(false) ;
     ui->horizontalSlider_ombre->setValue(0) ;
+    ui->horizontalSlider_ombre->setEnabled(false) ;
+
     ui->groupBox_correction->setChecked(false) ;
 }
 
 // Reinitialiser : Box Couleur
 void MainWindow::ReinitialiserCouleur(){
     ui->horizontalSlider_temperature->setValue(0) ;
-    ui->horizontalSlider_vividite->setValue(0) ;
-    ui->horizontalSlider_teinte->setValue(0) ;
-    ui->horizontalSlider_saturation->setValue(0) ;
+    ui->horizontalSlider_temperature->setEnabled(false) ;
     ui->radioButton_temperature->setChecked(false) ;
+
+    ui->horizontalSlider_vividite->setValue(0) ;
+    ui->horizontalSlider_vividite->setEnabled(false) ;
     ui->radioButton_vividite->setChecked(false) ;
+
+    ui->horizontalSlider_teinte->setValue(0) ;
+    ui->horizontalSlider_teinte->setEnabled(false) ;
     ui->radioButton_teinte->setChecked(false) ;
+
+    ui->horizontalSlider_saturation->setValue(0) ;
+    ui->horizontalSlider_saturation->setEnabled(false) ;
     ui->radioButton_saturation->setChecked(false) ;
+
     ui->groupBox_couleur->setChecked(false) ;
 }
 
@@ -2552,13 +2773,22 @@ void MainWindow::ReinitialiserResolution(){
     ui->groupBox_resolutionQuantification->setChecked(false) ;
 }
 
-// Reinitialiser : Box Details
+// Reinitialiser : Box Contours
 void MainWindow::ReinitialiserDetail(){
     ui->radioButton_nettete->setChecked(false) ;
-    ui->radioButton_bruitage->setChecked(false) ;
     ui->horizontalSlider_nettete->setValue(0) ;
-    ui->horizontalSlider_Bruitage->setValue(0) ;
     ui->groupBox_details->setChecked(false) ;
+    ui->groupBox_contours->setChecked(false) ;
+    ReinitialiserContour() ;
+}
+
+// Reinitialiser : Box Bruitage et debruitage
+void MainWindow::ReinitialiserBruitageDebruitage(){
+    ui->radioButton_bruitage->setChecked(false) ;
+    ui->horizontalSlider_Bruitage->setValue(0) ;
+    ui->groupBox_bruitageDebruitage->setChecked(false) ;
+    ui->groupBox_debruitage->setChecked(false) ;
+    ReinitialiserDebruitage() ;
 }
 
 // Reinitialiser : Box Extraction
@@ -2579,9 +2809,13 @@ void MainWindow::ReinitialiserContour(){
 // Reinitialiser : Box Debruitage
 void MainWindow::ReinitialiserDebruitage(){
     ui->radioButton_moyenneur->setChecked(false) ;
+    ui->radioButton_moyenneur->setEnabled(false) ;
     ui->radioButton_gaussien->setChecked(false) ;
+    ui->radioButton_gaussien->setEnabled(false) ;
     ui->radioButton_median->setChecked(false) ;
+    ui->radioButton_median->setEnabled(false) ;
     ui->radioButton_kuwahara->setChecked(false) ;
+    ui->radioButton_kuwahara->setEnabled(false) ;
     ui->groupBox_debruitage->setChecked(false) ;
 }
 
@@ -2591,12 +2825,21 @@ void MainWindow::ReinitialiserSeuillageSegmentation(){
     ui->radioButton_seuillageSimple->setChecked(false) ;
     ui->radioButton_segmentation->setChecked(false) ;
     ui->radioButton_seuillageHysteresis->setChecked(false) ;
+
     ui->verticalSlider_seuilBasB_2->setValue(0) ;
+    ui->verticalSlider_seuilBasB_2->setEnabled(false) ;
     ui->verticalSlider_seuilBasR_2->setValue(0) ;
+    ui->verticalSlider_seuilBasR_2->setEnabled(false) ;
     ui->verticalSlider_seuilBasV_2->setValue(0) ;
+    ui->verticalSlider_seuilBasV_2->setEnabled(false) ;
+
     ui->verticalSlider_seuilHautB_2->setValue(256) ;
+    ui->verticalSlider_seuilHautB_2->setEnabled(false) ;
     ui->verticalSlider_seuilHautR_2->setValue(256) ;
+    ui->verticalSlider_seuilHautR_2->setEnabled(false) ;
     ui->verticalSlider_seuilHautV_2->setValue(256) ;
+    ui->verticalSlider_seuilHautV_2->setEnabled(false) ;
+
     ui->groupBox_seuillageSegmentation->setChecked(false) ;
 }
 
@@ -2630,160 +2873,11 @@ void MainWindow::ReinitialiserAutre(){
    ui->groupBox_autre->setChecked(false) ;
 }
 
-// Transformee de Fourier
-void MainWindow::on_radioButton_fourier_clicked(){
-    if(ui->radioButton_fourier->isChecked()){
-        // Desactiver les autres fonctionnalites
-        ui->spinBoxHough->setEnabled(false) ;
-        ui->spinBoxHough->setValue(0) ;
-        ui->spinBoxKmeans->setEnabled(false) ;
-        ui->spinBoxKmeans->setValue(0) ;
-        QMessageBox::information(0, "Transformée de Fourier", "Cette fonctionnalité va arriver bientôt dans la version suivante.") ;
-    }
-}
 
-// Egalisation d'histogramme
-void MainWindow::on_radioButtonEgalisation_clicked(){
-    if(ui->radioButtonEgalisation->isChecked()){
-        // Desactiver les autres filtres
-        ui->radioButton_originale->setChecked(false) ;              // Image originale
-        ui->radioButton_sepia->setChecked(false) ;                  // Sepia
-        ui->radioButton_inversement->setChecked(false) ;            // Inversement
-        ui->radioButton_rouge->setChecked(false) ;                  // Rouge
-        ui->radioButton_vert->setChecked(false) ;                   // Vert
-        ui->radioButton_bleu->setChecked(false) ;                   // Bleu
-        ui->radioButton_cyan->setChecked(false) ;                   // Cyan
-        ui->radioButton_jaune->setChecked(false) ;                  // Jaune
-        ui->radioButton_magenta->setChecked(false) ;                // Magenta
-        ui->radioButton_rgb->setChecked(false) ;                    // RGB
-        ui->radioButton_niveauGris->setChecked(false) ;             // Nilveau de gris
-        ui->radioButtonBruitPoivreSel->setChecked(false) ;          // Bruit poivre et sel
-
-        // Ajouter du bruit gaussien dans l'image
-        _imageResultat = ImageEgalisation(_imageOriginale) ;
-        AffichageResultat(_imageResultat, 1) ;
-    }
-}
-
-// Bruit poivre et sel
-void MainWindow::on_radioButtonBruitPoivreSel_clicked(){
-    if(ui->radioButtonBruitPoivreSel->isChecked()){
-        // Desactiver les autres filtres
-        ui->radioButton_originale->setChecked(false) ;              // Image originale
-        ui->radioButton_sepia->setChecked(false) ;                  // Sepia
-        ui->radioButton_inversement->setChecked(false) ;            // Inversement
-        ui->radioButton_rouge->setChecked(false) ;                  // Rouge
-        ui->radioButton_vert->setChecked(false) ;                   // Vert
-        ui->radioButton_bleu->setChecked(false) ;                   // Bleu
-        ui->radioButton_cyan->setChecked(false) ;                   // Cyan
-        ui->radioButton_jaune->setChecked(false) ;                  // Jaune
-        ui->radioButton_magenta->setChecked(false) ;                // Magenta
-        ui->radioButton_rgb->setChecked(false) ;                    // RGB
-        ui->radioButton_niveauGris->setChecked(false) ;             // Nilveau de gris
-        ui->radioButtonEgalisation->setChecked(false) ;           // Bruit gaussien
-
-        // Ajouter du bruit poivre et sel dans l'image
-        _imageResultat = ImageBruitPoivreSel(_imageOriginale) ;
-        AffichageResultat(_imageResultat, 1) ;
-    }
-
-}
-
-
-void MainWindow::on_groupBox_autre_clicked(){
-    AffichageResultat(_imageOriginale, 1) ;                      // Image originale
-    // Si le box est choisi
-    if(ui->groupBox_couleur->isChecked()){
-        // Desactiver les autres fonctionnalites
-        ReinitialiserLuminosite() ;             // Luminosite
-        ReinitialiserDetail() ;                 // Details
-        ReinitialiserResolution() ;             // Resolution
-        ReinitialiserExtraction() ;              // Extraction
-        ReinitialiserContour() ;                // Contours
-        ReinitialiserDebruitage() ;             // Debruitage
-        ReinitialiserSeuillageSegmentation() ;  // Seuillage et segmentation
-        ReinitialiserFiltre() ;                 // Filtres
-    // Sinon : Reinitialiser
-    }else{
-        ReinitialiserCouleur() ;
-    }
-
-    // Si le box est choisi
-    if(ui->groupBox_autre->isChecked()){
-        // Desactiver les autres fonctionnalites
-        ReinitialiserLuminosite() ;             // Luminosite
-        ReinitialiserDetail() ;                 // Details
-        ReinitialiserResolution() ;             // Resolution
-        ReinitialiserExtraction() ;              // Extraction
-        ReinitialiserContour() ;                // Contours
-        ReinitialiserDebruitage() ;             // Debruitage
-        ReinitialiserSeuillageSegmentation() ;  // Seuillage et segmentation
-        ReinitialiserFiltre() ;                 // Filtres
-    // Sinon : Reinitialiser
-    }else{
-        ReinitialiserAutre() ;
-    }
-}
-
-// K-means
-void MainWindow::on_radioButtonKmeans_clicked(){
-    if(ui->radioButtonKmeans->isChecked()){
-        // Desactiver les autres fonctionnalites
-        ui->spinBoxHough->setEnabled(false) ;
-        ui->spinBoxHough->setValue(0) ;
-        // Initialiser le critere
-        ui->spinBoxKmeans->setEnabled(true) ;
-        ui->spinBoxKmeans->setValue(0) ;
-    }
-}
-
-// Transformee de Hough
-void MainWindow::on_radioButtonTransformeeHough_clicked(){
-    if(ui->radioButtonTransformeeHough->isChecked()){
-        // Desactiver les autres fonctionnalites
-        ui->spinBoxKmeans->setEnabled(false) ;
-        ui->spinBoxKmeans->setValue(0) ;
-        // Initialiser le critere
-        ui->spinBoxHough->setEnabled(true) ;
-        ui->spinBoxHough_seuil_theta->setEnabled(true);
-        ui->spinBoxHough->setValue(0) ;
-    }
-}
 
 
 void MainWindow::on_pushButtonRetourMenuConsultationImage_clicked(){
     MainWindow::on_pushButtonRetourMenuModificationImage_clicked() ;
-}
-
-void MainWindow::on_pushButton_traitementSauvegarder_clicked()
-{
-    QString fileName = QFileDialog::getSaveFileName(0,tr("Sauvegarder l'image traitée"), QCoreApplication::applicationDirPath() ,tr("Fichiers Images (*.png *.jpg *.bmp *.pgm *.jpeg *.tiff)")) ;
-    if (!fileName.isEmpty()){
-        if (fileName.count('.')){
-         string fileNameStr = fileName.toStdString() ;
-         imwrite(fileNameStr, _imageResultat) ;
-    }else{
-        fileName.append(".jpg");
-        string fileNameStr = fileName.toStdString() ;
-        imwrite(fileNameStr, _imageResultat) ;
-    }
-    }
-}
-
-void MainWindow::on_pushButtonAfficherImageTraitee_clicked()
-{
-    // Mise a jour l'image originale temporelle
-    Mat imageResultat = ImageBGRRGB(_imageResultat);
-    QImage imageResultatQT = QImage((uchar*) imageResultat.data, imageResultat.cols, imageResultat.rows, imageResultat.step, QImage::Format_RGB888) ;
-    // Affichage de l'image traitée
-    QGraphicsScene* scene = new QGraphicsScene() ;
-    scene->addPixmap(QPixmap::fromImage(imageResultatQT));
-    ui->graphicsView_contenuImageTraiteeAgrandi->setScene(scene) ;
-    ui->graphicsView_contenuImageTraiteeAgrandi->show() ;
-    ui->graphicsView_contenuImageTraiteeAgrandi->fitInView(scene->sceneRect(), Qt::KeepAspectRatio) ;
-    ui->stackedWidget->setCurrentIndex(7);
-
-
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -2791,8 +2885,6 @@ void MainWindow::on_pushButton_clicked()
     ui->stackedWidget->setCurrentIndex(6);
 }
 
-void MainWindow::on_pushButton_Appliquer_Hough_clicked()
-{
-    _imageResultat = TransformeedeHough(_imageOriginale,ui -> spinBoxHough_seuil_theta ->value(),ui -> spinBoxHough -> value());
-    AffichageResultat(_imageResultat,1);
-}
+
+
+
