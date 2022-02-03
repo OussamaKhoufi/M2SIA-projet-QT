@@ -32,6 +32,7 @@ var searchData=
   ['on_5fhorizontalslider_5ftemperature_5fvaluechanged',['on_horizontalSlider_temperature_valueChanged',['../classMainWindow.html#ac45ec92e372ec2a02d5c69a8b6fb80e9',1,'MainWindow']]],
   ['on_5fhorizontalslider_5fvividite_5fvaluechanged',['on_horizontalSlider_vividite_valueChanged',['../classMainWindow.html#a20985e6c681639b6a4a48f35837a7e59',1,'MainWindow']]],
   ['on_5flineeditmdp_5freturnpressed',['on_lineEditMdp_returnPressed',['../classMainWindow.html#a495b1763c99152a0a067d9efcd5867b6',1,'MainWindow']]],
+  ['on_5fpushbutton_5fappliquer_5fhough_5fclicked',['on_pushButton_Appliquer_Hough_clicked',['../classMainWindow.html#a471d6806c6dab1db759f5e4454455a05',1,'MainWindow']]],
   ['on_5fpushbutton_5fclicked',['on_pushButton_clicked',['../classMainWindow.html#a4de79c63c7fa0b8d7c468ac71f20be81',1,'MainWindow']]],
   ['on_5fpushbutton_5fmodifier_5fclicked',['on_pushButton_modifier_clicked',['../classMainWindow.html#a70f495382f691edf5ac4c5b754249c21',1,'MainWindow']]],
   ['on_5fpushbutton_5fretour_5fclicked',['on_pushButton_retour_clicked',['../classMainWindow.html#aec65250d1c32225746ec18aa394a943f',1,'MainWindow']]],

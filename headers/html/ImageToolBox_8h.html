@@ -337,6 +337,9 @@ Fonctions</h2></td></tr>
 <tr class="memitem:add7af4ead9829a856b445e291318994e"><td class="memItemLeft" align="right" valign="top">Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ImageToolBox_8h.html#add7af4ead9829a856b445e291318994e">ImageToolBox::ImageFourierArranger</a> (const Mat image)</td></tr>
 <tr class="memdesc:add7af4ead9829a856b445e291318994e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arranger la représentation de la transformee de Fourier 2D de l'image.  <a href="ImageToolBox_8h.html#add7af4ead9829a856b445e291318994e">Plus de détails...</a><br /></td></tr>
 <tr class="separator:add7af4ead9829a856b445e291318994e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab087e468b42f53de22736db601cc67ce"><td class="memItemLeft" align="right" valign="top">Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ImageToolBox_8h.html#ab087e468b42f53de22736db601cc67ce">ImageToolBox::TransformeedeHough</a> (const Mat image, int num_theta, int threshold_acc)</td></tr>
+<tr class="memdesc:ab087e468b42f53de22736db601cc67ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transformee de Hough.  <a href="ImageToolBox_8h.html#ab087e468b42f53de22736db601cc67ce">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ab087e468b42f53de22736db601cc67ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
 <div class="textblock"><p>Header du namespace ImageToolBox contenant les différentes fonctions de traitement d'images. </p>
@@ -2997,6 +3000,49 @@ Fonctions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Renvoie</dt><dd>Image de l'histogramme de la composante choisie de l'image </dd></dl>
+
+</div>
+</div>
+<a id="file_ab087e468b42f53de22736db601cc67ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#file_ab087e468b42f53de22736db601cc67ce">&#9670;&nbsp;</a></span>TransformeedeHough()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Mat ImageToolBox::TransformeedeHough </td>
+          <td>(</td>
+          <td class="paramtype">const Mat&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>threshold_acc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Transformee de Hough. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">image</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>une image avec les lignes detectees et tracees </dd></dl>
 
 </div>
 </div>

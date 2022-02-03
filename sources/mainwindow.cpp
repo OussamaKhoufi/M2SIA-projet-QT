@@ -1865,6 +1865,7 @@ void MainWindow::on_radioButton_resolution_clicked(){
         ui->horizontalSlider_quantification->setEnabled(false) ;
 
         // Initialiser la zone de reglage
+        ui->horizontalSlider_resolution->setEnabled(true);
         ui->groupBox_interpolation->setEnabled(true) ;
         ui->horizontalSlider_resolution->setValue(0) ;
         ui->radioButton_PPP->setChecked(true) ;
@@ -2205,7 +2206,7 @@ void MainWindow::GenererIcone(){
     int hauteur = ui->label_mono->height() ;    // Hauteur de la fenetre d'affichage
     int largeur = ui->label_mono->width() ;     // Largeur de la fenetre d'affichage
     // Originale
-    QPixmap exempleOriginale(":/icons/rgbexample.jpeg") ;
+    QPixmap exempleOriginale(":/icons/galaxy.jpeg") ;
     ui->label_original->setPixmap(exempleOriginale.scaled(largeur, hauteur, Qt::KeepAspectRatio)) ;
     ui->label_original->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter) ;
     // Mono
@@ -2343,6 +2344,9 @@ void MainWindow::AfficherMessageAide(){
     ui->pushButton_traitementAppliquer->setToolTip("Appliquer le traitement actuel :\nL'image de départ sera remplacé par l'image traitée en cours d'affichage") ;
     ui->pushButton_traitementReinitialiser->setToolTip("Réinitialiser l'image de départ par l'image choisie dans la page précédente") ;
     ui->pushButton_traitementSauvegarder->setToolTip("Sauvegarder l'image traitée") ;
+    // Transformée de Hough
+    ui->spinBoxHough->setToolTip("Seuille de détection des droites. Plus c'est élevé plus, nous eliminons les droites redondantes ou les faux-positives.");
+    ui->spinBoxHough_seuil_theta->setToolTip("Nombre de projection que theta peut faire dans l'intervalle [0;180]. \n A 1: Effectué  une seul projection pour un angle de 0. \n A 180 : une projection effectué tous les 1 degrés");
 }
 
 // Messages d'aide : Luminosite
@@ -2741,6 +2745,7 @@ void MainWindow::on_radioButtonTransformeeHough_clicked(){
         ui->spinBoxKmeans->setValue(0) ;
         // Initialiser le critere
         ui->spinBoxHough->setEnabled(true) ;
+        ui->spinBoxHough_seuil_theta->setEnabled(true);
         ui->spinBoxHough->setValue(0) ;
     }
 }
@@ -2784,4 +2789,10 @@ void MainWindow::on_pushButtonAfficherImageTraitee_clicked()
 void MainWindow::on_pushButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(6);
+}
+
+void MainWindow::on_pushButton_Appliquer_Hough_clicked()
+{
+    _imageResultat = TransformeedeHough(_imageOriginale,ui -> spinBoxHough_seuil_theta ->value(),ui -> spinBoxHough -> value());
+    AffichageResultat(_imageResultat,1);
 }

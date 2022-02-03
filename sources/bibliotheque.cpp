@@ -477,6 +477,10 @@ vector<int> Bibliotheque::Trier(vector<double>valeurNonTri){
     vector<double> valeurTri ;      // Vecteur des valeurs triees
     vector<int> indice ;            // Vecteur des indices pour le tri de la bibliotheque
 
+    // Initialisation
+    indice.clear() ;
+    valeurTri.clear() ;
+
     // Initialiser le vecteur des titres tries 
     valeurTri = valeurNonTri ;     
 
@@ -513,6 +517,10 @@ vector<int> Bibliotheque::Trier(vector<string>valeurNonTri){
     vector<string> valeurTri ;      // Vecteur des valeurs triees
     vector<int> indice ;            // Vecteur des indices pour le tri de la bibliotheque
 
+    // Initialisation
+    indice.clear() ;
+    valeurTri.clear() ;
+
     // Initialiser le vecteur des titres tries 
     valeurTri = valeurNonTri ;     
              
@@ -548,7 +556,9 @@ vector<int> Bibliotheque::Trier(vector<int>valeurNonTri){
     int c, k ;                      // Indices
     vector<int> valeurTri ;         // Vecteur des valeurs triees
     vector<int> indice ;            // Vecteur des indices pour le tri de la bibliotheque
-
+    // Initialisation
+    indice.clear() ;
+    valeurTri.clear() ;
     // Initialiser le vecteur des titres tries 
     valeurTri = valeurNonTri ;     
 

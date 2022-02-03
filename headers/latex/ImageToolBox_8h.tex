@@ -190,7 +190,9 @@ Mat \hyperlink{ImageToolBox_8h_a996455b582ed88d1003d0f7cfd08135a}{Image\+Tool\+B
 int \hyperlink{ImageToolBox_8h_aeb0a18c2585e268d0e3eec18e29e9ecb}{Image\+Tool\+Box\+::\+Verifier\+Saturation} (const int valeur)
 \begin{DoxyCompactList}\small\item\em Vérifier la saturation de la valeur d\textquotesingle{}un pixel de l\textquotesingle{}image. \end{DoxyCompactList}\item 
 Mat \hyperlink{ImageToolBox_8h_add7af4ead9829a856b445e291318994e}{Image\+Tool\+Box\+::\+Image\+Fourier\+Arranger} (const Mat image)
-\begin{DoxyCompactList}\small\item\em Arranger la représentation de la transformee de Fourier 2D de l\textquotesingle{}image. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Arranger la représentation de la transformee de Fourier 2D de l\textquotesingle{}image. \end{DoxyCompactList}\item 
+Mat \hyperlink{ImageToolBox_8h_ab087e468b42f53de22736db601cc67ce}{Image\+Tool\+Box\+::\+Transformeede\+Hough} (const Mat image, int num\+\_\+theta, int threshold\+\_\+acc)
+\begin{DoxyCompactList}\small\item\em Transformee de Hough. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Description détaillée}
@@ -1731,6 +1733,24 @@ Calculer et tracer l\textquotesingle{}histogramme d\textquotesingle{}une composa
 \end{DoxyParams}
 \begin{DoxyReturn}{Renvoie}
 Image de l\textquotesingle{}histogramme de la composante choisie de l\textquotesingle{}image 
+\end{DoxyReturn}
+\mbox{\Hypertarget{ImageToolBox_8h_file_ab087e468b42f53de22736db601cc67ce}\label{ImageToolBox_8h_file_ab087e468b42f53de22736db601cc67ce}} 
+\index{Image\+Tool\+Box.\+h@{Image\+Tool\+Box.\+h}!Transformeede\+Hough@{Transformeede\+Hough}}
+\index{Transformeede\+Hough@{Transformeede\+Hough}!Image\+Tool\+Box.\+h@{Image\+Tool\+Box.\+h}}
+\subsubsection{\texorpdfstring{Transformeede\+Hough()}{TransformeedeHough()}}
+{\footnotesize\ttfamily Mat Image\+Tool\+Box\+::\+Transformeede\+Hough (\begin{DoxyParamCaption}\item[{const Mat}]{image,  }\item[{int}]{num\+\_\+theta,  }\item[{int}]{threshold\+\_\+acc }\end{DoxyParamCaption})}
+
+
+
+Transformee de Hough. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em image} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+une image avec les lignes detectees et tracees 
 \end{DoxyReturn}
 \mbox{\Hypertarget{ImageToolBox_8h_file_a3ff5538fa3264135cfeb09bc62842575}\label{ImageToolBox_8h_file_a3ff5538fa3264135cfeb09bc62842575}} 
 \index{Image\+Tool\+Box.\+h@{Image\+Tool\+Box.\+h}!Variance\+Vecteur@{Variance\+Vecteur}}

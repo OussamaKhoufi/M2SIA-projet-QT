@@ -1,7 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
  <qresource>
      <file>icons/zoom.png</file>
-     <file>icons/rgbexample.jpeg</file>
+     <file>icons/galaxy.jpeg</file>
      <file>icons/exempleMono.jpeg</file>
      <file>icons/exempleSepia.jpeg</file>
      <file>icons/exempleNeg.jpeg</file>

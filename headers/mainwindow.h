@@ -705,17 +705,20 @@ private slots:
      * @brief autres filtres
      */
     void on_groupBox_autre_clicked();
-    // Reinitialiser : Box Autres
+
     /**
      * @brief Reinitialiser : Box Autres
      */
     void ReinitialiserAutre() ;
 
     /**
-     * @brief Bouton K-means
+     * @brief radioBouton K-means
      */
     void on_radioButtonKmeans_clicked();
-
+    /**
+     * @brief Bouton OK pour appliquer la transformée de Hough
+     */
+    void on_pushButton_Appliquer_Hough_clicked();
     /**
      * @brief Transformée de Hough
      */

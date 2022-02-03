@@ -449,7 +449,7 @@ border-color: rgb(114, 159, 207);</string>
         <string notr="true">color: rgb(238, 238, 236);</string>
        </property>
        <property name="text">
-        <string>Créer nouvelle bibliothèque</string>
+        <string>Créer une nouvelle bibliothèque</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -615,7 +615,7 @@ color: rgb(0, 0, 0);</string>
         <enum>Qt::SolidLine</enum>
        </property>
        <property name="sortingEnabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -831,7 +831,7 @@ color: rgb(0, 0, 0);</string>
         <string notr="true">color: rgb(238, 238, 236);</string>
        </property>
        <property name="text">
-        <string>Supprimer l'image</string>
+        <string>Supprimer</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -867,7 +867,7 @@ color: rgb(0, 0, 0);</string>
         <string notr="true">color: rgb(238, 238, 236);</string>
        </property>
        <property name="text">
-        <string>Ajouter une image</string>
+        <string>Ajouter</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -882,9 +882,9 @@ color: rgb(0, 0, 0);</string>
       <widget class="QLabel" name="labelMenuIBiblio">
        <property name="geometry">
         <rect>
-         <x>320</x>
-         <y>20</y>
-         <width>471</width>
+         <x>400</x>
+         <y>15</y>
+         <width>391</width>
          <height>70</height>
         </rect>
        </property>
@@ -910,7 +910,7 @@ color: rgb(0, 0, 0);</string>
         <number>1</number>
        </property>
        <property name="text">
-        <string>Menu Gestion de Bibliothèque</string>
+        <string>Gestion de Bibliothèque</string>
        </property>
        <property name="textFormat">
         <enum>Qt::AutoText</enum>
@@ -1771,7 +1771,7 @@ color: rgb(0, 0, 0);</string>
         <string notr="true">color: rgb(238, 238, 236);</string>
        </property>
        <property name="text">
-        <string>Ouvrir l'image</string>
+        <string>Ouvrir</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -1786,8 +1786,8 @@ color: rgb(0, 0, 0);</string>
       <widget class="QLabel" name="labelAppIconMenuBiblio">
        <property name="geometry">
         <rect>
-         <x>280</x>
-         <y>35</y>
+         <x>360</x>
+         <y>30</y>
          <width>31</width>
          <height>31</height>
         </rect>
@@ -2238,7 +2238,7 @@ color: rgb(0, 0, 0);</string>
       <widget class="QLabel" name="labelAppIconAjoutImage">
        <property name="geometry">
         <rect>
-         <x>101</x>
+         <x>140</x>
          <y>26</y>
          <width>31</width>
          <height>31</height>
@@ -2287,9 +2287,9 @@ color: rgb(0, 0, 0);</string>
       <widget class="QLabel" name="labelMenuIAjoutImage">
        <property name="geometry">
         <rect>
-         <x>140</x>
+         <x>180</x>
          <y>10</y>
-         <width>301</width>
+         <width>221</width>
          <height>70</height>
         </rect>
        </property>
@@ -2315,7 +2315,7 @@ color: rgb(0, 0, 0);</string>
         <number>1</number>
        </property>
        <property name="text">
-        <string>Menu Ajout d'Image</string>
+        <string>Ajout d'Image</string>
        </property>
        <property name="textFormat">
         <enum>Qt::AutoText</enum>
@@ -2492,7 +2492,7 @@ color: rgb(0, 0, 0);</string>
      <widget class="QLabel" name="labelAppIconMenuConsultationImage">
       <property name="geometry">
        <rect>
-        <x>430</x>
+        <x>460</x>
         <y>10</y>
         <width>31</width>
         <height>31</height>
@@ -2541,9 +2541,9 @@ color: rgb(0, 0, 0);</string>
      <widget class="QLabel" name="labelMenuIConsultationImage">
       <property name="geometry">
        <rect>
-        <x>470</x>
+        <x>500</x>
         <y>10</y>
-        <width>421</width>
+        <width>341</width>
         <height>37</height>
        </rect>
       </property>
@@ -2569,7 +2569,7 @@ color: rgb(0, 0, 0);</string>
        <number>1</number>
       </property>
       <property name="text">
-       <string>Menu Consultation d'Image</string>
+       <string>Consultation d'Image</string>
       </property>
       <property name="textFormat">
        <enum>Qt::AutoText</enum>
@@ -3008,9 +3008,9 @@ background-color: rgb(238, 238, 236);</string>
      <widget class="QLabel" name="labelMenuIModificationImage">
       <property name="geometry">
        <rect>
-        <x>470</x>
+        <x>500</x>
         <y>10</y>
-        <width>431</width>
+        <width>351</width>
         <height>37</height>
        </rect>
       </property>
@@ -3036,7 +3036,7 @@ background-color: rgb(238, 238, 236);</string>
        <number>1</number>
       </property>
       <property name="text">
-       <string>Menu Modification d'Image</string>
+       <string>Modification d'Image</string>
       </property>
       <property name="textFormat">
        <enum>Qt::AutoText</enum>
@@ -3057,7 +3057,7 @@ background-color: rgb(238, 238, 236);</string>
      <widget class="QLabel" name="labelAppIconMenuModificationImage">
       <property name="geometry">
        <rect>
-        <x>430</x>
+        <x>450</x>
         <y>10</y>
         <width>31</width>
         <height>31</height>
@@ -3156,7 +3156,7 @@ background-color: rgb(238, 238, 236);</string>
        <string notr="true">color: rgb(238, 238, 236);</string>
       </property>
       <property name="title">
-       <string>   Image traitee</string>
+       <string>   Image traitée</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -3309,7 +3309,7 @@ background-color: rgb(238, 238, 236);</string>
        <string notr="true">color: rgb(238, 238, 236);</string>
       </property>
       <property name="title">
-       <string>&amp;Luminosite</string>
+       <string>Luminosité</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -3401,7 +3401,7 @@ background-color: rgb(238, 238, 236);</string>
         </rect>
        </property>
        <property name="text">
-        <string>Intensite</string>
+        <string>Intensité</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="radioButton_contraste">
@@ -3514,7 +3514,7 @@ background-color: rgb(238, 238, 236);</string>
         </rect>
        </property>
        <property name="text">
-        <string>Haute lumiere</string>
+        <string>Haute lumi&amp;ère</string>
        </property>
       </widget>
      </widget>
@@ -3580,7 +3580,7 @@ background-color: rgb(238, 238, 236);</string>
         </rect>
        </property>
        <property name="text">
-        <string>Temperature</string>
+        <string>Température</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="radioButton_vividite">
@@ -3593,7 +3593,7 @@ background-color: rgb(238, 238, 236);</string>
         </rect>
        </property>
        <property name="text">
-        <string>&amp;Vividite</string>
+        <string>Vividité</string>
        </property>
       </widget>
       <widget class="QSlider" name="horizontalSlider_vividite">
@@ -3914,7 +3914,7 @@ background-color: rgb(238, 238, 236);</string>
        <string notr="true">color: rgb(238, 238, 236);</string>
       </property>
       <property name="text">
-       <string>resolution</string>
+       <string>résolution</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -4122,7 +4122,7 @@ background-color: rgb(238, 238, 236);</string>
          </rect>
         </property>
         <property name="text">
-         <string>Hysteresis</string>
+         <string>Hystérésis</string>
         </property>
        </widget>
       </widget>
@@ -4462,7 +4462,7 @@ background-color: rgb(238, 238, 236);</string>
        <string notr="true">color: rgb(238, 238, 236);</string>
       </property>
       <property name="title">
-       <string>Debruitage</string>
+       <string>Débruitage</string>
       </property>
       <property name="checkable">
        <bool>true</bool>
@@ -4506,7 +4506,7 @@ background-color: rgb(238, 238, 236);</string>
         </rect>
        </property>
        <property name="text">
-        <string>Median</string>
+        <string>Médian</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="radioButton_kuwahara">
@@ -4536,7 +4536,7 @@ background-color: rgb(238, 238, 236);</string>
        <string notr="true">color: rgb(238, 238, 236);</string>
       </property>
       <property name="title">
-       <string>Details</string>
+       <string>Détails</string>
       </property>
       <property name="checkable">
        <bool>true</bool>
@@ -4622,7 +4622,7 @@ background-color: rgb(238, 238, 236);</string>
         </rect>
        </property>
        <property name="text">
-        <string>&amp;Nettete</string>
+        <string>Netteté</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="radioButton_bruitage">
@@ -4667,7 +4667,7 @@ background-color: rgb(238, 238, 236);</string>
         </rect>
        </property>
        <property name="text">
-        <string>Transform&amp;ée de Fourier</string>
+        <string>Transformée de Fourier</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="radioButtonKmeans">
@@ -4704,22 +4704,6 @@ background-color: rgb(238, 238, 236);</string>
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QSpinBox" name="spinBoxHough">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>190</x>
-         <y>120</y>
-         <width>48</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="maximum">
-        <number>100</number>
-       </property>
-      </widget>
       <widget class="QSpinBox" name="spinBoxKmeans">
        <property name="enabled">
         <bool>false</bool>
@@ -4736,27 +4720,6 @@ background-color: rgb(238, 238, 236);</string>
         <number>20</number>
        </property>
       </widget>
-      <widget class="QLabel" name="labelHough">
-       <property name="geometry">
-        <rect>
-         <x>60</x>
-         <y>125</y>
-         <width>111</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Nombre de points :</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
       <widget class="QRadioButton" name="radioButtonTransformeeHough">
        <property name="geometry">
         <rect>
@@ -4767,7 +4730,55 @@ background-color: rgb(238, 238, 236);</string>
         </rect>
        </property>
        <property name="text">
-        <string>Transformee de Hough</string>
+        <string>Transformée de Hough</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="spinBoxHough">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>120</y>
+         <width>48</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="maximum">
+        <number>500</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="spinBoxHough_seuil_theta">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>120</y>
+         <width>48</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>180</number>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_Appliquer_Hough">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>120</y>
+         <width>61</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>OK</string>
        </property>
       </widget>
      </widget>
@@ -4784,7 +4795,7 @@ background-color: rgb(238, 238, 236);</string>
        <string notr="true">color: rgb(238, 238, 236);</string>
       </property>
       <property name="title">
-       <string>Resolution</string>
+       <string>Résolution</string>
       </property>
       <property name="checkable">
        <bool>true</bool>
@@ -4802,7 +4813,7 @@ background-color: rgb(238, 238, 236);</string>
         </rect>
        </property>
        <property name="text">
-        <string>Resolution</string>
+        <string>Résolution</string>
        </property>
       </widget>
       <widget class="QSlider" name="horizontalSlider_quantification">
@@ -4844,7 +4855,7 @@ background-color: rgb(238, 238, 236);</string>
         <rect>
          <x>20</x>
          <y>120</y>
-         <width>112</width>
+         <width>121</width>
          <height>16</height>
         </rect>
        </property>
@@ -4915,7 +4926,7 @@ background-color: rgb(238, 238, 236);</string>
          </rect>
         </property>
         <property name="text">
-         <string>Bilineaire</string>
+         <string>Bilinéaire</string>
         </property>
        </widget>
       </widget>
@@ -4940,7 +4951,7 @@ background-color: rgb(238, 238, 236);</string>
        <string notr="true">color: rgb(238, 238, 236);</string>
       </property>
       <property name="title">
-       <string>E&amp;xtraction</string>
+       <string>Extraction</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -5019,7 +5030,7 @@ background-color: rgb(238, 238, 236);</string>
        <string notr="true">color: rgb(238, 238, 236);</string>
       </property>
       <property name="text">
-       <string>resolution</string>
+       <string>résolution</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -5028,9 +5039,9 @@ background-color: rgb(238, 238, 236);</string>
      <widget class="QLabel" name="labelMenuITraitementImage">
       <property name="geometry">
        <rect>
-        <x>475</x>
+        <x>500</x>
         <y>10</y>
-        <width>431</width>
+        <width>301</width>
         <height>37</height>
        </rect>
       </property>
@@ -5056,7 +5067,7 @@ background-color: rgb(238, 238, 236);</string>
        <number>1</number>
       </property>
       <property name="text">
-       <string>Menu Traitement d'Image</string>
+       <string>Traitement d'Image</string>
       </property>
       <property name="textFormat">
        <enum>Qt::AutoText</enum>
@@ -5077,7 +5088,7 @@ background-color: rgb(238, 238, 236);</string>
      <widget class="QLabel" name="labelAppIconMenuTraitementImage">
       <property name="geometry">
        <rect>
-        <x>430</x>
+        <x>450</x>
         <y>10</y>
         <width>31</width>
         <height>31</height>
@@ -5377,7 +5388,7 @@ background-color: rgb(238, 238, 236);</string>
          </font>
         </property>
         <property name="text">
-         <string notr="true">Negatif</string>
+         <string notr="true">Négatif</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_negatif">
@@ -5706,7 +5717,7 @@ background-color: rgb(238, 238, 236);</string>
          </font>
         </property>
         <property name="text">
-         <string>Égalisation</string>
+         <string>&amp;Égalisation</string>
         </property>
        </widget>
        <widget class="QLabel" name="labelEgalisation">

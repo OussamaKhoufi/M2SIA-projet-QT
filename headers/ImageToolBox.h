@@ -663,4 +663,10 @@ namespace ImageToolBox {
      * @return Image arrangée de la représentation de la transformée de Fourier 2D de l'image
      */
     Mat ImageFourierArranger(const Mat image) ;                             // Arranger la representation de la transformee de Fourier
+    /**
+     * @brief Transformee de Hough
+     * @param image
+     * @return une image avec les lignes detectees et tracees
+     */
+    Mat TransformeedeHough(const Mat image,int num_theta,int threshold_acc); // Détection de ligne dans une images
 };

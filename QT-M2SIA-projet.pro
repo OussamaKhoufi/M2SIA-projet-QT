@@ -32,7 +32,8 @@ SOURCES += \
 HEADERS += \
         /home/vm/M2SIA-projet-QT/headers/mainwindow.h \
         /home/vm/M2SIA-projet-QT/headers/bibliotheque.h \
-        /home/vm/M2SIA-projet-QT/headers/ImageToolBox.h
+        /home/vm/M2SIA-projet-QT/headers/ImageToolBox.h \
+
 FORMS += \
         /home/vm/M2SIA-projet-QT/ui/mainwindow.ui \
 
